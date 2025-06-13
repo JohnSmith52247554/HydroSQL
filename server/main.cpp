@@ -15,16 +15,40 @@ using namespace YourSQL::Server;
 
 int main()
 {
-    std::string path(PROJECT_PATH);
-    path += "/data.bin";
-    Engine::Constraint c(Engine::ConstraintType::CHECK, "testtest");
-    std::ofstream ofs(path, std::ios::binary);
-    ofs << c;
-    ofs.close();
-    std::ifstream ifs(path, std::ios::binary);
-    Engine::Constraint cc;
-    ifs >> cc;
-    ifs.close();
-    std::cout << static_cast<int>(cc.type) << cc.details << std::endl;
+    std::cout << "INT" << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::INT, L"1", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::INT, L"1.1", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::INT, L"abc", 0) << std::endl;
+
+    std::cout << "FLOAT" << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::FLOAT, L"1", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::FLOAT, L"1.1", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::FLOAT, L"Abc", 0) << std::endl;
+
+    std::cout << "CHAR" << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::CHAR, L"a", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::CHAR, L"0", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::CHAR, L"Abc", 0) << std::endl;
+
+    std::cout << "BOOLEAN" << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::BOOLEAN, L"true", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::BOOLEAN, L"FALSE", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::BOOLEAN, L"A1", 0) << std::endl;
+
+    std::cout << "DATE" << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::DATE, L"2025-06-13", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::DATE, L"1978-02-30", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::DATE, L"22-2-2", 0) << std::endl;
+
+    std::cout << "TIME" << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::TIME, L"21:19:01", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::TIME, L"20:00:00", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::TIME, L"2:1:1", 0) << std::endl;
+
+    std::cout << "DATATIME" << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::DATETIME, L"2024-06-13-21:19:01", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::DATETIME, L"2222-22-22-20:00:00", 0) << std::endl;
+    std::cout << Engine::Table::dataTypeExamination(Engine::DataType::DATETIME, L"21-2-3-2:1:1", 0) << std::endl;
+
     return 0;
 }
