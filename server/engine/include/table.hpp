@@ -141,9 +141,21 @@ namespace YourSQL::Server::Engine
     std::ostream &operator<<(std::ostream &os, const Column &col);
     std::istream &operator>>(std::istream &is, Column &col);
 
+    struct SelectOrder
+    {
+        std::wstring key;
+        bool ascending;
+    };
+
     class Table
     {
     private:
+        struct ColAndIndex
+        {
+            const Column *col;
+            size_t index;
+        };
+        
         std::wstring name;
         std::vector<Column> columns;
 
@@ -173,7 +185,17 @@ namespace YourSQL::Server::Engine
          */
         [[nodiscard]] int insert(const std::vector<std::wstring> &keys, const std::vector<std::vector<std::wstring>> &values, std::wstring &result);
 
-        [[nodiscard]] int select(const std::vector<std::wstring> &rows, const std::wstring &requirements, const std::wstring &order, std::wstring &result) const;
+        /**
+         * @brief select some rows in the table
+         *
+         * @param keys The columns which will be displayed. An empty vector represent "*", which  means all columns.
+         * @param requirements TODO: The requirements that the rows should meet. A tree.
+         * @param order The order of the output rows.
+         * @param output The selected rows in the right order.
+         * @param result The result (or error message) to be outputed.
+         * @return int 0 for failed and 1 for succeeded
+         */
+        [[nodiscard]] int select(const std::vector<std::wstring> &keys, const bool &requirements, const SelectOrder &order, std::vector<std::vector<std::wstring>> &output, std::wstring &result) const;
 
         [[nodiscard]] int update();
 
@@ -185,7 +207,20 @@ namespace YourSQL::Server::Engine
         [[nodiscard]] static const bool continuousNumExamination(const std::wstring &str, const size_t begin, const size_t length);
 
         [[nodiscard]] static const size_t getDataTypeSize(const DataType type);
+        [[nodiscard]] static const size_t getColumnSize(const Column &col);
 
         [[nodiscard]] const std::streampos calRowLen() const;
+
+        static void insertVal(std::ostream &os, const DataType type, const std::wstring &val, const size_t len = 1);
+
+        static void readVal(std::istream &is, const Column &col, std::wstring &output);
+
+        // WARNING: The following six fuctions will not examine the legality of the input in order to be faster. Illegal input may cause the program to CRASH. Use a try and catch block if your are not sure whether the input is legal.
+        static void dateStrToNum(const std::wstring &str, int32_t &num);
+        static void dateNumToStr(const int32_t &num, std::wstring &str);
+        static void timeStrToNum(const std::wstring &str, int32_t &num);
+        static void timeNumToStr(const int32_t &num, std::wstring &str);
+        static void datetimeStrToNum(const std::wstring &str, int32_t &num);
+        static void datetimeNumToStr(const int32_t &num, std::wstring &str);
     };
 }
