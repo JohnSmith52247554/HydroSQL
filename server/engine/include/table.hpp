@@ -153,12 +153,11 @@ namespace YourSQL::Server::Engine
         // the length of one row
         std::streampos row_length;
 
+        std::filesystem::path data_path;
+
     public:
-        Table(const std::wstring name_)
-            : name(name_)
-        {}
-        Table(const std::wstring &command)
-        {}
+        Table(const std::wstring &name_);
+        Table(const std::wstring &name_, const std::vector<Column> &&columns_);
 
         Table(const Table &other) = delete;
         Table(const Table &&other) = delete;
@@ -181,11 +180,12 @@ namespace YourSQL::Server::Engine
         [[nodiscard]] int delete_();
 
     private:
-        [[nodiscard]] int init();
+        [[nodiscard]] static const bool dataTypeExamination(const DataType type, const std::wstring &str, const size_t varchar_length);
 
-    public:
-        [[nodiscard]] static bool dataTypeExamination(const DataType type, const std::wstring &str, const size_t varchar_length);
+        [[nodiscard]] static const bool continuousNumExamination(const std::wstring &str, const size_t begin, const size_t length);
 
-        [[nodiscard]] static bool continuousNumExamination(const std::wstring &str, const size_t begin, const size_t length);
+        [[nodiscard]] static const size_t getDataTypeSize(const DataType type);
+
+        [[nodiscard]] const std::streampos calRowLen() const;
     };
 }
