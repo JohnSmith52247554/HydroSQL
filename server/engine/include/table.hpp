@@ -25,8 +25,8 @@ namespace YourSQL::Server::Engine
         return static_cast<std::underlying_type<Enum>::type>(data);
     }
 
-    void saveStr(std::ostream &os, const std::wstring &str);
-    void loadStr(std::istream &is, std::wstring &str);
+    void saveStr(std::ostream &os, const std::string &str);
+    void loadStr(std::istream &is, std::string &str);
     
     template<typename T>
     void saveVector(std::ostream &os, const std::vector<T> &vec)
@@ -71,7 +71,7 @@ namespace YourSQL::Server::Engine
      * 
      * @return const char* 
      */
-    const wchar_t *dataTypeStr(const DataType type);
+    const char *dataTypeStr(const DataType type);
 
     enum class ConstraintType : char
     {
@@ -87,19 +87,19 @@ namespace YourSQL::Server::Engine
      *
      * @return const char*
      */
-    const wchar_t *constraintTypeStr(const ConstraintType type);
+    const char *constraintTypeStr(const ConstraintType type);
 
     struct Constraint
     {
         ConstraintType type;
-        std::wstring details;
+        std::string details;
 
         Constraint() : type(ConstraintType::PRIMARY_KEY)
         {}
-        Constraint(const ConstraintType &type_, const wchar_t *details_)
+        Constraint(const ConstraintType &type_, const char *details_)
             : type(type_), details(details_)
         {}
-        Constraint(const ConstraintType &type_, const std::wstring &details_)
+        Constraint(const ConstraintType &type_, const std::string &details_)
             : type(type_), details(details_)
         {}
 
@@ -116,17 +116,17 @@ namespace YourSQL::Server::Engine
 
     struct Column
     {
-        std::wstring name;
+        std::string name;
         DataType data_type;
         unsigned int length;    // for VARCHAR
         unsigned int precision; // for DECIMAL
         unsigned int scale;     // for DECIMAL
-        std::wstring default_value;
+        std::string default_value;
         std::vector<Constraint> constraints;
 
         Column() : data_type(DataType::INT), length(1), precision(0), scale(0)
         {}
-        Column(const std::wstring &name_, DataType type_, int len_ = 1)
+        Column(const std::string &name_, DataType type_, int len_ = 1)
             : name(name_), data_type(type_), length(len_), precision(0), scale(0)
         {}
 
@@ -143,14 +143,14 @@ namespace YourSQL::Server::Engine
 
     struct SelectOrder
     {
-        std::wstring key;
+        std::string key;
         bool ascending;
     };
 
     struct UpdateInfo
     {
-        std::wstring col_name;
-        std::wstring set;
+        std::string col_name;
+        std::string set;
     };
 
     class Table
@@ -162,7 +162,7 @@ namespace YourSQL::Server::Engine
             size_t index;
         };
         
-        std::wstring name;
+        std::string name;
         std::vector<Column> columns;
 
         // the header stores the name of the table and infomations of columns
@@ -174,8 +174,8 @@ namespace YourSQL::Server::Engine
         std::filesystem::path data_path;
 
     public:
-        Table(const std::wstring &name_);
-        Table(const std::wstring &name_, const std::vector<Column> &&columns_);
+        Table(const std::string &name_);
+        Table(const std::string &name_, const std::vector<Column> &&columns_);
 
         Table(const Table &other) = delete;
         Table(const Table &&other) = delete;
@@ -189,7 +189,7 @@ namespace YourSQL::Server::Engine
          * @param result The result (or error message) to be outputed.
          * @return int 0 for failed and 1 for succeeded
          */
-        [[nodiscard]] int insert(const std::vector<std::wstring> &keys, const std::vector<std::vector<std::wstring>> &values, std::wstring &result);
+        [[nodiscard]] int insert(const std::vector<std::string> &keys, const std::vector<std::vector<std::string>> &values, std::string &result);
 
         /**
          * @brief select some rows in the table
@@ -201,32 +201,32 @@ namespace YourSQL::Server::Engine
          * @param result The result (or error message) to be outputed.
          * @return int 0 for failed and 1 for succeeded
          */
-        [[nodiscard]] int select(const std::vector<std::wstring> &keys, const bool &requirements, const SelectOrder &order, std::vector<std::vector<std::wstring>> &output, std::wstring &result) const;
+        [[nodiscard]] int select(const std::vector<std::string> &keys, const bool &requirements, const SelectOrder &order, std::vector<std::vector<std::string>> &output, std::string &result) const;
 
-        [[nodiscard]] int update(const std::vector<UpdateInfo> &info, const bool &requirements, std::wstring &result);
+        [[nodiscard]] int update(const std::vector<UpdateInfo> &info, const bool &requirements, std::string &result);
 
         [[nodiscard]] int delete_();
 
     private:
-        [[nodiscard]] static const bool dataTypeExamination(const DataType type, const std::wstring &str, const size_t varchar_length);
+        [[nodiscard]] static const bool dataTypeExamination(const DataType type, const std::string &str, const size_t varchar_length);
 
-        [[nodiscard]] static const bool continuousNumExamination(const std::wstring &str, const size_t begin, const size_t length);
+        [[nodiscard]] static const bool continuousNumExamination(const std::string &str, const size_t begin, const size_t length);
 
         [[nodiscard]] static const size_t getDataTypeSize(const DataType type);
         [[nodiscard]] static const size_t getColumnSize(const Column &col);
 
         [[nodiscard]] const std::streampos calRowLen() const;
 
-        static void insertVal(std::ostream &os, const DataType type, const std::wstring &val, const size_t len = 1);
+        static void insertVal(std::ostream &os, const DataType type, const std::string &val, const size_t len = 1);
 
-        static void readVal(std::istream &is, const Column &col, std::wstring &output);
+        static void readVal(std::istream &is, const Column &col, std::string &output);
 
         // WARNING: The following six fuctions will not examine the legality of the input in order to be faster. Illegal input may cause the program to CRASH. Use a try and catch block if your are not sure whether the input is legal.
-        static void dateStrToNum(const std::wstring &str, int32_t &num);
-        static void dateNumToStr(const int32_t &num, std::wstring &str);
-        static void timeStrToNum(const std::wstring &str, int32_t &num);
-        static void timeNumToStr(const int32_t &num, std::wstring &str);
-        static void datetimeStrToNum(const std::wstring &str, int32_t &num);
-        static void datetimeNumToStr(const int32_t &num, std::wstring &str);
+        static void dateStrToNum(const std::string &str, int32_t &num);
+        static void dateNumToStr(const int32_t &num, std::string &str);
+        static void timeStrToNum(const std::string &str, int32_t &num);
+        static void timeNumToStr(const int32_t &num, std::string &str);
+        static void datetimeStrToNum(const std::string &str, int32_t &num);
+        static void datetimeNumToStr(const int32_t &num, std::string &str);
     };
 }

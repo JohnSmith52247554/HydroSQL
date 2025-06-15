@@ -13,14 +13,14 @@
 
 namespace YourSQL::Server::Engine
 {
-    void saveStr(std::ostream &os, const std::wstring &str)
+    void saveStr(std::ostream &os, const std::string &str)
     {
         size_t size = str.size();
         os.write(reinterpret_cast<const char *>(&size), sizeof(size));
         os.write(reinterpret_cast<const char *>(str.data()), sizeof(*str.data()) * size);
     }
 
-    void loadStr(std::istream &is, std::wstring &str)
+    void loadStr(std::istream &is, std::string &str)
     {
         size_t size;
         is.read(reinterpret_cast<char *>(&size), sizeof(size));
@@ -28,53 +28,53 @@ namespace YourSQL::Server::Engine
         is.read(reinterpret_cast<char *>(str.data()), sizeof(*str.data()) * size);
     }
 
-    const wchar_t *dataTypeStr(const DataType type)
+    const char *dataTypeStr(const DataType type)
     {
         switch (type)
         {
         case DataType::INT:
-            return L"INT";
+            return "INT";
         case DataType::SMALLINT:
-            return L"SMALLINT";
+            return "SMALLINT";
         case DataType::BIGINT:
-            return L"BIGINT";
+            return "BIGINT";
         case DataType::FLOAT:
-            return L"FLOAT";
+            return "FLOAT";
         case DataType::DECIMAL:
-            return L"DECIMAL";
+            return "DECIMA";
         case DataType::CHAR:
-            return L"CHAR";
+            return "CHAR";
         case DataType::VARCHAR:
-            return L"VARCHAR";
+            return "VARCHAR";
         case DataType::BOOLEAN:
-            return L"BOOLEAN";
+            return "BOOLEAN";
         case DataType::DATE:
-            return L"DATE";
+            return "DATE";
         case DataType::TIME:
-            return L"TIME";
+            return "TIME";
         case DataType::DATETIME:
-            return L"DATETIME";
+            return "DATETIME";
         default:
-            return L"UNDEFINED";
+            return "UNDEFINED";
         }
     }
 
-    const wchar_t *constraintTypeStr(const ConstraintType type)
+    const char *constraintTypeStr(const ConstraintType type)
     {
         switch (type)
         {
         case ConstraintType::PRIMARY_KEY:
-            return L"PRIMARY_KEY";
+            return "PRIMARY_KEY";
         case ConstraintType::NOT_NULL:
-            return L"NOT_NULL";
+            return "NOT_NUL";
         case ConstraintType::UNIQUE:
-            return L"UNIQUE";
+            return "UNIQUE";
         case ConstraintType::CHECK:
-            return L"CHECK";
+            return "CHECK";
         case ConstraintType::DEFAULT:
-            return L"DEFAULT";
+            return "DEFAULT";
         default:
-            return L"UNDEFINED";
+            return "UNDEFINED";
         }
     }
 
@@ -118,11 +118,11 @@ namespace YourSQL::Server::Engine
         return is;
     }
 
-    Table::Table(const std::wstring &name_)
+    Table::Table(const std::string &name_)
         : name(name_)
     {
         std::filesystem::path path(DATA_PATH);
-        this->data_path = path / (this->name + L".dat");
+        this->data_path = path / (this->name + ".dat");
         if (!std::filesystem::exists(this->data_path))
         {
             throw std::runtime_error("[ERROR] Table " + std::string(name.begin(), name.end()) + " doesn't exist.");
@@ -144,11 +144,11 @@ namespace YourSQL::Server::Engine
         ifile.close();
     }
 
-    Table::Table(const std::wstring &name_, const std::vector<Column> &&columns_)
+    Table::Table(const std::string &name_, const std::vector<Column> &&columns_)
         : name(name_), columns(columns_)
     {
         std::filesystem::path path(DATA_PATH);
-        this->data_path = path / (this->name + L".dat");
+        this->data_path = path / (this->name + ".dat");
         if (std::filesystem::exists(this->data_path))
         {
             throw std::runtime_error("[ERROR] Table " + std::string(name.begin(), name.end()) + " already exist.");
@@ -171,7 +171,7 @@ namespace YourSQL::Server::Engine
         ofile.close();
     }
 
-    int Table::insert(const std::vector<std::wstring> &keys, const std::vector<std::vector<std::wstring>> &values, std::wstring &result)
+    int Table::insert(const std::vector<std::string> &keys, const std::vector<std::vector<std::string>> &values, std::string &result)
     {
         // legality examination
         // The amount of values each row should be the same as the keys.
@@ -179,13 +179,13 @@ namespace YourSQL::Server::Engine
         {
             if (values[i].size () != keys.size())
             {
-                result = L"[FAILED] The amount of the values in row " + std::to_wstring(i) + L" is " + std::to_wstring(values[i].size()) + L", but the amount of the keys is " + std::to_wstring(keys.size()) + L".";
+                result = "[FAILED] The amount of the values in row " + std::to_string(i) + " is " + std::to_string(values[i].size()) + ", but the amount of the keys is " + std::to_string(keys.size()) + ".";
                 return 0;
             }
         }
 
         // The keys should exist.    
-        std::map<const std::wstring, const ColAndIndex> column_map;
+        std::map<const std::string, const ColAndIndex> column_map;
         std::vector<const Column *> uninvolved_column;
         
         {
@@ -212,7 +212,7 @@ namespace YourSQL::Server::Engine
             {
                 if (!key_flag[i])
                 {
-                    result = L"[FAILED] The key " + keys[i] + L" doesn't exist in the table.";
+                    result = "[FAILED] The key " + keys[i] + " doesn't exist in the table.";
                     return 0;
                 }
             }
@@ -234,7 +234,7 @@ namespace YourSQL::Server::Engine
 
         //     if (!exist)
         //     {
-        //         result = L"[ERROR] The key " + key + L" doesn't exist in the table.";
+        //         result = "[ERROR] The key " + key + " doesn't exist in the table.";
         //         return 0;
         //     }
         // }
@@ -247,14 +247,14 @@ namespace YourSQL::Server::Engine
                 auto &col = column_map[keys[i]].col;
                 if (col == nullptr)
                 {
-                    result = L"[ERROR] nullptr";
+                    result = "[ERROR] nullptr";
                     return 0;
                 }
                 if (col->data_type != DataType::VARCHAR)
                 {
                     if (!dataTypeExamination(col->data_type, values[j][i], 0))
                     {
-                        result = L"[FAILED] The type of column " + keys[i] + L" is " + dataTypeStr(col->data_type) + L". Row " + std::to_wstring(j) + L" doesn't match that type.";
+                        result = "[FAILED] The type of column " + keys[i] + " is " + dataTypeStr(col->data_type) + ". Row " + std::to_string(j) + " doesn't match that type.";
                         return 0;
                     }
                 }
@@ -262,7 +262,7 @@ namespace YourSQL::Server::Engine
                 {
                     if (!dataTypeExamination(col->data_type, values[j][i], col->length))
                     {
-                        result = L"[FAILED] The type of column " + keys[i] + L" is " + dataTypeStr(col->data_type) + L", whose maximum length is " + std::to_wstring(col->length) + L". Row " + std::to_wstring(j) + L" doesn't match that type.";
+                        result = "[FAILED] The type of column " + keys[i] + " is " + dataTypeStr(col->data_type) + ", whose maximum length is " + std::to_string(col->length) + ". Row " + std::to_string(j) + " doesn't match that type.";
                         return 0;
                     }
                 }
@@ -289,7 +289,7 @@ namespace YourSQL::Server::Engine
             }
             if (!has_default && has_not_null)
             {
-                result = L"[FAILED] Column " + col->name + L" is not null and doesn't have a default value.";
+                result = "[FAILED] Column " + col->name + " is not null and doesn't have a default value.";
                 return 0;
             }
         }
@@ -303,7 +303,7 @@ namespace YourSQL::Server::Engine
         std::ofstream ofile(data_path, std::ios::binary | std::ios::app);
         if (!ofile.is_open())
         {
-            result = L"[ERROR] Can not open data file.";
+            result = "[ERROR] Can not open data file.";
             return 0;
         }
 
@@ -329,15 +329,15 @@ namespace YourSQL::Server::Engine
                     if (default_con == nullptr)
                     {
                         if (col.data_type == DataType::VARCHAR)
-                            insertVal(ofile, col.data_type, L"");
+                            insertVal(ofile, col.data_type, "");
                         else if (col.data_type == DataType::DATE)
-                            insertVal(ofile, col.data_type, L"0000-00-00");
+                            insertVal(ofile, col.data_type, "0000-00-00");
                         else if (col.data_type == DataType::TIME)
-                            insertVal(ofile, col.data_type, L"00:00:00");
+                            insertVal(ofile, col.data_type, "00:00:00");
                         else if (col.data_type == DataType::DATETIME)
-                            insertVal(ofile, col.data_type, L"0000-00-00-00:00:00");
+                            insertVal(ofile, col.data_type, "0000-00-00-00:00:00");
                         else
-                            insertVal(ofile, col.data_type, L"0");
+                            insertVal(ofile, col.data_type, "0");
                     }
                     else
                     {
@@ -349,12 +349,12 @@ namespace YourSQL::Server::Engine
 
         ofile.close();
 
-        result = L"[SUCCESS] " + std::to_wstring(values.size()) + L" row(s) affected.";
+        result = "[SUCCESS] " + std::to_string(values.size()) + " row(s) affected.";
 
         return 1;
     }
 
-    int Table::select(const std::vector<std::wstring> &keys, const bool &requirements, const SelectOrder &order, std::vector<std::vector<std::wstring>> &output, std::wstring &result) const
+    int Table::select(const std::vector<std::string> &keys, const bool &requirements, const SelectOrder &order, std::vector<std::vector<std::string>> &output, std::string &result) const
     {
         // legality examination
         // The keys should exist.
@@ -396,7 +396,7 @@ namespace YourSQL::Server::Engine
                 }
                 if (!exist)
                 {
-                    result = L"[FAILED] The key " + keys[i] + L" doesn't exist.";
+                    result = "[FAILED] The key " + keys[i] + " doesn't exist.";
                     return 0;
                 }
             }
@@ -409,7 +409,7 @@ namespace YourSQL::Server::Engine
         std::ifstream ifile(data_path, std::ios::binary);
         if (!ifile.is_open())
         {
-            result = L"[ERROR] Can not open data file.";
+            result = "[ERROR] Can not open data file.";
             return 0;
         }
 
@@ -418,7 +418,7 @@ namespace YourSQL::Server::Engine
 
         ifile.seekg(header_length, std::ios::beg);
 
-        std::list<std::vector<std::wstring>> output_list;
+        std::list<std::vector<std::string>> output_list;
         while (end_of_file - ifile.tellg() >= row_length)
         {
             output_list.emplace_back(keys.size() == 0 ? col_vec.size() : keys.size());
@@ -469,12 +469,12 @@ namespace YourSQL::Server::Engine
 
         // TODO: sort
 
-        result = L"[SUCCESS] " + std::to_wstring(output.size() - 1) + L" row(s) in set.";
+        result = "[SUCCESS] " + std::to_string(output.size() - 1) + " row(s) in set.";
 
         return 1;
     }
 
-    int Table::update(const std::vector<UpdateInfo> &info, const bool &requirements, std::wstring &result)
+    int Table::update(const std::vector<UpdateInfo> &info, const bool &requirements, std::string &result)
     {
         // legality examination
         // the columns to be update should exist
@@ -505,7 +505,7 @@ namespace YourSQL::Server::Engine
             }
             if (!exist)
             {
-                result = L"[FAILED] The column " + info[i].col_name + L" doesn't exist.";
+                result = "[FAILED] The column " + info[i].col_name + " doesn't exist.";
                 return 0;
             }
         }
@@ -520,7 +520,7 @@ namespace YourSQL::Server::Engine
             {
                 if(!this->dataTypeExamination(col.col->data_type, info[col.index].set, col.col->length))
                 {
-                    result = L"[FAILED] The data type of column " + col.col->name + L" is VARCHAR, whose maximun lenght is " + std::to_wstring(col.col->length) + L". The set value doesn't match that type.";
+                    result = "[FAILED] The data type of column " + col.col->name + " is VARCHAR, whose maximun lenght is " + std::to_string(col.col->length) + ". The set value doesn't match that type.";
                     return 0;
                 }
             }   
@@ -528,7 +528,7 @@ namespace YourSQL::Server::Engine
             {
                 if (!this->dataTypeExamination(col.col->data_type, info[col.index].set, 0))
                 {
-                    result = L"[FAILED] The data type of column " + col.col->name + L" is " + dataTypeStr(col.col->data_type) + L". The set value doesn't match that type.";
+                    result = "[FAILED] The data type of column " + col.col->name + " is " + dataTypeStr(col.col->data_type) + ". The set value doesn't match that type.";
                     return 0;
                 }
             } 
@@ -538,7 +538,7 @@ namespace YourSQL::Server::Engine
         std::ofstream ofile(data_path, std::ios::binary | std::ios::in);
         if (!ofile.is_open())
         {
-            result = L"[FAILED] Can not open the data file.";
+            result = "[FAILED] Can not open the data file.";
             return 0;
         }
 
@@ -580,12 +580,12 @@ namespace YourSQL::Server::Engine
 
         ofile.close();
 
-        result = L"[SUCCESS] " + std::to_wstring(changed_num) + L" row(s) updated.";
+        result = "[SUCCESS] " + std::to_string(changed_num) + " row(s) updated.";
 
         return 1;
     }
     
-    const bool Table::dataTypeExamination(const DataType type, const std::wstring &str, const size_t varchar_length)
+    const bool Table::dataTypeExamination(const DataType type, const std::string &str, const size_t varchar_length)
     {
         // INT, SMALLINT, FLOAT... should could be interpret as a number.
         // CHAR should be a string with size equal one.
@@ -642,17 +642,17 @@ namespace YourSQL::Server::Engine
         case DataType::CHAR:
             return str.size() == 1 && str[0] >= 0 && str[0] <= 255;
         case DataType::BOOLEAN:
-            return str == L"true" || str == L"false" || str == L"TRUE" || str == L"FALSE" || str == L"1" || str == L"0";
+            return str == "true" || str == "false" || str == "TRUE" || str == "FALSE" || str == "1" || str == "0";
         case DataType::DATE:
             if (str.size() != 10)
                 return false;
             if (!continuousNumExamination(str, 0, 4))
                 return false;
-            if (str[4] != L'-')
+            if (str[4] != '-')
                 return false;
             if (!continuousNumExamination(str, 5, 2))
                 return false;
-            if (str[7] != L'-')
+            if (str[7] != '-')
                 return false;
             if (!continuousNumExamination(str, 8, 2))
                 return false;
@@ -662,11 +662,11 @@ namespace YourSQL::Server::Engine
                 return false;
             if (!continuousNumExamination(str, 0, 2))
                 return false;
-            if (str[2] != L':')
+            if (str[2] != ':')
                 return false;
             if (!continuousNumExamination(str, 3, 2))
                 return false;
-            if (str[5] != L':')
+            if (str[5] != ':')
                 return false;
             if (!continuousNumExamination(str, 6, 2))
                 return false;
@@ -676,23 +676,23 @@ namespace YourSQL::Server::Engine
                 return false;
             if (!continuousNumExamination(str, 0, 4))
                 return false;
-            if (str[4] != L'-')
+            if (str[4] != '-')
                 return false;
             if (!continuousNumExamination(str, 5, 2))
                 return false;
-            if (str[7] != L'-')
+            if (str[7] != '-')
                 return false;
             if (!continuousNumExamination(str, 8, 2))
                 return false;
-            if (str[10] != L'-')
+            if (str[10] != '-')
                 return false;
             if (!continuousNumExamination(str, 11, 2))
                 return false;
-            if (str[13] != L':')
+            if (str[13] != ':')
                 return false;
             if (!continuousNumExamination(str, 14, 2))
                 return false;
-            if (str[16] != L':')
+            if (str[16] != ':')
                 return false;
             if (!continuousNumExamination(str, 17, 2))
                 return false;
@@ -706,13 +706,13 @@ namespace YourSQL::Server::Engine
         return true;
     }
 
-    const bool Table::continuousNumExamination(const std::wstring &str, const size_t begin, const size_t length)
+    const bool Table::continuousNumExamination(const std::string &str, const size_t begin, const size_t length)
     {
         if (begin + length > str.size())
             return false;
         for (size_t i = begin; i < begin + length; i++)
         {
-            if (str[i] < L'0' || str[i] > L'9')
+            if (str[i] < '0' || str[i] > '9')
                 return false;
         }
         return true;
@@ -735,7 +735,7 @@ namespace YourSQL::Server::Engine
         case DataType::CHAR:
             return sizeof(char);
         case DataType::VARCHAR:
-            return sizeof(wchar_t);
+            return sizeof(char);
         case DataType::BOOLEAN:
             return sizeof(bool);
         case DataType::DATE:
@@ -772,7 +772,7 @@ namespace YourSQL::Server::Engine
         return len;
     }
 
-    void Table::insertVal(std::ostream &os, const DataType type, const std::wstring &val, const size_t len)
+    void Table::insertVal(std::ostream &os, const DataType type, const std::string &val, const size_t len)
     {
         switch (type)
         {
@@ -815,20 +815,20 @@ namespace YourSQL::Server::Engine
         break;
         case DataType::VARCHAR:
         {
-            std::vector<wchar_t> str(len, '\0');
+            std::vector<char> str(len, '\0');
             for (size_t i = 0; i < std::min(len, val.size()); i++)
             {
                 str[i] = val[i];
             }
-            os.write(reinterpret_cast<const char *>(str.data()), sizeof(wchar_t) * str.size());
+            os.write(reinterpret_cast<const char *>(str.data()), sizeof(char) * str.size());
         }
         break;
         case DataType::BOOLEAN:
         {
             bool boolean;
-            if (val == L"true" || val == L"TRUE" || val == L"1")
+            if (val == "true" || val == "TRUE" || val == "1")
                 boolean = true;
-            else if (val == L"false" || val == L"FALSE" || val == L"0")
+            else if (val == "false" || val == "FALSE" || val == "0")
                 boolean = false;
             os.write(reinterpret_cast<const char *>(&boolean), sizeof(boolean));
         }
@@ -871,7 +871,7 @@ namespace YourSQL::Server::Engine
         }
     }
 
-    void Table::readVal(std::istream &is, const Column &col, std::wstring &output)
+    void Table::readVal(std::istream &is, const Column &col, std::string &output)
     {
         switch (col.data_type)
         {
@@ -879,28 +879,28 @@ namespace YourSQL::Server::Engine
         {
             int32_t buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-            output = std::to_wstring(buffer);
+            output = std::to_string(buffer);
         }
         break;
         case DataType::SMALLINT:
         {;
             int16_t buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-            output = std::to_wstring(buffer);
+            output = std::to_string(buffer);
         }
         break;
         case DataType::BIGINT:
         {
             int64_t buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-            output = std::to_wstring(buffer);
+            output = std::to_string(buffer);
         }
         break;
         case DataType::FLOAT:
         {
             float buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-            output = std::to_wstring(buffer);
+            output = std::to_string(buffer);
         }
         break;
         case DataType::DECIMAL:
@@ -908,20 +908,20 @@ namespace YourSQL::Server::Engine
             // TODO: costumize the presision and scale of the decimal
             double buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-            output = std::to_wstring(buffer);
+            output = std::to_string(buffer);
         }
         break;
         case DataType::CHAR:
         {
             char buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-            output = std::to_wstring(buffer);
+            output = std::to_string(buffer);
         }
         break;
         case DataType::VARCHAR:
         {
-            std::vector<wchar_t> buffer(col.length, '\0');
-            is.read(reinterpret_cast<char *>(buffer.data()), sizeof(wchar_t) * buffer.size());
+            std::vector<char> buffer(col.length, '\0');
+            is.read(reinterpret_cast<char *>(buffer.data()), sizeof(char) * buffer.size());
             auto end = buffer.rbegin();
             while (*end == '\0' && end != buffer.rend())
             {
@@ -934,7 +934,7 @@ namespace YourSQL::Server::Engine
         {
             bool buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-            output = std::to_wstring(buffer);
+            output = std::to_string(buffer);
         }
         break;
         case DataType::DATE:
@@ -963,7 +963,7 @@ namespace YourSQL::Server::Engine
         }
     }
 
-    void Table::dateStrToNum(const std::wstring &str, int32_t &num)
+    void Table::dateStrToNum(const std::string &str, int32_t &num)
     {
         int32_t buffer = 0;
         num = 0;
@@ -974,18 +974,18 @@ namespace YourSQL::Server::Engine
         buffer = std::stoi(str.substr(0, 4));
         num += buffer * 1e4;
     }
-    void Table::dateNumToStr(const int32_t &num, std::wstring &str)
+    void Table::dateNumToStr(const int32_t &num, std::string &str)
     {
         int32_t year = num / 10000;
         int32_t month = (num % 10000) / 100;
         int32_t day = num % 100;
-        std::wstringstream wss;
-        wss << std::setw(4) << std::setfill(L'0') << year << L"-"
-            << std::setw(2) << std::setfill(L'0') << month << L"-"
-            << std::setw(2) << std::setfill(L'0') << day;
+        std::stringstream wss;
+        wss << std::setw(4) << std::setfill('0') << year << "-"
+            << std::setw(2) << std::setfill('0') << month << "-"
+            << std::setw(2) << std::setfill('0') << day;
         str = wss.str();
     }
-    void Table::timeStrToNum(const std::wstring &str, int32_t &num)
+    void Table::timeStrToNum(const std::string &str, int32_t &num)
     {
         int32_t buffer = 0;
         num = 0;
@@ -996,20 +996,20 @@ namespace YourSQL::Server::Engine
         buffer = std::stoi(str.substr(0, 2));
         num += buffer * 1e4;
     }
-    void Table::timeNumToStr(const int32_t &num, std::wstring &str)
+    void Table::timeNumToStr(const int32_t &num, std::string &str)
     {
         int32_t hour = num / 10000;
         int32_t minute = (num % 10000) / 100;
         int32_t second = num % 100;
 
-        std::wstringstream wss;
-        wss << std::setw(2) << std::setfill(L'0') << hour << L":"
-            << std::setw(2) << std::setfill(L'0') << minute << L":"
-            << std::setw(2) << std::setfill(L'0') << second;
+        std::stringstream wss;
+        wss << std::setw(2) << std::setfill('0') << hour << ":"
+            << std::setw(2) << std::setfill('0') << minute << ":"
+            << std::setw(2) << std::setfill('0') << second;
 
         str = wss.str();
     }
-    void Table::datetimeStrToNum(const std::wstring &str, int32_t &num)
+    void Table::datetimeStrToNum(const std::string &str, int32_t &num)
     {
         int64_t buffer = 0;
         num = 0;
@@ -1026,7 +1026,7 @@ namespace YourSQL::Server::Engine
         buffer = std::stoi(str.substr(0, 4));
         num += buffer * 1e10;
     }
-    void Table::datetimeNumToStr(const int32_t &num, std::wstring &str)
+    void Table::datetimeNumToStr(const int32_t &num, std::string &str)
     {
         int64_t datePart = num / 1000000;
         int32_t year = datePart / 10000;
@@ -1038,13 +1038,13 @@ namespace YourSQL::Server::Engine
         int32_t minute = (timePart % 10000) / 100;
         int32_t second = timePart % 100;
 
-        std::wstringstream wss;
-        wss << std::setw(4) << std::setfill(L'0') << year << L"-"
-            << std::setw(2) << std::setfill(L'0') << month << L"-"
-            << std::setw(2) << std::setfill(L'0') << day << L"-"
-            << std::setw(2) << std::setfill(L'0') << hour << L":"
-            << std::setw(2) << std::setfill(L'0') << minute << L":"
-            << std::setw(2) << std::setfill(L'0') << second;
+        std::stringstream wss;
+        wss << std::setw(4) << std::setfill('0') << year << "-"
+            << std::setw(2) << std::setfill('0') << month << "-"
+            << std::setw(2) << std::setfill('0') << day << "-"
+            << std::setw(2) << std::setfill('0') << hour << ":"
+            << std::setw(2) << std::setfill('0') << minute << ":"
+            << std::setw(2) << std::setfill('0') << second;
 
         str = wss.str();
     }

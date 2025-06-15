@@ -9,74 +9,80 @@
  * 
  */
 
+#include <windows.h>
 #include <engine/include/table.hpp>
 
 using namespace YourSQL::Server;
 
 int main()
 {
+#ifdef WIN32
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
+#endif
+
     std::vector<Engine::Column> cols = {
-        Engine::Column{L"index", Engine::DataType::INT},
-        Engine::Column{L"name", Engine::DataType::VARCHAR, 10},
-        Engine::Column{L"age", Engine::DataType::SMALLINT},
+        Engine::Column{"index", Engine::DataType::INT},
+        Engine::Column{"name", Engine::DataType::VARCHAR, 10},
+        Engine::Column{"age", Engine::DataType::SMALLINT},
     };
 
-    Engine::Table table(L"test", std::move(cols));
+    Engine::Table table("test", std::move(cols));
 
-    std::vector<std::wstring> keys = {L"name", L"index", L"age" };
-    std::vector<std::vector<std::wstring>> vals = {
-        { L"张三", L"1", L"20" },
-        { L"李四", L"2", L"21" },
-        { L"王五", L"3", L"22" },
-        { L"zaoliu", L"4", L"23" }
+    std::vector<std::string> keys = {"name", "index", "age" };
+    std::vector<std::vector<std::string>> vals = {
+        { "张三", "1", "20" },
+        { "李四", "2", "21" },
+        { "王五", "3", "22" },
+        { "zaoliu", "4", "23" }
     };
-    std::wstring result;
+    std::string result;
 
     if(!table.insert(keys, vals, result))
     {
         std::cout << "error" << std::endl;
     }
 
-    std::wcout << result << std::endl;
+    std::cout << result << std::endl;
 
-    // Engine::Table table(L"test");
+    // Engine::Table table("test");
 
-    // std::wstring result;
-    // std::vector<std::wstring> keys = { L"index", L"age", L"name" };
-    // std::vector<std::vector<std::wstring>> output;
+    // std::string result;
+    // std::vector<std::string> keys = { "index", "age", "name" };
+    // std::vector<std::vector<std::string>> output;
 
-    // if(!table.select(keys, false, Engine::SelectOrder(L"", false), output, result))
+    // if(!table.select(keys, false, Engine::SelectOrder("", false), output, result))
     //     std::cout << "error" << std::endl;
-    // std::wcout << result << std::endl;
+    // std::cout << result << std::endl;
 
     // for (const auto &row : output)
     // {
     //     for (const auto &val : row)
     //     {
-    //         std::wcout << val << '\t';
+    //         std::cout << val << '\t';
     //     }
     //     std::cout << std::endl;
     // }
 
     std::vector<Engine::UpdateInfo> update = {
-        { L"age", L"100" }
+        { "age", "100" }
     };
-    //std::wstring result;
+    //std::string result;
 
-    // Engine::Table table(L"test");
+    // Engine::Table table("test");
 
-    std::vector<std::wstring> keyss = {L"index", L"age", L"name"};
-    std::vector<std::vector<std::wstring>> output;
+    std::vector<std::string> keyss = {"index", "age", "name"};
+    std::vector<std::vector<std::string>> output;
 
-    if (!table.select(keyss, false, Engine::SelectOrder(L"", false), output, result))
+    if (!table.select(keyss, false, Engine::SelectOrder("", false), output, result))
         std::cout << "error" << std::endl;
-    std::wcout << result << std::endl;
+    std::cout << result << std::endl;
 
     for (const auto &row : output)
     {
         for (const auto &val : row)
         {
-            std::wcout << val << '\t';
+            std::cout << val << '\t';
         }
         std::cout << std::endl;
     }
@@ -84,20 +90,20 @@ int main()
     if (!table.update(update, false, result))
         std::cout << "error" << std::endl;
 
-    std::wcout << result << std::endl;
+    std::cout << result << std::endl;
 
-    // std::vector<std::wstring> keyss = { L"index", L"age", L"name" };
-    // std::vector<std::vector<std::wstring>> output;
+    // std::vector<std::string> keyss = { "index", "age", "name" };
+    // std::vector<std::vector<std::string>> output;
 
-    if(!table.select(keyss, false, Engine::SelectOrder(L"", false), output, result))
+    if(!table.select(keyss, false, Engine::SelectOrder("", false), output, result))
         std::cout << "error" << std::endl;
-    std::wcout << result << std::endl;
+    std::cout << result << std::endl;
 
     for (const auto &row : output)
     {
         for (const auto &val : row)
         {
-            std::wcout << val << '\t';
+            std::cout << val << '\t';
         }
         std::cout << std::endl;
     }
