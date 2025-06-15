@@ -15,37 +15,83 @@ using namespace YourSQL::Server;
 
 int main()
 {
-    // std::vector<Engine::Column> cols = {
-    //     Engine::Column{L"index", Engine::DataType::INT},
-    //     Engine::Column{L"name", Engine::DataType::VARCHAR, 10},
-    //     Engine::Column{L"age", Engine::DataType::SMALLINT},
-    // };
+    std::vector<Engine::Column> cols = {
+        Engine::Column{L"index", Engine::DataType::INT},
+        Engine::Column{L"name", Engine::DataType::VARCHAR, 10},
+        Engine::Column{L"age", Engine::DataType::SMALLINT},
+    };
 
-    // Engine::Table table(L"test", std::move(cols));
+    Engine::Table table(L"test", std::move(cols));
 
-    // std::vector<std::wstring> keys = {L"name", L"index", L"age" };
-    // std::vector<std::vector<std::wstring>> vals = {
-    //     { L"zhangsan", L"1", L"20" },
-    //     { L"lisi", L"2", L"21" },
-    //     { L"wangwu", L"3", L"22" },
-    //     { L"zaoliu", L"4", L"23" }
-    // };
+    std::vector<std::wstring> keys = {L"name", L"index", L"age" };
+    std::vector<std::vector<std::wstring>> vals = {
+        { L"张三", L"1", L"20" },
+        { L"李四", L"2", L"21" },
+        { L"王五", L"3", L"22" },
+        { L"zaoliu", L"4", L"23" }
+    };
+    std::wstring result;
+
+    if(!table.insert(keys, vals, result))
+    {
+        std::cout << "error" << std::endl;
+    }
+
+    std::wcout << result << std::endl;
+
+    // Engine::Table table(L"test");
+
     // std::wstring result;
+    // std::vector<std::wstring> keys = { L"index", L"age", L"name" };
+    // std::vector<std::vector<std::wstring>> output;
 
-    // if(!table.insert(keys, vals, result))
-    // {
+    // if(!table.select(keys, false, Engine::SelectOrder(L"", false), output, result))
     //     std::cout << "error" << std::endl;
-    // }
-
     // std::wcout << result << std::endl;
 
-    Engine::Table table(L"test");
+    // for (const auto &row : output)
+    // {
+    //     for (const auto &val : row)
+    //     {
+    //         std::wcout << val << '\t';
+    //     }
+    //     std::cout << std::endl;
+    // }
 
-    std::wstring result;
-    std::vector<std::wstring> keys = { L"name" };
+    std::vector<Engine::UpdateInfo> update = {
+        { L"age", L"100" }
+    };
+    //std::wstring result;
+
+    // Engine::Table table(L"test");
+
+    std::vector<std::wstring> keyss = {L"index", L"age", L"name"};
     std::vector<std::vector<std::wstring>> output;
 
-    table.select(keys, false, Engine::SelectOrder(L"", false), output, result);
+    if (!table.select(keyss, false, Engine::SelectOrder(L"", false), output, result))
+        std::cout << "error" << std::endl;
+    std::wcout << result << std::endl;
+
+    for (const auto &row : output)
+    {
+        for (const auto &val : row)
+        {
+            std::wcout << val << '\t';
+        }
+        std::cout << std::endl;
+    }
+
+    if (!table.update(update, false, result))
+        std::cout << "error" << std::endl;
+
+    std::wcout << result << std::endl;
+
+    // std::vector<std::wstring> keyss = { L"index", L"age", L"name" };
+    // std::vector<std::vector<std::wstring>> output;
+
+    if(!table.select(keyss, false, Engine::SelectOrder(L"", false), output, result))
+        std::cout << "error" << std::endl;
+    std::wcout << result << std::endl;
 
     for (const auto &row : output)
     {

@@ -147,6 +147,12 @@ namespace YourSQL::Server::Engine
         bool ascending;
     };
 
+    struct UpdateInfo
+    {
+        std::wstring col_name;
+        std::wstring set;
+    };
+
     class Table
     {
     private:
@@ -197,7 +203,7 @@ namespace YourSQL::Server::Engine
          */
         [[nodiscard]] int select(const std::vector<std::wstring> &keys, const bool &requirements, const SelectOrder &order, std::vector<std::vector<std::wstring>> &output, std::wstring &result) const;
 
-        [[nodiscard]] int update();
+        [[nodiscard]] int update(const std::vector<UpdateInfo> &info, const bool &requirements, std::wstring &result);
 
         [[nodiscard]] int delete_();
 

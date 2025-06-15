@@ -179,7 +179,7 @@ namespace YourSQL::Server::Engine
         {
             if (values[i].size () != keys.size())
             {
-                result = L"[ERROR] The amount of the values in row " + std::to_wstring(i) + L" is " + std::to_wstring(values[i].size()) + L", but the amount of the keys is " + std::to_wstring(keys.size()) + L".";
+                result = L"[FAILED] The amount of the values in row " + std::to_wstring(i) + L" is " + std::to_wstring(values[i].size()) + L", but the amount of the keys is " + std::to_wstring(keys.size()) + L".";
                 return 0;
             }
         }
@@ -212,7 +212,7 @@ namespace YourSQL::Server::Engine
             {
                 if (!key_flag[i])
                 {
-                    result = L"[ERROR] The key " + keys[i] + L" doesn't exist in the table.";
+                    result = L"[FAILED] The key " + keys[i] + L" doesn't exist in the table.";
                     return 0;
                 }
             }
@@ -254,7 +254,7 @@ namespace YourSQL::Server::Engine
                 {
                     if (!dataTypeExamination(col->data_type, values[j][i], 0))
                     {
-                        result = L"[ERROR] The type of column " + keys[i] + L" is " + dataTypeStr(col->data_type) + L". Row " + std::to_wstring(j) + L" doesn't match that type.";
+                        result = L"[FAILED] The type of column " + keys[i] + L" is " + dataTypeStr(col->data_type) + L". Row " + std::to_wstring(j) + L" doesn't match that type.";
                         return 0;
                     }
                 }
@@ -262,7 +262,7 @@ namespace YourSQL::Server::Engine
                 {
                     if (!dataTypeExamination(col->data_type, values[j][i], col->length))
                     {
-                        result = L"[ERROR] The type of column " + keys[i] + L" is " + dataTypeStr(col->data_type) + L", whose maximum length is " + std::to_wstring(col->length) + L". Row " + std::to_wstring(j) + L" doesn't match that type.";
+                        result = L"[FAILED] The type of column " + keys[i] + L" is " + dataTypeStr(col->data_type) + L", whose maximum length is " + std::to_wstring(col->length) + L". Row " + std::to_wstring(j) + L" doesn't match that type.";
                         return 0;
                     }
                 }
@@ -289,7 +289,7 @@ namespace YourSQL::Server::Engine
             }
             if (!has_default && has_not_null)
             {
-                result = L"[ERROR] Column " + col->name + L" is not null and doesn't have a default value.";
+                result = L"[FAILED] Column " + col->name + L" is not null and doesn't have a default value.";
                 return 0;
             }
         }
@@ -396,7 +396,7 @@ namespace YourSQL::Server::Engine
                 }
                 if (!exist)
                 {
-                    result = L"[ERROR] The key " + keys[i] + L" doesn't exist.";
+                    result = L"[FAILED] The key " + keys[i] + L" doesn't exist.";
                     return 0;
                 }
             }
@@ -419,7 +419,7 @@ namespace YourSQL::Server::Engine
         ifile.seekg(header_length, std::ios::beg);
 
         std::list<std::vector<std::wstring>> output_list;
-        while (end_of_file - ifile.tellg() > row_length)
+        while (end_of_file - ifile.tellg() >= row_length)
         {
             output_list.emplace_back(keys.size() == 0 ? col_vec.size() : keys.size());
             auto &list_back = output_list.back();
@@ -469,11 +469,122 @@ namespace YourSQL::Server::Engine
 
         // TODO: sort
 
-        result = L"[SUCCESS] " + std::to_wstring(col_vec.size()) + L" row(s) in set.";
+        result = L"[SUCCESS] " + std::to_wstring(output.size() - 1) + L" row(s) in set.";
 
         return 1;
     }
 
+    int Table::update(const std::vector<UpdateInfo> &info, const bool &requirements, std::wstring &result)
+    {
+        // legality examination
+        // the columns to be update should exist
+        struct ColUpdate
+        {
+            Column *col;
+            bool should_update;
+            size_t index;
+        };
+        std::vector<ColUpdate> col_vec(this->columns.size(), ColUpdate(nullptr, false));
+        for (size_t i = 0; i < col_vec.size(); i++)
+        {
+            col_vec[i].col = &this->columns[i];
+        }
+
+        for (size_t i = 0; i < info.size(); i++)
+        {
+            bool exist = false;
+            for (auto &col_up : col_vec)
+            {
+                if (info[i].col_name == col_up.col->name)
+                {
+                    exist = true;
+                    col_up.should_update = true;
+                    col_up.index = i;
+                    break;
+                }
+            }
+            if (!exist)
+            {
+                result = L"[FAILED] The column " + info[i].col_name + L" doesn't exist.";
+                return 0;
+            }
+        }
+
+        // the value to be set should match the data type of the column
+        for (const auto &col : col_vec)
+        {
+            if (!col.should_update)
+                continue;
+            
+            if (col.col->data_type == DataType::VARCHAR)
+            {
+                if(!this->dataTypeExamination(col.col->data_type, info[col.index].set, col.col->length))
+                {
+                    result = L"[FAILED] The data type of column " + col.col->name + L" is VARCHAR, whose maximun lenght is " + std::to_wstring(col.col->length) + L". The set value doesn't match that type.";
+                    return 0;
+                }
+            }   
+            else
+            {
+                if (!this->dataTypeExamination(col.col->data_type, info[col.index].set, 0))
+                {
+                    result = L"[FAILED] The data type of column " + col.col->name + L" is " + dataTypeStr(col.col->data_type) + L". The set value doesn't match that type.";
+                    return 0;
+                }
+            } 
+        }
+
+        // update
+        std::ofstream ofile(data_path, std::ios::binary | std::ios::in);
+        if (!ofile.is_open())
+        {
+            result = L"[FAILED] Can not open the data file.";
+            return 0;
+        }
+
+        ofile.seekp(0, std::ios::end);
+        auto end_of_file = ofile.tellp();
+
+        ofile.seekp(header_length, std::ios::beg);
+        // auto cur = ofile.tellp();
+        size_t changed_num = 0;
+
+        while (end_of_file - ofile.tellp() >= this->row_length)
+        {
+            // TODO: requirements check
+
+            for (const auto &col : col_vec)
+            {
+                if (!col.should_update)
+                {
+                    ofile.seekp(getColumnSize(*col.col), std::ios::cur);
+                    // cur = ofile.tellp();
+                    continue;
+                }
+                else
+                {
+                    if (col.col->data_type != DataType::VARCHAR)
+                    {
+                        this->insertVal(ofile, col.col->data_type, info[col.index].set);
+                    }
+                    else
+                    {
+                        this->insertVal(ofile, col.col->data_type, info[col.index].set, col.col->length);
+                    }
+                    // cur = ofile.tellp();
+                }
+            }
+            // cur = ofile.tellp();
+            changed_num++;
+        }
+
+        ofile.close();
+
+        result = L"[SUCCESS] " + std::to_wstring(changed_num) + L" row(s) updated.";
+
+        return 1;
+    }
+    
     const bool Table::dataTypeExamination(const DataType type, const std::wstring &str, const size_t varchar_length)
     {
         // INT, SMALLINT, FLOAT... should could be interpret as a number.
@@ -775,7 +886,7 @@ namespace YourSQL::Server::Engine
         {;
             int16_t buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-            output = std::to_wstring(20);
+            output = std::to_wstring(buffer);
         }
         break;
         case DataType::BIGINT:
