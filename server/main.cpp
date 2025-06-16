@@ -29,13 +29,28 @@ int main()
 
     Engine::Table table("test", std::move(cols));
 
-    std::vector<std::string> keys = {"name", "index", "age" };
-    std::vector<std::vector<std::string>> vals = {
-        { "张三", "1", "20" },
-        { "李四", "2", "21" },
-        { "王五", "3", "22" },
-        { "zaoliu", "4", "23" }
-    };
+    std::vector<std::string> keys = {"index", "name",  "age" };
+
+    std::vector<std::vector<std::string>> vals(500, std::vector<std::string>{3});
+    for (size_t i = 0; i < vals.size(); i += 5)
+    {
+        vals[i][0] = std::to_string(i);
+        vals[i][1] = "张三";
+        vals[i][2] = "24";
+        vals[i + 1][0] = std::to_string(i + 1);
+        vals[i + 1][1] = "李四";
+        vals[i + 1][2] = "25";
+        vals[i + 2][0] = std::to_string(i + 2);
+        vals[i + 2][1] = "王五";
+        vals[i + 2][2] = "26";
+        vals[i + 3][0] = std::to_string(i + 3);
+        vals[i + 3][1] = "Alex";
+        vals[i + 3][2] = "27";
+        vals[i + 4][0] = std::to_string(i + 4);
+        vals[i + 4][1] = "Sam";
+        vals[i + 4][2] = "28";
+    }
+
     std::string result;
 
     if(!table.insert(keys, vals, result))

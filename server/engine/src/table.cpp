@@ -142,6 +142,8 @@ namespace YourSQL::Server::Engine
         this->row_length = calRowLen();
 
         ifile.close();
+
+        buffer_row_num = MAX_BUFFER_SIZE / row_length;
     }
 
     Table::Table(const std::string &name_, const std::vector<Column> &&columns_)
@@ -169,6 +171,8 @@ namespace YourSQL::Server::Engine
         this->row_length = calRowLen();
 
         ofile.close();
+
+        buffer_row_num = MAX_BUFFER_SIZE / row_length;
     }
 
     int Table::insert(const std::vector<std::string> &keys, const std::vector<std::vector<std::string>> &values, std::string &result)
@@ -307,45 +311,115 @@ namespace YourSQL::Server::Engine
             return 0;
         }
 
-        for (const auto &rows : values)
+        // for (const auto &rows : values)
+        // {
+        //     // delete mark
+        //     {
+        //         std::vector<char> mark(this->DELETE_MARK_SIZE, 0);
+        //         ofile.write(reinterpret_cast<const char *>(mark.data()), sizeof(char) * this->DELETE_MARK_SIZE);
+        //     }
+
+        //     for (const auto &col : this->columns)
+        //     {
+        //         const auto it = column_map.find(col.name);
+        //         if (it != column_map.end())
+        //         {
+        //             const auto &val = rows[it->second.index];
+        //             insertVal(ofile, col.data_type, val, col.length);
+        //         }
+        //         else
+        //         {
+        //             // fill with default value
+        //             const Constraint *default_con = nullptr;
+        //             for (const auto &con : col.constraints)
+        //             {
+        //                 if (con.type == ConstraintType::DEFAULT)
+        //                     default_con = &con;
+        //             }
+        //             if (default_con == nullptr)
+        //             {
+        //                 if (col.data_type == DataType::VARCHAR)
+        //                     insertVal(ofile, col.data_type, "");
+        //                 else if (col.data_type == DataType::DATE)
+        //                     insertVal(ofile, col.data_type, "0000-00-00");
+        //                 else if (col.data_type == DataType::TIME)
+        //                     insertVal(ofile, col.data_type, "00:00:00");
+        //                 else if (col.data_type == DataType::DATETIME)
+        //                     insertVal(ofile, col.data_type, "0000-00-00-00:00:00");
+        //                 else
+        //                     insertVal(ofile, col.data_type, "0");
+        //             }
+        //             else
+        //             {
+        //                 // the DEFAULT constraint
+        //             }
+        //         }
+        //     }
+        // }
+
+        //*****************NEW*VERSION*****************/
+        //*********************************************/
+
+        size_t remained_rows = values.size();
+        
+        while (remained_rows > 0)
         {
-            for (const auto &col : this->columns)
+            std::vector<char> buffer(std::min(this->buffer_row_num, remained_rows) * row_length, 0);
+            auto it = buffer.begin();
+
+            for (size_t i = buffer.size() / this->row_length; i > 0; i--)
             {
-                const auto it = column_map.find(col.name);
-                if (it != column_map.end())
+                auto &row = values[values.size() - remained_rows];
+
+                // delete mark
+                for (size_t i = 0; i < this->DELETE_MARK_SIZE; i++)
                 {
-                    const auto &val = rows[it->second.index];
-                    insertVal(ofile, col.data_type, val, col.length);
+                    *it++ = 0;
                 }
-                else
+
+                for (const auto &col : columns)
                 {
-                    // fill with default value
-                    const Constraint *default_con = nullptr;
-                    for (const auto &con : col.constraints)
+                    const auto it_ = column_map.find(col.name);
+                    if (it_ != column_map.end())
                     {
-                        if (con.type == ConstraintType::DEFAULT)
-                            default_con = &con;
-                    }
-                    if (default_con == nullptr)
-                    {
-                        if (col.data_type == DataType::VARCHAR)
-                            insertVal(ofile, col.data_type, "");
-                        else if (col.data_type == DataType::DATE)
-                            insertVal(ofile, col.data_type, "0000-00-00");
-                        else if (col.data_type == DataType::TIME)
-                            insertVal(ofile, col.data_type, "00:00:00");
-                        else if (col.data_type == DataType::DATETIME)
-                            insertVal(ofile, col.data_type, "0000-00-00-00:00:00");
-                        else
-                            insertVal(ofile, col.data_type, "0");
+                        const auto &val = row[it_->second.index];
+                        it_insertVal(it, col.data_type, val, col.length);
                     }
                     else
                     {
-                        // TODO: the DEFAULT constraint
+                        // fill with default value
+                        const Constraint *default_con = nullptr;
+                        for (const auto &con : col.constraints)
+                        {
+                            if (con.type == ConstraintType::DEFAULT)
+                                default_con = &con;
+                        }
+                        if (default_con == nullptr)
+                        {
+                            if (col.data_type == DataType::VARCHAR)
+                                it_insertVal(it, col.data_type, "");
+                            else if (col.data_type == DataType::DATE)
+                                it_insertVal(it, col.data_type, "0000-00-00");
+                            else if (col.data_type == DataType::TIME)
+                                it_insertVal(it, col.data_type, "00:00:00");
+                            else if (col.data_type == DataType::DATETIME)
+                                it_insertVal(it, col.data_type, "0000-00-00-00:00:00");
+                            else
+                                it_insertVal(it, col.data_type, "0");
+                        }
+                        else
+                        {
+                            // TODO: the DEFAULT constraint
+                        }
                     }
                 }
+
+                remained_rows--;
             }
+            ofile.write(reinterpret_cast<const char *>(buffer.data()), sizeof(char) * buffer.size());
         }
+
+        //*********************************************/
 
         ofile.close();
 
@@ -419,25 +493,80 @@ namespace YourSQL::Server::Engine
         ifile.seekg(header_length, std::ios::beg);
 
         std::list<std::vector<std::string>> output_list;
+        // while (end_of_file - ifile.tellg() >= row_length)
+        // {
+        //     // check the delete sign
+        //     {
+        //         std::vector<char> mark(this->DELETE_MARK_SIZE, 0);
+        //         ifile.read(reinterpret_cast<char *>(mark.data()), sizeof(char) * this->DELETE_MARK_SIZE);
+        //         if (mark[0] != 0)
+        //             continue;
+        //     }
+
+        //     output_list.emplace_back(keys.size() == 0 ? col_vec.size() : keys.size());
+        //     auto &list_back = output_list.back();
+        //     for (size_t i = 0; i < col_vec.size(); i++)
+        //     {
+        //         auto &col = col_vec[i];
+        //         if (!col.selected)
+        //         {
+        //             ifile.seekg(getColumnSize(*col.cai.col), std::ios::cur);
+        //         }
+        //         else
+        //         {
+        //             readVal(ifile, *col.cai.col, list_back[col.cai.index]);
+        //         }
+        //     }
+
+        //     // TODO: requirement
+        // }
+
+        //**********************NEW*VERSION***********************/
+        //********************************************************/
         while (end_of_file - ifile.tellg() >= row_length)
         {
-            output_list.emplace_back(keys.size() == 0 ? col_vec.size() : keys.size());
-            auto &list_back = output_list.back();
-            for (size_t i = 0; i < col_vec.size(); i++)
+            std::vector<char> buffer(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - ifile.tellg())), 0);
+
+            ifile.read(reinterpret_cast<char *>(buffer.data()), sizeof(char) * buffer.size());
+
+            size_t row_counter = buffer.size() / this->row_length;
+            auto it = buffer.begin();
+
+            while(row_counter > 0)
             {
-                auto &col = col_vec[i];
-                if (!col.selected)
+                // check delete mark
+                if (*it != 0)
                 {
-                    ifile.seekg(getColumnSize(*col.cai.col), std::ios::cur);
+                    // skip one row
+                    it += this->row_length;
                 }
                 else
                 {
-                    readVal(ifile, *col.cai.col, list_back[col.cai.index]);
-                }
-            }
+                    it += this->DELETE_MARK_SIZE;
 
-            // TODO: requirement
+                    output_list.emplace_back(keys.size() == 0 ? col_vec.size() : keys.size());
+                    auto &list_back = output_list.back();
+                    for (size_t i = 0; i < col_vec.size(); i++)
+                    {
+                        auto &col = col_vec[i];
+                        if (!col.selected)
+                        {
+                            it += getColumnSize(*col.cai.col);
+                        }
+                        else
+                        {
+                            it_readVal(it, *col.cai.col, list_back[col.cai.index]);
+                        }
+                    }
+
+                    // TODO: requirement
+                }
+
+                row_counter--;
+            }
         }
+        //********************************************************/
+
 
         output.resize(output_list.size() + 1);
         if (keys.size() == 0)
@@ -535,50 +664,118 @@ namespace YourSQL::Server::Engine
         }
 
         // update
-        std::ofstream ofile(data_path, std::ios::binary | std::ios::in);
-        if (!ofile.is_open())
+        std::fstream file(data_path, std::ios::binary | std::ios::in | std::ios::out);
+        if (!file.is_open())
         {
             result = "[FAILED] Can not open the data file.";
             return 0;
         }
 
-        ofile.seekp(0, std::ios::end);
-        auto end_of_file = ofile.tellp();
+        file.seekp(0, std::ios::end);
+        auto end_of_file = file.tellp();
 
-        ofile.seekp(header_length, std::ios::beg);
+        file.seekp(header_length, std::ios::beg);
         // auto cur = ofile.tellp();
         size_t changed_num = 0;
 
-        while (end_of_file - ofile.tellp() >= this->row_length)
-        {
-            // TODO: requirements check
+        // while (end_of_file - file.tellp() >= this->row_length)
+        // {
+        //     // check the delete sign
+        //     {
+        //         std::vector<char> mark(this->DELETE_MARK_SIZE, 0);
+        //         file.read(reinterpret_cast<char *>(mark.data()), sizeof(char) * this->DELETE_MARK_SIZE);
+        //         if (mark[0] != 0)
+        //             continue;
+        //     }
 
-            for (const auto &col : col_vec)
+        //     // TODO: requirements check
+
+        //     for (const auto &col : col_vec)
+        //     {
+        //         if (!col.should_update)
+        //         {
+        //             file.seekp(getColumnSize(*col.col), std::ios::cur);
+        //             // cur = ofile.tellp();
+        //             continue;
+        //         }
+        //         else
+        //         {
+        //             if (col.col->data_type != DataType::VARCHAR)
+        //             {
+        //                 this->insertVal(file, col.col->data_type, info[col.index].set);
+        //             }
+        //             else
+        //             {
+        //                 this->insertVal(file, col.col->data_type, info[col.index].set, col.col->length);
+        //             }
+        //             // cur = ofile.tellp();
+        //         }
+        //     }
+        //     // cur = ofile.tellp();
+        //     changed_num++;
+        // }
+
+        //***************************NEW*VERSION****************************/
+        //******************************************************************/
+        while(end_of_file - file.tellp() >= this->row_length)
+        {
+            std::vector<char> buffer(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - file.tellp())), 0);
+
+            file.read(reinterpret_cast<char *>(buffer.data()), sizeof(char) * buffer.size());
+
+            auto it = buffer.begin();
+
+            bool update = false;
+
+            for (size_t row_counter = buffer.size() / this->row_length; row_counter > 0; row_counter--)
             {
-                if (!col.should_update)
+                // check delete sign
+                if (*it != 0)
                 {
-                    ofile.seekp(getColumnSize(*col.col), std::ios::cur);
-                    // cur = ofile.tellp();
+                    it += this->row_length;
                     continue;
                 }
                 else
                 {
-                    if (col.col->data_type != DataType::VARCHAR)
+                    it += 1;
+                }
+
+                // TODO: requirements check
+
+                for (const auto &col : col_vec)
+                {
+                    if (!col.should_update)
                     {
-                        this->insertVal(ofile, col.col->data_type, info[col.index].set);
+                        it += getColumnSize(*col.col);
+                        continue;
                     }
                     else
                     {
-                        this->insertVal(ofile, col.col->data_type, info[col.index].set, col.col->length);
+                        if (col.col->data_type != DataType::VARCHAR)
+                        {
+                            this->it_insertVal(it, col.col->data_type, info[col.index].set);
+                        }
+                        else
+                        {
+                            this->it_insertVal(it, col.col->data_type, info[col.index].set, col.col->length);
+                        }
+
+                        update = true;
                     }
-                    // cur = ofile.tellp();
                 }
+                changed_num++;
             }
-            // cur = ofile.tellp();
-            changed_num++;
+
+            if (update)
+            {
+                file.seekp(-sizeof(char) * buffer.size(), std::ios::cur);
+                file.write(reinterpret_cast<const char *>(buffer.data()), sizeof(char) * buffer.size());
+            }
         }
 
-        ofile.close();
+        //******************************************************************/
+
+        file.close();
 
         result = "[SUCCESS] " + std::to_string(changed_num) + " row(s) updated.";
 
@@ -764,7 +961,7 @@ namespace YourSQL::Server::Engine
 
     const std::streampos Table::calRowLen() const
     {
-        std::streampos len = 0;
+        std::streampos len = this->DELETE_MARK_SIZE;
         for (const auto &col : this->columns)
         {
             len += getColumnSize(col);
@@ -871,6 +1068,126 @@ namespace YourSQL::Server::Engine
         }
     }
 
+    void Table::it_insertVal(std::vector<char>::iterator &it, const DataType type, const std::string &val, const size_t len)
+    {
+        switch (type)
+        {
+        case DataType::INT:
+        {
+            int32_t num = std::stoi(val);
+            for (size_t i = 0; i < sizeof(num) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((num >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::SMALLINT:
+        {
+            int16_t num = static_cast<int16_t>(std::stoi(val));
+            for (size_t i = 0; i < sizeof(num) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((num >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::BIGINT:
+        {
+            int64_t num = std::stoll(val);
+            for (size_t i = 0; i < sizeof(num) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((num >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::FLOAT:
+        {
+            float num = std::stof(val);
+            char *bytes = reinterpret_cast<char *>(&num);
+            for (size_t i = 0; i < sizeof(float); ++i)
+                *it++ = bytes[i];
+        }
+        break;
+        case DataType::DECIMAL:
+        {
+            // TODO: costumize the presision and scale of the decimal
+            double num = std::stod(val);
+            char *bytes = reinterpret_cast<char *>(&num);
+            for (size_t i = 0; i < sizeof(double); ++i)
+                *it++ = bytes[i];
+        }
+        break;
+        case DataType::CHAR:
+        {
+            *it++ = val[0];
+        }
+        break;
+        case DataType::VARCHAR:
+        {
+            for (size_t i = 0; i < len; i++)
+            {
+                if (i <  val.size())
+                    *it++ = val[i];
+                else
+                    *it++ = '\0';
+            }
+            
+        }
+        break;
+        case DataType::BOOLEAN:
+        {
+            if (val == "true" || val == "TRUE" || val == "1")
+                *it++ = 0xFF;
+            else if (val == "false" || val == "FALSE" || val == "0")
+                *it++ = 0x00;
+        }
+        break;
+        case DataType::DATE:
+        {
+            int32_t date;
+            dateStrToNum(val, date);
+            for (size_t i = 0; i < sizeof(date) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((date >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::TIME:
+        {
+            int32_t time;
+            timeStrToNum(val, time);
+            for (size_t i = 0; i < sizeof(time) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((time >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::DATETIME:
+        {
+            int64_t buffer = 0;
+            int64_t datetime = 0;
+            buffer = std::stoi(val.substr(17, 2));
+            datetime += buffer * 1e0;
+            buffer = std::stoi(val.substr(14, 2));
+            datetime += buffer * 1e2;
+            buffer = std::stoi(val.substr(11, 2));
+            datetime += buffer * 1e4;
+            buffer = std::stoi(val.substr(8, 2));
+            datetime += buffer * 1e6;
+            buffer = std::stoi(val.substr(5, 2));
+            datetime += buffer * 1e8;
+            buffer = std::stoi(val.substr(0, 4));
+            datetime += buffer * 1e10;
+            for (size_t i = 0; i < sizeof(datetime) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((datetime >> i) & 0xFF);
+            }
+        }
+        break;
+        default:
+            break;
+        }
+    }
+
     void Table::readVal(std::istream &is, const Column &col, std::string &output)
     {
         switch (col.data_type)
@@ -955,6 +1272,123 @@ namespace YourSQL::Server::Engine
         {
             int64_t buffer;
             is.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+            datetimeNumToStr(buffer, output);
+        }
+        break;
+        default:
+            break;
+        }
+    }
+
+    void Table::it_readVal(std::vector<char>::iterator &it, const Column &col, std::string &output)
+    {
+        switch (col.data_type)
+        {
+        case DataType::INT:
+        {
+            int32_t buffer = 0;
+            for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
+            {
+                buffer = buffer | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+            output = std::to_string(buffer);
+        }
+        break;
+        case DataType::SMALLINT:
+        {
+            int16_t buffer = 0;
+            for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
+            {
+                buffer = buffer | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+            output = std::to_string(buffer);
+        }
+        break;
+        case DataType::BIGINT:
+        {
+            int64_t buffer = 0;
+            for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
+            {
+                buffer = buffer | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+            output = std::to_string(buffer);
+        }
+        break;
+        case DataType::FLOAT:
+        {
+            float buffer = 0.f;
+            char *bytes = reinterpret_cast<char *>(&buffer);
+            for (size_t i = 0; i < sizeof(buffer); ++i)
+            {
+                bytes[i] = *it++;
+            }
+            output = std::to_string(buffer);
+        }
+        break;
+        case DataType::DECIMAL:
+        {
+            // TODO: costumize the presision and scale of the decimal
+            double buffer = 0;
+            char *bytes = reinterpret_cast<char *>(&buffer);
+            for (size_t i = 0; i < sizeof(buffer); ++i)
+            {
+                bytes[i] = *it++;
+            }
+            output = std::to_string(buffer);
+        }
+        break;
+        case DataType::CHAR:
+        {
+            output = std::to_string(*it++);
+        }
+        break;
+        case DataType::VARCHAR:
+        {
+            std::vector<char> buffer(it, it + col.length);
+            auto end = buffer.rbegin();
+            while (*end == '\0' && end != buffer.rend())
+            {
+                end++;
+            }
+            output.assign(buffer.begin(), end.base());
+            it += col.length;
+        }
+        break;
+        case DataType::BOOLEAN:
+        {
+            if (*it++ == 0)
+                output = "false";
+            else
+                output = "true";
+        }
+        break;
+        case DataType::DATE:
+        {
+            int32_t buffer = 0;
+            for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
+            {
+                buffer += (static_cast<decltype(buffer)>(*it++) << i);
+            }
+            dateNumToStr(buffer, output);
+        }
+        break;
+        case DataType::TIME:
+        {
+            int32_t buffer = 0;
+            for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
+            {
+                buffer += (static_cast<decltype(buffer)>(*it++) << i);
+            }
+            timeNumToStr(buffer, output);
+        }
+        break;
+        case DataType::DATETIME:
+        {
+            int64_t buffer = 0;
+            for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
+            {
+                buffer += (static_cast<decltype(buffer)>(*it++) << i);
+            }
             datetimeNumToStr(buffer, output);
         }
         break;

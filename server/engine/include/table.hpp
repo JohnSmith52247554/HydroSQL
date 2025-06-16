@@ -173,6 +173,11 @@ namespace YourSQL::Server::Engine
 
         std::filesystem::path data_path;
 
+        static constexpr size_t DELETE_MARK_SIZE = sizeof(char);
+        static constexpr size_t MAX_BUFFER_SIZE = 1024; // 1kb
+
+        size_t buffer_row_num;
+
     public:
         Table(const std::string &name_);
         Table(const std::string &name_, const std::vector<Column> &&columns_);
@@ -217,9 +222,15 @@ namespace YourSQL::Server::Engine
 
         [[nodiscard]] const std::streampos calRowLen() const;
 
-        static void insertVal(std::ostream &os, const DataType type, const std::string &val, const size_t len = 1);
+        // [ABORT]
+        [[deprecated]] static void insertVal(std::ostream &os, const DataType type, const std::string &val, const size_t len = 1);
+        // new version using iterator
+        static void it_insertVal(std::vector<char>::iterator &it, const DataType type, const std::string &val, const size_t len = 1);
 
-        static void readVal(std::istream &is, const Column &col, std::string &output);
+        // [ABORT]
+        [[deprecated]] static void readVal(std::istream &is, const Column &col, std::string &output);
+        // new version using iterator
+        static void it_readVal(std::vector<char>::iterator &it, const Column &col, std::string &output);
 
         // WARNING: The following six fuctions will not examine the legality of the input in order to be faster. Illegal input may cause the program to CRASH. Use a try and catch block if your are not sure whether the input is legal.
         static void dateStrToNum(const std::string &str, int32_t &num);
