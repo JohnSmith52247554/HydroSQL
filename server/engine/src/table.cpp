@@ -10,8 +10,9 @@
  */
 
 #include <table.hpp>
+#include <LogicalTree.hpp>
 
-namespace YourSQL::Server::Engine
+namespace HydroSQL::Server::Engine
 {
     void saveStr(std::ostream &os, const std::string &str)
     {
@@ -361,10 +362,13 @@ namespace YourSQL::Server::Engine
         //*********************************************/
 
         size_t remained_rows = values.size();
-        
+
+        std::vector<char> buffer;
+
         while (remained_rows > 0)
         {
-            std::vector<char> buffer(std::min(this->buffer_row_num, remained_rows) * row_length, 0);
+            // std::vector<char> buffer(std::min(this->buffer_row_num, remained_rows) * row_length, 0);
+            buffer.resize(std::min(this->buffer_row_num, remained_rows) * row_length);
             auto it = buffer.begin();
 
             for (size_t i = buffer.size() / this->row_length; i > 0; i--)
@@ -428,7 +432,7 @@ namespace YourSQL::Server::Engine
         return 1;
     }
 
-    int Table::select(const std::vector<std::string> &keys, const bool &requirements, const SelectOrder &order, std::vector<std::vector<std::string>> &output, std::string &result) const
+    int Table::select(const std::vector<std::string> &keys, const std::shared_ptr<LT::LT> requirements, const SelectOrder &order, std::vector<std::vector<std::string>> &output, std::string &result) const
     {
         // legality examination
         // The keys should exist.
@@ -475,7 +479,6 @@ namespace YourSQL::Server::Engine
                 }
             }
         }
-        // TODO: requirement examine
         
         // TODO: order examine
 
@@ -518,21 +521,23 @@ namespace YourSQL::Server::Engine
         //         }
         //     }
 
-        //     // TODO: requirement
+        //     // TODO requirement
         // }
 
         //**********************NEW*VERSION***********************/
         //********************************************************/
+        std::vector<char> buffer;
         while (end_of_file - ifile.tellg() >= row_length)
         {
-            std::vector<char> buffer(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - ifile.tellg())), 0);
+            // std::vector<char> buffer(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - ifile.tellg())), 0);
+            buffer.resize(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - ifile.tellg())));
 
             ifile.read(reinterpret_cast<char *>(buffer.data()), sizeof(char) * buffer.size());
 
             size_t row_counter = buffer.size() / this->row_length;
             auto it = buffer.begin();
 
-            while(row_counter > 0)
+            for (; row_counter > 0; row_counter--)
             {
                 // check delete mark
                 if (*it != 0)
@@ -543,6 +548,80 @@ namespace YourSQL::Server::Engine
                 else
                 {
                     it += this->DELETE_MARK_SIZE;
+
+                    using ColInfo = LT::ColInfo;
+                    using RowInfo = LT::RowInfo;
+                    std::unique_ptr<RowInfo> row_info;
+                    if (requirements != nullptr)
+                    {
+                        row_info = std::make_unique<RowInfo>();
+                        row_info->resize(this->columns.size());
+                        for (size_t i = 0; i < this->columns.size(); i++)
+                        {
+                            row_info->at(i).col_name = columns[i].name;
+                            row_info->at(i).col_type = columns[i].data_type;
+                            switch (columns[i].data_type)
+                            {
+                            case DataType::INT:
+                                [[fallthrough]];
+                            case DataType::SMALLINT:
+                                [[fallthrough]];
+                            case DataType::BIGINT:
+                                [[fallthrough]];
+                            case DataType::CHAR:
+                                [[fallthrough]];
+                            case DataType::DATE:
+                                [[fallthrough]];
+                            case DataType::TIME:
+                                [[fallthrough]];
+                            case DataType::DATETIME:
+                                {
+                                    row_info->at(i).liter.liter_type = LT::LiterType::INT;
+                                    int64_t temp;
+                                    it_rawReadInt(it, columns[i], temp);
+                                    row_info->at(i).liter.liter_info.emplace<int64_t>(temp);
+                                }
+                                break;
+                            case DataType::FLOAT:
+                                [[fallthrough]];
+                            case DataType::DECIMAL:
+                                {
+                                    row_info->at(i).liter.liter_type = LT::LiterType::FLOAT;
+                                    double temp;
+                                    it_rawReadFloat(it, columns[i], temp);
+                                    row_info->at(i).liter.liter_info.emplace<double>(temp);
+                                }
+                                break;
+                            case DataType::VARCHAR:
+                                {
+                                    row_info->at(i).liter.liter_type = LT::LiterType::STR;
+                                    std::string temp;
+                                    it_rawReadStr(it, columns[i], temp);
+                                    row_info->at(i).liter.liter_info.emplace<std::string>(std::move(temp));
+                                }
+                                break;
+                            case DataType::BOOLEAN:
+                                {
+                                    row_info->at(i).liter.liter_type = LT::LiterType::BOOLEAN;
+                                    bool temp;
+                                    it_rawReadBool(it, columns[i], temp);
+                                    row_info->at(i).liter.liter_info.emplace<bool>(temp);
+                                }
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+
+                        if (!LT::boolOp(requirements, *row_info))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            it -= this->row_length - static_cast<std::streampos>(this->DELETE_MARK_SIZE);
+                        }
+                    }
 
                     output_list.emplace_back(keys.size() == 0 ? col_vec.size() : keys.size());
                     auto &list_back = output_list.back();
@@ -558,11 +637,7 @@ namespace YourSQL::Server::Engine
                             it_readVal(it, *col.cai.col, list_back[col.cai.index]);
                         }
                     }
-
-                    // TODO: requirement
                 }
-
-                row_counter--;
             }
         }
         //********************************************************/
@@ -603,7 +678,7 @@ namespace YourSQL::Server::Engine
         return 1;
     }
 
-    int Table::update(const std::vector<UpdateInfo> &info, const bool &requirements, std::string &result)
+    int Table::update(const std::vector<UpdateInfo> &info, const std::shared_ptr<LT::LT> requirements, std::string &result)
     {
         // legality examination
         // the columns to be update should exist
@@ -688,7 +763,7 @@ namespace YourSQL::Server::Engine
         //             continue;
         //     }
 
-        //     // TODO: requirements check
+        //     // TODO requirements check
 
         //     for (const auto &col : col_vec)
         //     {
@@ -717,9 +792,11 @@ namespace YourSQL::Server::Engine
 
         //***************************NEW*VERSION****************************/
         //******************************************************************/
+        std::vector<char> buffer;
         while(end_of_file - file.tellp() >= this->row_length)
         {
-            std::vector<char> buffer(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - file.tellp())), 0);
+            // std::vector<char> buffer(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - file.tellp())), 0);
+            buffer.resize(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - file.tellp())));
 
             file.read(reinterpret_cast<char *>(buffer.data()), sizeof(char) * buffer.size());
 
@@ -1356,7 +1433,7 @@ namespace YourSQL::Server::Engine
         break;
         case DataType::BOOLEAN:
         {
-            if (*it++ == 0)
+            if (*it++ == 0x00)
                 output = "false";
             else
                 output = "true";
@@ -1367,7 +1444,7 @@ namespace YourSQL::Server::Engine
             int32_t buffer = 0;
             for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
             {
-                buffer += (static_cast<decltype(buffer)>(*it++) << i);
+                buffer = buffer | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
             }
             dateNumToStr(buffer, output);
         }
@@ -1377,7 +1454,7 @@ namespace YourSQL::Server::Engine
             int32_t buffer = 0;
             for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
             {
-                buffer += (static_cast<decltype(buffer)>(*it++) << i);
+                buffer = buffer | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
             }
             timeNumToStr(buffer, output);
         }
@@ -1387,13 +1464,140 @@ namespace YourSQL::Server::Engine
             int64_t buffer = 0;
             for (size_t i = 0; i < sizeof(buffer) * 8; i += 8)
             {
-                buffer += (static_cast<decltype(buffer)>(*it++) << i);
+                buffer = buffer | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
             }
             datetimeNumToStr(buffer, output);
         }
         break;
         default:
             break;
+        }
+    }
+
+    void Table::it_rawReadInt(std::vector<char>::iterator &it, const Column &col, int64_t &output)
+    {
+        output = 0;
+        switch (col.data_type)
+        {
+        case DataType::INT:
+        {
+            for (size_t i = 0; i < sizeof(int32_t) * 8; i += 8)
+            {
+                output = output | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+        }
+        break;
+        case DataType::SMALLINT:
+        {
+            for (size_t i = 0; i < sizeof(int16_t) * 8; i += 8)
+            {
+                output = output | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+        }
+        break;
+        case DataType::BIGINT:
+        {
+            for (size_t i = 0; i < sizeof(int64_t) * 8; i += 8)
+            {
+                output = output | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+        }
+        break;
+        case DataType::CHAR:
+        {
+            output = *it++;
+        }
+        break;
+        case DataType::DATE:
+        {
+            for (size_t i = 0; i < sizeof(int32_t) * 8; i += 8)
+            {
+                output = output | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+        }
+        break;
+        case DataType::TIME:
+        {
+            for (size_t i = 0; i < sizeof(int32_t) * 8; i += 8)
+            {
+                output = output | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+        }
+        break;
+        case DataType::DATETIME:
+        {
+            for (size_t i = 0; i < sizeof(int64_t) * 8; i += 8)
+            {
+                output = output | ((static_cast<decltype(buffer_row_num)>(*it++) & 0xFF) << i);
+            }
+        }
+        break;
+        default:
+            assert(false);
+            break;
+        }
+    }
+    void Table::it_rawReadFloat(std::vector<char>::iterator &it, const Column &col, double &output)
+    {
+        switch (col.data_type)
+        {
+        case DataType::FLOAT:
+        {
+            float buffer = 0.f;
+            char *bytes = reinterpret_cast<char *>(&buffer);
+            for (size_t i = 0; i < sizeof(buffer); ++i)
+            {
+                bytes[i] = *it++;
+            }
+            output = static_cast<double>(buffer);
+        }
+        break;
+        case DataType::DECIMAL:
+        {
+            // TODO: costumize the presision and scale of the decimal
+            output = 0;
+            char *bytes = reinterpret_cast<char *>(&output);
+            for (size_t i = 0; i < sizeof(output); ++i)
+            {
+                bytes[i] = *it++;
+            }
+        }
+        default:
+            assert(false);
+            break;
+        }
+    }
+    void Table::it_rawReadStr(std::vector<char>::iterator &it, const Column &col, std::string &output)
+    {
+        if (col.data_type == DataType::VARCHAR)
+        {
+            std::vector<char> buffer(it, it + col.length);
+            auto end = buffer.rbegin();
+            while (*end == '\0' && end != buffer.rend())
+            {
+                end++;
+            }
+            output.assign(buffer.begin(), end.base());
+            it += col.length;
+        }
+        else
+        {
+            assert(false);
+        }
+    }
+
+    void Table::it_rawReadBool(std::vector<char>::iterator &it, const Column &col, bool &output)
+    {
+        if (col.data_type == DataType::BOOLEAN)
+        {
+            if (*it++ == 0x00)
+                output = false;
+            else
+                output = true;
+        }
+        else
+        {
+            assert(false);
         }
     }
 
