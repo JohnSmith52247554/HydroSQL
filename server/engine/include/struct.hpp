@@ -64,9 +64,9 @@ namespace HydroSQL::Server::Engine
             FLOAT,
             BOOLEAN,
             STR,
-            DATE,
-            TIME,
-            DATETIME
+            // DATE,
+            // TIME,
+            // DATETIME
         };
 
         struct Literal

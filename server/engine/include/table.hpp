@@ -146,6 +146,8 @@ namespace HydroSQL::Server::Engine
     std::ostream &operator<<(std::ostream &os, const Column &col);
     std::istream &operator>>(std::istream &is, Column &col);
 
+    LT::LiterType dataTypeToLiteralType(const DataType type);
+
     class Table
     {
     private:
@@ -193,13 +195,13 @@ namespace HydroSQL::Server::Engine
          * @brief select some rows in the table
          *
          * @param keys The columns which will be displayed. An empty vector represent "*", which  means all columns.
-         * @param requirements TODO: The requirements that the rows should meet. A tree.
+         * @param requirements The requirements that the rows should meet. A tree.
          * @param order The order of the output rows.
          * @param output The selected rows in the right order.
          * @param result The result (or error message) to be outputed.
          * @return int 0 for failed and 1 for succeeded
          */
-        [[nodiscard]] int select(const std::vector<std::string> &keys, const std::shared_ptr<LT::LT> requirements, const SelectOrder &order, std::vector<std::vector<std::string>> &output, std::string &result) const;
+        [[nodiscard]] int select(const std::vector<std::string> &keys, const std::shared_ptr<LT::LT> requirements, const std::shared_ptr<SelectOrder> order, std::vector<std::vector<std::string>> &output, std::string &result) const;
 
         [[nodiscard]] int update(const std::vector<UpdateInfo> &info, const std::shared_ptr<LT::LT> requirements, std::string &result);
 

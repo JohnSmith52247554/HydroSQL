@@ -27,7 +27,7 @@ void test1()
 
     std::vector<std::string> keys = {"index", "name", "age"};
 
-    std::vector<std::vector<std::string>> vals(500, std::vector<std::string>{3});
+    std::vector<std::vector<std::string>> vals(100, std::vector<std::string>{3});
     for (size_t i = 0; i < vals.size(); i += 5)
     {
         vals[i][0] = std::to_string(i);
@@ -97,7 +97,9 @@ void test1()
     root->children[1]->info.liter.liter_type = Engine::LT::LiterType::STR;
     root->children[1]->info.liter.liter_info.emplace<std::string>("张三");
 
-    if (!table.select(keyss, root, Engine::SelectOrder("", false), output, result))
+    auto order = std::make_shared<Engine::SelectOrder>("index", false);
+
+    if (!table.select(keyss, root, order, output, result))
         std::cout << "error" << std::endl;
     std::cout << result << std::endl;
 
@@ -110,7 +112,7 @@ void test1()
         std::cout << std::endl;
     }
 
-    if (!table.update(update, nullptr, result))
+    if (!table.update(update, root, result))
         std::cout << "error" << std::endl;
 
     std::cout << result << std::endl;
@@ -120,7 +122,7 @@ void test1()
 
     std::shared_ptr<Engine::LT::LT> root2 = std::make_shared<Engine::LT::LT>();
     root2->type = Engine::LT::NodeType::OPERATOR;
-    root2->info.op_type = Engine::LT::OpType::AND;
+    root2->info.op_type = Engine::LT::OpType::OR;
     root2->children.resize(2);
     root2->children[0] = std::make_shared<Engine::LT::LT>();
     root2->children[0]->type = Engine::LT::NodeType::OPERATOR;
@@ -143,13 +145,15 @@ void test1()
     vec1[0] = std::make_shared<Engine::LT::LT>();
     vec1[0]->type = Engine::LT::NodeType::COL;
     vec1[0]->info.liter.liter_type = Engine::LT::LiterType::STR;
-    vec1[0]->info.liter.liter_info.emplace<std::string>("index");
+    vec1[0]->info.liter.liter_info.emplace<std::string>("name");
     vec1[1] = std::make_shared<Engine::LT::LT>();
     vec1[1]->type = Engine::LT::NodeType::LITERAL;
-    vec1[1]->info.liter.liter_type = Engine::LT::LiterType::INT;
-    vec1[1]->info.liter.liter_info.emplace<int64_t>(305);
+    vec1[1]->info.liter.liter_type = Engine::LT::LiterType::STR;
+    vec1[1]->info.liter.liter_info.emplace<std::string>("李四");
 
-    if (!table.select(keyss, root2, Engine::SelectOrder("", false), output, result))
+    order->key = "age";
+
+    if (!table.select(keyss, root2, order, output, result))
         std::cout << "error" << std::endl;
     std::cout << result << std::endl;
 

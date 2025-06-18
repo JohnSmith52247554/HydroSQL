@@ -119,6 +119,37 @@ namespace HydroSQL::Server::Engine
         return is;
     }
 
+    LT::LiterType dataTypeToLiteralType(const DataType type)
+    {
+        switch (type)
+        {
+        case DataType::INT:
+            [[fallthrough]];
+        case DataType::SMALLINT:
+            [[fallthrough]];
+        case DataType::BIGINT:
+            [[fallthrough]];
+        case DataType::CHAR:
+            [[fallthrough]];
+        case DataType::BOOLEAN:
+            return LT::LiterType::INT;
+        case DataType::FLOAT:
+            [[fallthrough]];
+        case DataType::DECIMAL:
+            return LT::LiterType::FLOAT;
+        case DataType::VARCHAR:
+            [[fallthrough]];
+        case DataType::DATE:
+            [[fallthrough]];
+        case DataType::TIME:
+            [[fallthrough]];
+        case DataType::DATETIME:
+            return LT::LiterType::STR;
+        default:
+            return LT::LiterType::null;
+        }
+    }
+
     Table::Table(const std::string &name_)
         : name(name_)
     {
@@ -432,7 +463,7 @@ namespace HydroSQL::Server::Engine
         return 1;
     }
 
-    int Table::select(const std::vector<std::string> &keys, const std::shared_ptr<LT::LT> requirements, const SelectOrder &order, std::vector<std::vector<std::string>> &output, std::string &result) const
+    int Table::select(const std::vector<std::string> &keys, const std::shared_ptr<LT::LT> requirements, const std::shared_ptr<SelectOrder> order, std::vector<std::vector<std::string>> &output, std::string &result) const
     {
         // legality examination
         // The keys should exist.
@@ -480,7 +511,22 @@ namespace HydroSQL::Server::Engine
             }
         }
         
-        // TODO: order examine
+        // order examine
+        size_t order_index = 0;
+        LT::LiterType order_col_type = LT::LiterType::null;
+        if (order != nullptr)
+        {
+            auto order_it = std::find_if(col_vec.begin(), col_vec.end(),
+                                         [&](SelectInfo &si)
+                                         { return si.selected && si.cai.col->name == order->key; });
+            if (order_it == col_vec.end())
+            {
+                result = "[FAILED] The result is order by the column " + order->key + ", but that column doesn't exist / haven't been selected.";
+                return 0;
+            }
+            order_index = order_it->cai.index;
+            order_col_type = dataTypeToLiteralType(order_it->cai.col->data_type);
+        }
 
         // Select
         std::ifstream ifile(data_path, std::ios::binary);
@@ -671,7 +717,44 @@ namespace HydroSQL::Server::Engine
             }
         }
 
-        // TODO: sort
+        // sort
+        if (order != nullptr)
+        {
+            std::sort(output.begin() + 1, output.end(),
+                      [&](std::vector<std::string> &vec1, std::vector<std::string> &vec2) {
+                        switch (order_col_type)
+                        {
+                            case LT::LiterType::STR:
+                            {
+                                if (order->ascending)
+                                    return vec1[order_index] < vec2[order_index];
+                                else
+                                    return vec1[order_index] > vec2[order_index];
+                            }
+                            case LT::LiterType::FLOAT:
+                            {
+                                double num1 = std::stod(vec1[order_index]);
+                                double num2 = std::stod(vec2[order_index]);
+                                if (order->ascending)
+                                    return num1 < num2;
+                                else
+                                    return num1 > num2;
+                            }
+                            case LT::LiterType::INT:
+                            {
+                                int64_t num1 = std::stoll(vec1[order_index]);
+                                int64_t num2 = std::stoll(vec2[order_index]);
+                                if (order->ascending)
+                                    return num1 < num2;
+                                else
+                                    return num1 > num2;
+                            }
+                            default:
+                                return true;
+                        }
+                      });
+        }
+
 
         result = "[SUCCESS] " + std::to_string(output.size() - 1) + " row(s) in set.";
 
@@ -818,6 +901,79 @@ namespace HydroSQL::Server::Engine
                 }
 
                 // TODO: requirements check
+                using ColInfo = LT::ColInfo;
+                using RowInfo = LT::RowInfo;
+                std::unique_ptr<RowInfo> row_info;
+                if (requirements != nullptr)
+                {
+                    row_info = std::make_unique<RowInfo>();
+                    row_info->resize(this->columns.size());
+                    for (size_t i = 0; i < this->columns.size(); i++)
+                    {
+                        row_info->at(i).col_name = columns[i].name;
+                        row_info->at(i).col_type = columns[i].data_type;
+                        switch (columns[i].data_type)
+                        {
+                        case DataType::INT:
+                            [[fallthrough]];
+                        case DataType::SMALLINT:
+                            [[fallthrough]];
+                        case DataType::BIGINT:
+                            [[fallthrough]];
+                        case DataType::CHAR:
+                            [[fallthrough]];
+                        case DataType::DATE:
+                            [[fallthrough]];
+                        case DataType::TIME:
+                            [[fallthrough]];
+                        case DataType::DATETIME:
+                        {
+                            row_info->at(i).liter.liter_type = LT::LiterType::INT;
+                            int64_t temp;
+                            it_rawReadInt(it, columns[i], temp);
+                            row_info->at(i).liter.liter_info.emplace<int64_t>(temp);
+                        }
+                        break;
+                        case DataType::FLOAT:
+                            [[fallthrough]];
+                        case DataType::DECIMAL:
+                        {
+                            row_info->at(i).liter.liter_type = LT::LiterType::FLOAT;
+                            double temp;
+                            it_rawReadFloat(it, columns[i], temp);
+                            row_info->at(i).liter.liter_info.emplace<double>(temp);
+                        }
+                        break;
+                        case DataType::VARCHAR:
+                        {
+                            row_info->at(i).liter.liter_type = LT::LiterType::STR;
+                            std::string temp;
+                            it_rawReadStr(it, columns[i], temp);
+                            row_info->at(i).liter.liter_info.emplace<std::string>(std::move(temp));
+                        }
+                        break;
+                        case DataType::BOOLEAN:
+                        {
+                            row_info->at(i).liter.liter_type = LT::LiterType::BOOLEAN;
+                            bool temp;
+                            it_rawReadBool(it, columns[i], temp);
+                            row_info->at(i).liter.liter_info.emplace<bool>(temp);
+                        }
+                        break;
+                        default:
+                            break;
+                        }
+                    }
+
+                    if (!LT::boolOp(requirements, *row_info))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        it -= this->row_length - static_cast<std::streampos>(this->DELETE_MARK_SIZE);
+                    }
+                }
 
                 for (const auto &col : col_vec)
                 {
