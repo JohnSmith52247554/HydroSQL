@@ -50,7 +50,7 @@ namespace HydroSQL::Server::Engine
         friend std::istream &operator>>(std::istream &is, Constraint &constraint);
     };
 
-    struct Column
+    struct HYDROSQL_ENGINE_API Column
     {
         std::string name;
         DataType data_type;
@@ -148,7 +148,7 @@ namespace HydroSQL::Server::Engine
 
     LT::LiterType dataTypeToLiteralType(const DataType type);
 
-    class Table
+    class HYDROSQL_ENGINE_API Table
     {
     private:
         struct ColAndIndex

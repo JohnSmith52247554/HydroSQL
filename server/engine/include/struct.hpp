@@ -1,5 +1,15 @@
 #pragma once
 
+#ifdef WIN32
+#ifdef HYDROSQL_ENGINE_EXPORTS
+#define HYDROSQL_ENGINE_API __declspec(dllexport)
+#else
+#define HYDROSQL_ENGINE_API __declspec(dllimport)
+#endif
+#else
+#define HYDROSQL_ENGINE_API
+#endif
+
 namespace HydroSQL::Server::Engine
 {
     enum class DataType : char
@@ -85,7 +95,7 @@ namespace HydroSQL::Server::Engine
             ~Info() {}
         };
 
-        struct LT
+        struct HYDROSQL_ENGINE_API LT
         {
             NodeType type;
             Info info;
