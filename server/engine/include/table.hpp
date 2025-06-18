@@ -21,7 +21,6 @@ namespace HydroSQL::Server::Engine
         PRIMARY_KEY = 0,
         NOT_NULL,
         UNIQUE,
-        CHECK,
         DEFAULT
     };
 

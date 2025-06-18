@@ -30,8 +30,11 @@
 *.exe
 *.out
 *.app
+*.dll
+*.lib
 
 # Folder
 .vscode
 build
 bin
+lib
