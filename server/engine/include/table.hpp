@@ -205,7 +205,7 @@ namespace HydroSQL::Server::Engine
 
         [[nodiscard]] int update(const std::vector<UpdateInfo> &info, const std::shared_ptr<LT::LT> requirements, std::string &result);
 
-        [[nodiscard]] int delete_();
+        [[nodiscard]] int delete_(const std::shared_ptr<LT::LT> requirements, std::string &result);
 
     private:
         [[nodiscard]] static const bool dataTypeExamination(const DataType type, const std::string &str, const size_t varchar_length);
@@ -238,5 +238,7 @@ namespace HydroSQL::Server::Engine
         static void timeNumToStr(const int32_t &num, std::string &str);
         static void datetimeStrToNum(const std::string &str, int32_t &num);
         static void datetimeNumToStr(const int32_t &num, std::string &str);
+
+        void setRowInfo(LT::RowInfo &row_info, std::vector<char>::iterator &it) const;
     };
 }

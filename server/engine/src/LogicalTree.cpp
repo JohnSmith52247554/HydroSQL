@@ -93,7 +93,6 @@ namespace HydroSQL::Server::Engine::LT
         }
         else if (root->type == NodeType::COL)
         {
-            // TODO:
             assert(root->info.liter.liter_type == LiterType::BOOLEAN);
             bool result;
             if(!getCol<bool>(info, std::get<std::string>(root->info.liter.liter_info), result))
@@ -143,7 +142,6 @@ namespace HydroSQL::Server::Engine::LT
         }
         else if (root->type == NodeType::COL)
         {
-            // TODO:
             assert(root->info.liter.liter_type == LiterType::STR);
             int64_t result;
             if (!getCol<int64_t>(info, std::get<std::string>(root->info.liter.liter_info), result))

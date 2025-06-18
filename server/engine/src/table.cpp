@@ -330,8 +330,63 @@ namespace HydroSQL::Server::Engine
             }
         }
 
-        // TODO:
         // unique examine
+        {
+            std::vector<std::string> unique_row;
+
+            for (size_t i = 0; i < keys.size(); i++)
+            {
+                const auto &col = column_map.find(keys[i]);
+                const auto &con = col->second.col->constraints;
+                if (std::find_if(con.begin(), con.end(), [](const Constraint constraint)
+                                 { return constraint.type == ConstraintType::UNIQUE || constraint.type == ConstraintType::PRIMARY_KEY; })
+                                != con.end())
+                {
+                    unique_row.emplace_back(keys[i]);
+                }
+            }
+
+            if (unique_row.size() > 0)
+            {
+                std::vector<std::vector<std::string>> select;
+                std::string str;
+
+                if(!this->select(unique_row, nullptr, nullptr, select, str))
+                {
+                    result = "[ERROR] Unable to select.";
+                    return 0;
+                }
+
+                for (size_t i = 0; i < unique_row.size(); i++)
+                {
+                    std::unordered_map<std::string, bool> unique_check;
+
+                    for (const auto & val : values)
+                    {
+                        auto &k = val[i];
+                        if (unique_check.count(k) == 0)
+                            unique_check.emplace(k, false);
+                        else
+                        {
+                            result = "[FAILED] Column " + unique_row[i] + " is UNIQUE or PRIMARY_KEY, but the insert value is not unique.";
+                            return 0; 
+                        }
+                    }
+
+                    for (const auto &row : select)
+                    {
+                        auto &k = row[i];
+                        if (unique_check.count(k) == 0)
+                            unique_check.emplace(k, false);
+                        else
+                        {
+                            result = "[FAILED] Column " + unique_row[i] + " is UNIQUE or PRIMARY_KEY, but the insert value is not unique.";
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
 
         
 
@@ -458,7 +513,7 @@ namespace HydroSQL::Server::Engine
 
         ofile.close();
 
-        result = "[SUCCESS] " + std::to_string(values.size()) + " row(s) affected.";
+        result = "[SUCCESS] " + std::to_string(values.size()) + " row(s) inserted.";
 
         return 1;
     }
@@ -601,63 +656,7 @@ namespace HydroSQL::Server::Engine
                     if (requirements != nullptr)
                     {
                         row_info = std::make_unique<RowInfo>();
-                        row_info->resize(this->columns.size());
-                        for (size_t i = 0; i < this->columns.size(); i++)
-                        {
-                            row_info->at(i).col_name = columns[i].name;
-                            row_info->at(i).col_type = columns[i].data_type;
-                            switch (columns[i].data_type)
-                            {
-                            case DataType::INT:
-                                [[fallthrough]];
-                            case DataType::SMALLINT:
-                                [[fallthrough]];
-                            case DataType::BIGINT:
-                                [[fallthrough]];
-                            case DataType::CHAR:
-                                [[fallthrough]];
-                            case DataType::DATE:
-                                [[fallthrough]];
-                            case DataType::TIME:
-                                [[fallthrough]];
-                            case DataType::DATETIME:
-                                {
-                                    row_info->at(i).liter.liter_type = LT::LiterType::INT;
-                                    int64_t temp;
-                                    it_rawReadInt(it, columns[i], temp);
-                                    row_info->at(i).liter.liter_info.emplace<int64_t>(temp);
-                                }
-                                break;
-                            case DataType::FLOAT:
-                                [[fallthrough]];
-                            case DataType::DECIMAL:
-                                {
-                                    row_info->at(i).liter.liter_type = LT::LiterType::FLOAT;
-                                    double temp;
-                                    it_rawReadFloat(it, columns[i], temp);
-                                    row_info->at(i).liter.liter_info.emplace<double>(temp);
-                                }
-                                break;
-                            case DataType::VARCHAR:
-                                {
-                                    row_info->at(i).liter.liter_type = LT::LiterType::STR;
-                                    std::string temp;
-                                    it_rawReadStr(it, columns[i], temp);
-                                    row_info->at(i).liter.liter_info.emplace<std::string>(std::move(temp));
-                                }
-                                break;
-                            case DataType::BOOLEAN:
-                                {
-                                    row_info->at(i).liter.liter_type = LT::LiterType::BOOLEAN;
-                                    bool temp;
-                                    it_rawReadBool(it, columns[i], temp);
-                                    row_info->at(i).liter.liter_info.emplace<bool>(temp);
-                                }
-                                break;
-                            default:
-                                break;
-                            }
-                        }
+                        setRowInfo(*row_info, it);
 
                         if (!LT::boolOp(requirements, *row_info))
                         {
@@ -756,7 +755,7 @@ namespace HydroSQL::Server::Engine
         }
 
 
-        result = "[SUCCESS] " + std::to_string(output.size() - 1) + " row(s) in set.";
+        result = "[SUCCESS] " + std::to_string(output.size() - 1) + " row(s) selected.";
 
         return 1;
     }
@@ -819,6 +818,79 @@ namespace HydroSQL::Server::Engine
                     return 0;
                 }
             } 
+        }
+
+        // unique examine
+        {
+            std::vector<std::string> unique_row;
+            std::vector<size_t> unique_row_index;
+
+            for (size_t i = 0; i < col_vec.size(); i++)
+            {
+                if (!col_vec[i].should_update)
+                    continue;
+
+                const auto &con = col_vec[i].col->constraints;
+                if (std::find_if(con.begin(), con.end(), [](const Constraint constraint)
+                                 { return constraint.type == ConstraintType::UNIQUE || constraint.type == ConstraintType::PRIMARY_KEY; }) != con.end())
+                {
+                    unique_row.emplace_back(col_vec[i].col->name);
+                    unique_row_index.emplace_back(col_vec[i].index);
+                }
+            }
+            
+            if (unique_row.size() > 0)
+            {
+                std::vector<std::vector<std::string>> select;
+                std::string str;
+
+                if (!this->select(unique_row, requirements, nullptr, select, str))
+                {
+                    result = "[ERROR] Unable to select.";
+                    return 0;
+                }
+                if (select.size() > 2)
+                {
+                    result = "[FAILED] Multiple rows meet the requirement. But column " + unique_row[0] + " is UNIQUE or PRIMARY_KEY.";
+                    return 0;
+                }
+
+                if (!this->select(unique_row, nullptr, nullptr, select, str))
+                {
+                    result = "[ERROR] Unable to select.";
+                    return 0;
+                }
+
+                for (size_t i = 0; i < unique_row.size(); i++)
+                {
+                    std::unordered_map<std::string, bool> unique_check;
+
+                    {
+                        auto &k = info[unique_row_index[i]].set;
+                        if (unique_check.count(k) == 0)
+                            unique_check.emplace(k, false);
+                        else
+                        {
+                            result = "[FAILED] Column " + unique_row[i] + " is UNIQUE or PRIMARY_KEY, but the update value is not unique.";
+                            return 0;
+                        }
+                    }
+
+                    for (const auto &row : select)
+                    {
+                        auto &k = row[i];
+                        if (unique_check.count(k) == 0)
+                            unique_check.emplace(k, false);
+                        else
+                        {
+                            result = "[FAILED] Column " + unique_row[i] + " is UNIQUE or PRIMARY_KEY, but the update value is not unique.";
+                            return 0;
+                        }
+                    }
+                }
+            }
+
+
         }
 
         // update
@@ -900,70 +972,14 @@ namespace HydroSQL::Server::Engine
                     it += 1;
                 }
 
-                // TODO: requirements check
+                // requirements check
                 using ColInfo = LT::ColInfo;
                 using RowInfo = LT::RowInfo;
                 std::unique_ptr<RowInfo> row_info;
                 if (requirements != nullptr)
                 {
                     row_info = std::make_unique<RowInfo>();
-                    row_info->resize(this->columns.size());
-                    for (size_t i = 0; i < this->columns.size(); i++)
-                    {
-                        row_info->at(i).col_name = columns[i].name;
-                        row_info->at(i).col_type = columns[i].data_type;
-                        switch (columns[i].data_type)
-                        {
-                        case DataType::INT:
-                            [[fallthrough]];
-                        case DataType::SMALLINT:
-                            [[fallthrough]];
-                        case DataType::BIGINT:
-                            [[fallthrough]];
-                        case DataType::CHAR:
-                            [[fallthrough]];
-                        case DataType::DATE:
-                            [[fallthrough]];
-                        case DataType::TIME:
-                            [[fallthrough]];
-                        case DataType::DATETIME:
-                        {
-                            row_info->at(i).liter.liter_type = LT::LiterType::INT;
-                            int64_t temp;
-                            it_rawReadInt(it, columns[i], temp);
-                            row_info->at(i).liter.liter_info.emplace<int64_t>(temp);
-                        }
-                        break;
-                        case DataType::FLOAT:
-                            [[fallthrough]];
-                        case DataType::DECIMAL:
-                        {
-                            row_info->at(i).liter.liter_type = LT::LiterType::FLOAT;
-                            double temp;
-                            it_rawReadFloat(it, columns[i], temp);
-                            row_info->at(i).liter.liter_info.emplace<double>(temp);
-                        }
-                        break;
-                        case DataType::VARCHAR:
-                        {
-                            row_info->at(i).liter.liter_type = LT::LiterType::STR;
-                            std::string temp;
-                            it_rawReadStr(it, columns[i], temp);
-                            row_info->at(i).liter.liter_info.emplace<std::string>(std::move(temp));
-                        }
-                        break;
-                        case DataType::BOOLEAN:
-                        {
-                            row_info->at(i).liter.liter_type = LT::LiterType::BOOLEAN;
-                            bool temp;
-                            it_rawReadBool(it, columns[i], temp);
-                            row_info->at(i).liter.liter_info.emplace<bool>(temp);
-                        }
-                        break;
-                        default:
-                            break;
-                        }
-                    }
+                    setRowInfo(*row_info, it);
 
                     if (!LT::boolOp(requirements, *row_info))
                     {
@@ -1014,7 +1030,80 @@ namespace HydroSQL::Server::Engine
 
         return 1;
     }
-    
+
+    int Table::delete_(const std::shared_ptr<LT::LT> requirements, std::string &result)
+    {
+        if (requirements == nullptr)
+        {
+            result = "[FAILED] The DELETE requires a WHERE statement.";
+            return 0;
+        }
+
+        std::fstream file(this->data_path, std::ios::binary | std::ios::in | std::ios::out);
+        if (!file.is_open())
+        {
+            result = "[FAILED] Can not open the data file.";
+            return 0;
+        }
+
+        file.seekp(0, std::ios::end);
+        auto end_of_file = file.tellp();
+
+        file.seekp(header_length, std::ios::beg);;
+
+        size_t delete_num = 0u;
+
+        std::vector<char> buffer;
+
+        while (end_of_file - file.tellp() >= this->row_length)
+        {
+            buffer.resize(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - file.tellp())));
+
+            file.read(reinterpret_cast<char *>(buffer.data()), sizeof(char) * buffer.size());
+
+            auto it = buffer.begin();
+
+            bool write = false;
+
+            for (size_t i = buffer.size() / this->row_length; i > 0; i--)
+            {
+                // check delete sign
+                if (*it != 0)
+                {
+                    it += this->row_length;
+                    continue;
+                }
+                it += this->DELETE_MARK_SIZE;
+
+                // get row
+                LT::RowInfo row_info;
+                setRowInfo(row_info, it);
+
+                if (!LT::boolOp(requirements, row_info))
+                {
+                    continue;
+                }
+
+                *(it - this->row_length) = 255;
+
+                delete_num++;
+                write = true;
+            }
+
+            if (write)
+            {
+                file.seekp(-sizeof(char) * buffer.size(), std::ios::cur);
+                file.write(reinterpret_cast<const char *>(buffer.data()), sizeof(char) * buffer.size());
+            }
+        }
+
+        file.close();
+
+        result = "[SUCCESS] " + std::to_string(delete_num) + " row(s) deleted.";
+
+        return 1;
+    }
+
     const bool Table::dataTypeExamination(const DataType type, const std::string &str, const size_t varchar_length)
     {
         // INT, SMALLINT, FLOAT... should could be interpret as a number.
@@ -1841,5 +1930,66 @@ namespace HydroSQL::Server::Engine
             << std::setw(2) << std::setfill('0') << second;
 
         str = wss.str();
+    }
+
+    void Table::setRowInfo(LT::RowInfo &row_info, std::vector<char>::iterator &it) const
+    {
+        row_info.resize(this->columns.size());
+        for (size_t i = 0; i < this->columns.size(); i++)
+        {
+            row_info.at(i).col_name = columns[i].name;
+            row_info.at(i).col_type = columns[i].data_type;
+            switch (columns[i].data_type)
+            {
+            case DataType::INT:
+                [[fallthrough]];
+            case DataType::SMALLINT:
+                [[fallthrough]];
+            case DataType::BIGINT:
+                [[fallthrough]];
+            case DataType::CHAR:
+                [[fallthrough]];
+            case DataType::DATE:
+                [[fallthrough]];
+            case DataType::TIME:
+                [[fallthrough]];
+            case DataType::DATETIME:
+            {
+                row_info.at(i).liter.liter_type = LT::LiterType::INT;
+                int64_t temp;
+                it_rawReadInt(it, columns[i], temp);
+                row_info.at(i).liter.liter_info.emplace<int64_t>(temp);
+            }
+            break;
+            case DataType::FLOAT:
+                [[fallthrough]];
+            case DataType::DECIMAL:
+            {
+                row_info.at(i).liter.liter_type = LT::LiterType::FLOAT;
+                double temp;
+                it_rawReadFloat(it, columns[i], temp);
+                row_info.at(i).liter.liter_info.emplace<double>(temp);
+            }
+            break;
+            case DataType::VARCHAR:
+            {
+                row_info.at(i).liter.liter_type = LT::LiterType::STR;
+                std::string temp;
+                it_rawReadStr(it, columns[i], temp);
+                row_info.at(i).liter.liter_info.emplace<std::string>(std::move(temp));
+            }
+            break;
+            case DataType::BOOLEAN:
+            {
+                row_info.at(i).liter.liter_type = LT::LiterType::BOOLEAN;
+                bool temp;
+                it_rawReadBool(it, columns[i], temp);
+                row_info.at(i).liter.liter_info.emplace<bool>(temp);
+            }
+            break;
+            default:
+                break;
+            }
+        }
     }
 }

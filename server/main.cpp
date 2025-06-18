@@ -22,12 +22,13 @@ void test1()
         Engine::Column{"name", Engine::DataType::VARCHAR, 10},
         Engine::Column{"age", Engine::DataType::SMALLINT},
     };
+    //cols[0].constraints.emplace_back(Engine::ConstraintType::UNIQUE, ""); 
 
     Engine::Table table("test", std::move(cols));
 
     std::vector<std::string> keys = {"index", "name", "age"};
 
-    std::vector<std::vector<std::string>> vals(100, std::vector<std::string>{3});
+    std::vector<std::vector<std::string>> vals(1000000, std::vector<std::string>{3});
     for (size_t i = 0; i < vals.size(); i += 5)
     {
         vals[i][0] = std::to_string(i);
@@ -55,6 +56,37 @@ void test1()
     }
 
     std::cout << result << std::endl;
+
+    // std::vector<std::vector<std::string>> vals2 = {
+    //     {"10", "aaa", "20"}};
+
+    // if (!table.insert(keys, vals2, result))
+    // {
+    //     std::cout << "error" << std::endl;
+    // }
+
+    // std::cout << result << std::endl;
+
+    std::vector<Engine::UpdateInfo> ui = {{"index", "10"}};
+
+    std::shared_ptr<Engine::LT::LT> root3 = std::make_shared<Engine::LT::LT>();
+    root3->type = Engine::LT::NodeType::OPERATOR;
+    root3->info.op_type = Engine::LT::OpType::EQUAL;
+    root3->children.resize(2);
+    root3->children[0] = std::make_shared<Engine::LT::LT>();
+    root3->children[0]->type = Engine::LT::NodeType::COL;
+    root3->children[0]->info.liter.liter_type = Engine::LT::LiterType::STR;
+    root3->children[0]->info.liter.liter_info.emplace<std::string>("index");
+    root3->children[1] = std::make_shared<Engine::LT::LT>();
+    root3->children[1]->type = Engine::LT::NodeType::LITERAL;
+    root3->children[1]->info.liter.liter_type = Engine::LT::LiterType::INT;
+    root3->children[1]->info.liter.liter_info.emplace<int64_t>(20);
+
+    // if (!table.update(ui, root3, result))
+    //     std::cout << "error" << std::endl;
+    // std::cout << result << std::endl;
+    
+    // return;
 
     // Engine::Table table("test");
 
@@ -99,20 +131,25 @@ void test1()
 
     auto order = std::make_shared<Engine::SelectOrder>("index", false);
 
-    if (!table.select(keyss, root, order, output, result))
+    if (!table.select(keyss, nullptr, order, output, result))
         std::cout << "error" << std::endl;
     std::cout << result << std::endl;
 
-    for (const auto &row : output)
-    {
-        for (const auto &val : row)
-        {
-            std::cout << val << '\t';
-        }
-        std::cout << std::endl;
-    }
+    // for (const auto &row : output)
+    // {
+    //     for (const auto &val : row)
+    //     {
+    //         std::cout << val << '\t';
+    //     }
+    //     std::cout << std::endl;
+    // }
 
     if (!table.update(update, root, result))
+        std::cout << "error" << std::endl;
+
+    std::cout << result << std::endl;
+
+    if (!table.delete_(root3, result))
         std::cout << "error" << std::endl;
 
     std::cout << result << std::endl;
@@ -151,20 +188,18 @@ void test1()
     vec1[1]->info.liter.liter_type = Engine::LT::LiterType::STR;
     vec1[1]->info.liter.liter_info.emplace<std::string>("李四");
 
-    order->key = "age";
-
-    if (!table.select(keyss, root2, order, output, result))
+    if (!table.select(keyss, nullptr, order, output, result))
         std::cout << "error" << std::endl;
     std::cout << result << std::endl;
 
-    for (const auto &row : output)
-    {
-        for (const auto &val : row)
-        {
-            std::cout << val << '\t';
-        }
-        std::cout << std::endl;
-    }
+    // for (const auto &row : output)
+    // {
+    //     for (const auto &val : row)
+    //     {
+    //         std::cout << val << '\t';
+    //     }
+    //     std::cout << std::endl;
+    // }
 }
 
 // void test2()
