@@ -150,12 +150,27 @@ namespace HydroSQL::Server::Engine
     class HYDROSQL_ENGINE_API Table
     {
     private:
+        using Data = std::variant<bool, int64_t, double, std::string>;
+
         struct ColAndIndex
         {
             const Column *col;
-            size_t index;
+            size_t key_index;
+            size_t col_index;
         };
-        
+
+        struct ColSelect
+        {
+            const Column *col;
+            size_t key_index;
+            size_t col_index;
+            bool selected;
+
+            ColSelect(const Column *col_ = nullptr, const size_t ki = 0, const size_t ci = 0, const bool s = false)
+                : col(col_), key_index(ki), col_index(ci), selected(s)
+            {}
+        };
+
         std::string name;
         std::vector<Column> columns;
 
@@ -168,7 +183,7 @@ namespace HydroSQL::Server::Engine
         std::filesystem::path data_path;
 
         static constexpr size_t DELETE_MARK_SIZE = sizeof(char);
-        static constexpr size_t MAX_BUFFER_SIZE = 1024 * 1024; // 1mb
+        static constexpr size_t MAX_BUFFER_SIZE = 4 * 1024; // 4kb
 
         size_t buffer_row_num;
 
@@ -190,6 +205,8 @@ namespace HydroSQL::Server::Engine
          */
         [[nodiscard]] int insert(const std::vector<std::string> &keys, const std::vector<std::vector<std::string>> &values, std::string &result);
 
+        [[nodiscard]] int insertV2(const std::vector<std::string> &keys, const std::vector<std::vector<std::shared_ptr<LT::LT>>> &values, std::string &result);
+
         /**
          * @brief select some rows in the table
          *
@@ -204,10 +221,99 @@ namespace HydroSQL::Server::Engine
 
         [[nodiscard]] int update(const std::vector<UpdateInfo> &info, const std::shared_ptr<LT::LT> requirements, std::string &result);
 
+        [[nodiscard]] int updateV2(const std::vector<std::string> &keys, const std::vector<std::shared_ptr<LT::LT>> &expr, const std::shared_ptr<LT::LT> requirements, std::string &result);
+
         [[nodiscard]] int delete_(const std::shared_ptr<LT::LT> requirements, std::string &result);
+
+        void test()
+        {
+            std::vector<std::string> keys = {"index", "name", "age"};
+            std::vector<std::vector<std::shared_ptr<LT::LT>>> value(1);
+            value[0].resize(3);
+            value[0][0] = std::make_shared<LT::LT>(LT::NodeType::CALCULATION);
+            value[0][0]->info.cal_type = LT::CalType::MULTIPLY;
+            value[0][0]->children.resize(2);
+            value[0][1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+            value[0][1]->info.liter.liter_type = LT::LiterType::STR;
+            value[0][1]->info.liter.liter_info.emplace<std::string>("张三");
+            value[0][2] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+            value[0][2]->info.liter.liter_type = LT::LiterType::INT;
+            value[0][2]->info.liter.liter_info.emplace<int64_t>(2);
+            auto &vec = value[0][0]->children;
+            vec[0] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+            vec[0]->info.liter.liter_type = LT::LiterType::INT;
+            vec[0]->info.liter.liter_info.emplace<int64_t>(2);
+            vec[1] = std::make_shared<LT::LT>(LT::NodeType::COL);
+            vec[1]->info.liter.liter_type = LT::LiterType::STR;
+            vec[1]->info.liter.liter_info.emplace<std::string>("age");
+            std::string result;
+            insertV2(keys, value, result);
+
+            std::cout << result << std::endl;
+
+            std::vector<std::string> k;
+            std::vector<std::vector<std::string>> output;
+            select(k, nullptr, nullptr, output, result);
+            for (const auto &row : output)
+            {
+                for (const auto &val : row)
+                {
+                    std::cout << val << '\t';
+                }
+                std::cout << std::endl;
+            }
+            std::cout << result << std::endl;
+
+            std::vector<std::string> update_key = {"age"};
+            auto requir = std::make_shared<LT::LT>(LT::NodeType::OPERATOR);
+            requir->info.op_type = LT::OpType::EQUAL;
+            requir->children.resize(2);
+            requir->children[0] = std::make_shared<LT::LT>(LT::NodeType::COL);
+            requir->children[0]->info.liter.liter_type = LT::LiterType::STR;
+            requir->children[0]->info.liter.liter_info.emplace<std::string>("name");
+            requir->children[1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+            requir->children[1]->info.liter.liter_type = LT::LiterType::STR;
+            requir->children[1]->info.liter.liter_info.emplace<std::string>("张三");
+            auto expr = std::make_shared<LT::LT>(LT::NodeType::CALCULATION);
+            expr->info.cal_type = LT::CalType::ADD;
+            expr->children.resize(2);
+            expr->children[0] = std::make_shared<LT::LT>(LT::NodeType::COL);
+            expr->children[0]->info.liter.liter_type = LT::LiterType::STR;
+            expr->children[0]->info.liter.liter_info.emplace<std::string>("age");
+            expr->children[1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+            expr->children[1]->info.liter.liter_type = LT::LiterType::INT;
+            expr->children[1]->info.liter.liter_info.emplace<int64_t>(10);
+            std::vector<std::shared_ptr<LT::LT>> expr_list = {expr};
+            updateV2(update_key, expr_list, requir, result);
+            std::cout << result << std::endl;
+            
+            select(k, nullptr, nullptr, output, result);
+            for (const auto &row : output)
+            {
+                for (const auto &val : row)
+                {
+                    std::cout << val << '\t';
+                }
+                std::cout << std::endl;
+            }
+            std::cout << result << std::endl;
+        }
+
 
     private:
         [[nodiscard]] static const bool dataTypeExamination(const DataType type, const std::string &str, const size_t varchar_length);
+        [[nodiscart]] const bool expressionTypeExamination(const Column &col, const std::shared_ptr<LT::LT> root) const;
+        [[nodiscart]] const LT::LiterType getLiterType(std::shared_ptr<LT::LT> node) const;
+        // void rowExpressionStr(std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColAndIndex> &column_map, std::vector<std::string> &result) const;
+        // const std::string expressionStr(size_t index, std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColAndIndex> &column_map, std::vector<std::optional<std::string>> &buffer, std::vector<bool> &lock) const;
+        void calRowExpr(const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &result) const;
+        const Data calExpr(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<std::optional<Data>> &buffer, std::vector<bool> &lock, const bool is_root) const;
+        const bool calEqual(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<std::optional<Data>> &buffer, std::vector<bool> &lock) const;
+        const bool calGreater(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<std::optional<Data>> &buffer, std::vector<bool> &lock) const;
+        void updateRowExpr(const std::vector<std::shared_ptr<LT::LT>> &row_expr, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &row_data) const;
+        const Data updateExpr(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &origine_row, std::vector<Data> &new_row, const bool is_root) const;
+        const bool updateEqual(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &original_row, std::vector<Data> &new_row) const;
+        const bool updateGreater(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &original_row, std::vector<Data> &new_row) const;
 
         [[nodiscard]] static const bool continuousNumExamination(const std::string &str, const size_t begin, const size_t length);
 
@@ -220,6 +326,7 @@ namespace HydroSQL::Server::Engine
         [[deprecated]] static void insertVal(std::ostream &os, const DataType type, const std::string &val, const size_t len = 1);
         // new version using iterator
         static void it_insertVal(std::vector<char>::iterator &it, const DataType type, const std::string &val, const size_t len = 1);
+        static void it_insertVal(std::vector<char>::iterator &it, const DataType type, const Data &val, const size_t len = 1);
 
         // [ABORT]
         [[deprecated]] static void readVal(std::istream &is, const Column &col, std::string &output);
@@ -235,8 +342,8 @@ namespace HydroSQL::Server::Engine
         static void dateNumToStr(const int32_t &num, std::string &str);
         static void timeStrToNum(const std::string &str, int32_t &num);
         static void timeNumToStr(const int32_t &num, std::string &str);
-        static void datetimeStrToNum(const std::string &str, int32_t &num);
-        static void datetimeNumToStr(const int32_t &num, std::string &str);
+        static void datetimeStrToNum(const std::string &str, int64_t &num);
+        static void datetimeNumToStr(const int64_t &num, std::string &str);
 
         void setRowInfo(LT::RowInfo &row_info, std::vector<char>::iterator &it) const;
     };

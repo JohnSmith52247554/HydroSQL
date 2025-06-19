@@ -85,9 +85,9 @@ namespace HydroSQL::Server::Engine
             FLOAT,
             BOOLEAN,
             STR,
-            // DATE,
-            // TIME,
-            // DATETIME
+            DATE,
+            TIME,
+            DATETIME
         };
 
         struct Literal
@@ -129,6 +129,9 @@ namespace HydroSQL::Server::Engine
         };
 
         using RowInfo = std::vector<ColInfo>;
+
+        const LiterType dataTypeToLiteralType(const DataType type);
+        
     } // namespace LT
     
 } // namespace HydroSQL::Server::Engine

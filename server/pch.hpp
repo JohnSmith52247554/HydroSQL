@@ -27,3 +27,4 @@
 #include <cassert>
 #include <type_traits>
 #include <variant>
+#include <optional>

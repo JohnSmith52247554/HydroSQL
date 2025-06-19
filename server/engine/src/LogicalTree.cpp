@@ -13,6 +13,37 @@
 
 namespace HydroSQL::Server::Engine::LT
 {
+    const LiterType dataTypeToLiteralType(const DataType type)
+    {
+        switch (type)
+        {
+        case DataType::INT:
+            [[fallthrough]];
+        case DataType::SMALLINT:
+            [[fallthrough]];
+        case DataType::BIGINT:
+            [[fallthrough]];
+        case DataType::CHAR:
+            return LiterType::INT;
+        case DataType::BOOLEAN:
+            return LiterType::BOOLEAN;
+        case DataType::FLOAT:
+            [[fallthrough]];
+        case DataType::DECIMAL:
+            return LiterType::FLOAT;
+        case DataType::VARCHAR:
+            return LiterType::STR;
+        case DataType::DATE:
+            return LiterType::DATE;
+        case DataType::TIME:
+            return LiterType::TIME;
+        case DataType::DATETIME:
+            return LiterType::DATETIME;
+        default:
+            return LiterType::null;
+        }
+    }
+    
     const int getOpParaNum(const OpType type)
     {
         switch (type)
@@ -265,6 +296,8 @@ namespace HydroSQL::Server::Engine::LT
             return LiterType::null;
         }
     }
+
+    
 
     const bool opEqual(std::shared_ptr<LT> root, RowInfo &info)
     {

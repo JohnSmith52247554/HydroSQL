@@ -70,8 +70,8 @@ namespace HydroSQL::Server::Engine
             return "NOT_NUL";
         case ConstraintType::UNIQUE:
             return "UNIQUE";
-        case ConstraintType::CHECK:
-            return "CHECK";
+        // case ConstraintType::CHECK:
+        //     return "CHECK";
         case ConstraintType::DEFAULT:
             return "DEFAULT";
         default:
@@ -226,14 +226,15 @@ namespace HydroSQL::Server::Engine
         
         {
             std::vector<bool> key_flag(keys.size(), false);
-            for (const auto &col : this->columns)
+            for (size_t j = 0; j < this->columns.size(); j++)
             {
+                const auto &col = this->columns[j];
                 bool exist = false;
                 for (size_t i = 0; i < keys.size(); i++)
                 {
                     if (col.name == keys[i])
                     {
-                        column_map.emplace(keys[i], ColAndIndex{&col, i});
+                        column_map.emplace(keys[i], ColAndIndex{&col, i, j});
                         exist = true;
                         key_flag[i] = true;
                         break;
@@ -327,6 +328,16 @@ namespace HydroSQL::Server::Engine
             {
                 result = "[FAILED] Column " + col->name + " is not null and doesn't have a default value.";
                 return 0;
+            }
+        }
+
+        // expression evaluation
+        std::vector<std::vector<std::string>> val_str(values.size(), std::vector<std::string>(this->columns.size()));
+        for (const auto &row : val_str) 
+        {
+            for (size_t i = 0; i < this->columns.size(); i++)
+            {
+
             }
         }
 
@@ -472,7 +483,7 @@ namespace HydroSQL::Server::Engine
                     const auto it_ = column_map.find(col.name);
                     if (it_ != column_map.end())
                     {
-                        const auto &val = row[it_->second.index];
+                        const auto &val = row[it_->second.key_index];
                         it_insertVal(it, col.data_type, val, col.length);
                     }
                     else
@@ -486,16 +497,16 @@ namespace HydroSQL::Server::Engine
                         }
                         if (default_con == nullptr)
                         {
-                            if (col.data_type == DataType::VARCHAR)
-                                it_insertVal(it, col.data_type, "");
-                            else if (col.data_type == DataType::DATE)
-                                it_insertVal(it, col.data_type, "0000-00-00");
-                            else if (col.data_type == DataType::TIME)
-                                it_insertVal(it, col.data_type, "00:00:00");
-                            else if (col.data_type == DataType::DATETIME)
-                                it_insertVal(it, col.data_type, "0000-00-00-00:00:00");
-                            else
-                                it_insertVal(it, col.data_type, "0");
+                            // if (col.data_type == DataType::VARCHAR)
+                            //     it_insertVal(it, col.data_type, "");
+                            // else if (col.data_type == DataType::DATE)
+                            //     it_insertVal(it, col.data_type, "0000-00-00");
+                            // else if (col.data_type == DataType::TIME)
+                            //     it_insertVal(it, col.data_type, "00:00:00");
+                            // else if (col.data_type == DataType::DATETIME)
+                            //     it_insertVal(it, col.data_type, "0000-00-00-00:00:00");
+                            // else
+                            //     it_insertVal(it, col.data_type, "0");
                         }
                         else
                         {
@@ -510,6 +521,180 @@ namespace HydroSQL::Server::Engine
         }
 
         //*********************************************/
+
+        ofile.close();
+
+        result = "[SUCCESS] " + std::to_string(values.size()) + " row(s) inserted.";
+
+        return 1;
+    }
+
+    int Table::insertV2(const std::vector<std::string> &keys, const std::vector<std::vector<std::shared_ptr<LT::LT>>> &values, std::string &result)
+    {
+        // legality examination
+        // The amount of values each row should be the same as the keys.
+        for (size_t i = 0; i < values.size(); i++)
+        {
+            if (values[i].size() != keys.size())
+            {
+                result = "[FAILED] The amount of the values in row " + std::to_string(i) + " is " + std::to_string(values[i].size()) + ", but the amount of the keys is " + std::to_string(keys.size()) + ".";
+                return 0;
+            }
+        }
+
+        // The keys should exist.
+        std::map<const std::string, const ColSelect> column_map;
+        
+        {
+            std::vector<const Column *> uninvolved_column;
+            std::vector<bool> key_flag(keys.size(), false);
+            for (size_t j = 0; j < this->columns.size(); j++)
+            {
+                const auto &col = this->columns[j];
+                bool exist = false;
+                for (size_t i = 0; i < keys.size(); i++)
+                {
+                    if (col.name == keys[i])
+                    {
+                        column_map.emplace(keys[i], ColSelect{ &col, i, j, true});
+                        exist = true;
+                        key_flag[i] = true;
+                        break;
+                    }
+                }
+                if (!exist)
+                {
+                    uninvolved_column.push_back(&col);
+                    column_map.emplace(col.name, ColSelect{&col, 0, j, false});
+                }
+            }
+            for (size_t i = 0; i < key_flag.size(); i++)
+            {
+                if (!key_flag[i])
+                {
+                    result = "[FAILED] The key " + keys[i] + " doesn't exist in the table.";
+                    return 0;
+                }
+            }
+
+            // the uninvolved column with constraint NOT_NULL should have default value
+            for (const auto &col : uninvolved_column)
+            {
+                bool has_default = false;
+                bool has_not_null = false;
+                for (const auto &con : col->constraints)
+                {
+                    if (con.type == ConstraintType::DEFAULT)
+                    {
+                        has_default = true;
+                        break;
+                    }
+                    if (con.type == ConstraintType::NOT_NULL)
+                    {
+                        has_not_null = true;
+                        break;
+                    }
+                }
+                if (!has_default && has_not_null)
+                {
+                    result = "[FAILED] Column " + col->name + " is not null and doesn't have a default value.";
+                    return 0;
+                }
+            }
+        }
+
+        // The type of the values should match the type of the keys.
+        for (size_t i = 0; i < keys.size(); i++)
+        {
+            for (size_t j = 0; j < values.size(); j++)
+            {
+                auto &col = column_map[keys[i]].col;
+                if (col == nullptr)
+                {
+                    result = "[ERROR] nullptr";
+                    return 0;
+                }
+                if (col->data_type != DataType::VARCHAR)
+                {
+                    if (!expressionTypeExamination(*col, values[j][i]))
+                    {
+                        result = "[FAILED] The type of column " + keys[i] + " is " + dataTypeStr(col->data_type) + ". Row " + std::to_string(j) + " doesn't match that type.";
+                        return 0;
+                    }
+                }
+                else
+                {
+                    if (!expressionTypeExamination(*col, values[j][i]))
+                    {
+                        result = "[FAILED] The type of column " + keys[i] + " is " + dataTypeStr(col->data_type) + ", whose maximum length is " + std::to_string(col->length) + ". Row " + std::to_string(j) + " doesn't match that type.";
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        // Calculate the value of the expression and generate the complete row.
+        // using Data = std::variant<bool, int8_t, int16_t, int32_t, int64_t, float, double, std::string>;
+        std::vector<std::vector<Data>> insert_data(values.size(), std::vector<Data>(this->columns.size()));
+
+        for (size_t row_index = 0; row_index < values.size(); row_index++)
+        {
+            auto &row_expr = values[row_index];
+            auto &row_data = insert_data[row_index];
+            std::vector<std::shared_ptr<LT::LT>> full_expr(this->columns.size());
+            for (size_t i = 0; i < this->columns.size(); i++)
+            {
+                auto &it = column_map.find(this->columns[i].name)->second;
+                if (it.selected)
+                    full_expr[i] = row_expr[it.key_index];
+                else
+                    full_expr[i] = nullptr;
+            }
+            calRowExpr(full_expr, column_map, row_data);
+        }
+
+        // unique examine
+
+
+        // insert
+        std::ofstream ofile(data_path, std::ios::binary | std::ios::app);
+        if (!ofile.is_open())
+        {
+            result = "[ERROR] Can not open data file.";
+            return 0;
+        }
+
+        size_t remained_rows = values.size();
+
+        std::vector<char> buffer;
+
+        while (remained_rows > 0)
+        {
+            buffer.resize(std::min(this->buffer_row_num, remained_rows) * row_length);
+            auto it = buffer.begin();
+
+            for (size_t i = buffer.size() / this->row_length; i > 0; i--)
+            {
+                auto &row = insert_data[values.size() - remained_rows];
+
+                // delete mark
+                for (size_t i = 0; i < this->DELETE_MARK_SIZE; i++)
+                {
+                    *it++ = 0;
+                }
+
+                for (size_t col_index = 0; col_index < this->columns.size(); col_index++)
+                {
+                    auto &col = this->columns[col_index];
+                    auto &data = row[col_index];
+
+                    it_insertVal(it, col.data_type, data, col.length);
+                }
+
+                remained_rows--;
+            }
+            ofile.write(reinterpret_cast<const char *>(buffer.data()), sizeof(char) * buffer.size());
+        }
 
         ofile.close();
 
@@ -540,7 +725,7 @@ namespace HydroSQL::Server::Engine
             for (size_t i = 0; i < col_vec.size(); i++)
             {
                 col_vec[i].selected = true;
-                col_vec[i].cai.index = i;
+                col_vec[i].cai.key_index = i;
             }
         }
         else
@@ -553,7 +738,7 @@ namespace HydroSQL::Server::Engine
                     if (keys[i] == col.cai.col->name)
                     {
                         col.selected = true;
-                        col.cai.index = i;
+                        col.cai.key_index = i;
                         exist = true;
                         break;
                     }
@@ -579,7 +764,7 @@ namespace HydroSQL::Server::Engine
                 result = "[FAILED] The result is order by the column " + order->key + ", but that column doesn't exist / haven't been selected.";
                 return 0;
             }
-            order_index = order_it->cai.index;
+            order_index = order_it->cai.key_index;
             order_col_type = dataTypeToLiteralType(order_it->cai.col->data_type);
         }
 
@@ -679,7 +864,7 @@ namespace HydroSQL::Server::Engine
                         }
                         else
                         {
-                            it_readVal(it, *col.cai.col, list_back[col.cai.index]);
+                            it_readVal(it, *col.cai.col, list_back[col.cai.key_index]);
                         }
                     }
                 }
@@ -1031,6 +1216,175 @@ namespace HydroSQL::Server::Engine
         return 1;
     }
 
+    int Table::updateV2(const std::vector<std::string> &keys, const std::vector<std::shared_ptr<LT::LT>> &expr, const std::shared_ptr<LT::LT> requirements, std::string &result)
+    {
+        // legality examination
+        // The size of expression each row should be the same as the size of keys.
+        
+        if (expr.size() != keys.size())
+        {
+            result = "[FAILED] The amount of the values is " + std::to_string(expr.size()) + ", but the amount of the keys is " + std::to_string(keys.size()) + ".";
+            return 0;
+        }
+        
+
+        // The keys should exist.
+        std::map<const std::string, const ColSelect> column_map;
+        {
+            std::vector<bool> key_flag(keys.size(), false);
+            for (size_t j = 0; j < this->columns.size(); j++)
+            {
+                const auto &col = this->columns[j];
+                bool exist = false;
+                for (size_t i = 0; i < keys.size(); i++)
+                {
+                    if (col.name == keys[i])
+                    {
+                        column_map.emplace(keys[i], ColSelect{&col, i, j, true});
+                        exist = true;
+                        key_flag[i] = true;
+                        break;
+                    }
+                }
+                if (!exist)
+                {
+                    column_map.emplace(col.name, ColSelect{&col, 0, j, false});
+                }
+            }
+            for (size_t i = 0; i < key_flag.size(); i++)
+            {
+                if (!key_flag[i])
+                {
+                    result = "[FAILED] The key " + keys[i] + " doesn't exist in the table.";
+                    return 0;
+                }
+            }
+
+        }
+
+        // The type of the values should match the type of the keys.
+        for (size_t i = 0; i < keys.size(); i++)
+        {
+            
+            auto &col = column_map[keys[i]].col;
+            if (col == nullptr)
+            {
+                result = "[ERROR] nullptr";
+                return 0;
+            }
+            if (col->data_type != DataType::VARCHAR)
+            {
+                if (!expressionTypeExamination(*col, expr[i]))
+                {
+                    result = "[FAILED] The type of column " + keys[i] + " is " + dataTypeStr(col->data_type) + ". The value doesn't match that type.";
+                    return 0;
+                }
+            }
+            else
+            {
+                if (!expressionTypeExamination(*col, expr[i]))
+                {
+                    result = "[FAILED] The type of column " + keys[i] + " is " + dataTypeStr(col->data_type) + ", whose maximum length is " + std::to_string(col->length) + ". The value doesn't match that type.";
+                    return 0;
+                }
+            }
+            
+        }
+
+        // TODO: unique examine
+
+        // update
+        std::fstream file(data_path, std::ios::binary | std::ios::in | std::ios::out);
+        if (!file.is_open())
+        {
+            result = "[FAILED] Can not open the data file.";
+            return 0;
+        }
+
+        file.seekp(0, std::ios::end);
+        auto end_of_file = file.tellp();
+
+        file.seekp(header_length, std::ios::beg);
+        size_t changed_num = 0;
+
+        std::vector<char> buffer;
+        while (end_of_file - file.tellp() >= this->row_length)
+        {
+            buffer.resize(std::min(this->buffer_row_num * this->row_length, static_cast<size_t>(end_of_file - file.tellp())));
+
+            file.read(reinterpret_cast<char *>(buffer.data()), sizeof(char) * buffer.size());
+
+            auto it = buffer.begin();
+
+            bool update = false;
+
+            for (size_t row_counter = buffer.size() / this->row_length; row_counter > 0; row_counter--)
+            {
+                // check delete sign
+                if (*it != 0)
+                {
+                    it += this->row_length;
+                    continue;
+                }
+                else
+                {
+                    it += 1;
+                }
+
+                // requirements check
+                using ColInfo = LT::ColInfo;
+                using RowInfo = LT::RowInfo;
+                std::unique_ptr<RowInfo> row_info;
+                if (requirements != nullptr)
+                {
+                    row_info = std::make_unique<RowInfo>();
+                    setRowInfo(*row_info, it);
+
+                    if (!LT::boolOp(requirements, *row_info))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        it -= this->row_length - static_cast<std::streampos>(this->DELETE_MARK_SIZE);
+                    }
+                }
+
+                // get data
+                std::vector<Data> row_data(this->columns.size());
+                for (size_t i = 0; i < this->columns.size(); i++)
+                {
+                    row_data[i] = row_info->at(i).liter.liter_info;
+                }
+                // update row
+                // Calculate the value of the expression and generate the complete row.
+                updateRowExpr(expr, column_map, row_data);
+                
+                // rewrite row
+                for (size_t i = 0; i < this->columns.size(); i++)
+                {
+                    auto &col = this->columns[i];
+                    this->it_insertVal(it, col.data_type, row_data[i], col.length);
+                }
+
+                update = true;
+                changed_num++;
+            }
+
+            if (update)
+            {
+                file.seekp(-sizeof(char) * buffer.size(), std::ios::cur);
+                file.write(reinterpret_cast<const char *>(buffer.data()), sizeof(char) * buffer.size());
+            }
+        }
+
+        file.close();
+
+        result = "[SUCCESS] " + std::to_string(changed_num) + " row(s) updated.";
+
+        return 1;
+    }
+
     int Table::delete_(const std::shared_ptr<LT::LT> requirements, std::string &result)
     {
         if (requirements == nullptr)
@@ -1223,6 +1577,1079 @@ namespace HydroSQL::Server::Engine
         }
 
         return true;
+    }
+
+    const bool Table::expressionTypeExamination(const Column &col, const std::shared_ptr<LT::LT> root) const
+    {
+        try
+        {
+            switch (getLiterType(root))
+            {
+            case LT::LiterType::INT:
+                return col.data_type == DataType::CHAR ||
+                       col.data_type == DataType::INT ||
+                       col.data_type == DataType::SMALLINT ||
+                       col.data_type == DataType::BIGINT ||
+                       col.data_type == DataType::FLOAT ||
+                       col.data_type == DataType::DECIMAL;
+            case LT::LiterType::FLOAT:
+                return col.data_type == DataType::FLOAT ||
+                       col.data_type == DataType::DECIMAL;
+            case LT::LiterType::STR:
+                return col.data_type == DataType::VARCHAR &&
+                       col.length >= std::get<std::string>(root->info.liter.liter_info).size();
+            case LT::LiterType::DATE:
+                {
+                    auto &str = std::get<std::string>(root->info.liter.liter_info);
+                    if (str.size() != 10)
+                        return false;
+                    if (!continuousNumExamination(str, 0, 4))
+                        return false;
+                    if (str[4] != '-')
+                        return false;
+                    if (!continuousNumExamination(str, 5, 2))
+                        return false;
+                    if (str[7] != '-')
+                        return false;
+                    if (!continuousNumExamination(str, 8, 2))
+                        return false;
+                    return col.data_type == DataType::DATE;
+                }
+            case LT::LiterType::TIME:
+                {
+                    auto &str = std::get<std::string>(root->info.liter.liter_info);
+                    if (str.size() != 8)
+                        return false;
+                    if (!continuousNumExamination(str, 0, 2))
+                        return false;
+                    if (str[2] != ':')
+                        return false;
+                    if (!continuousNumExamination(str, 3, 2))
+                        return false;
+                    if (str[5] != ':')
+                        return false;
+                    if (!continuousNumExamination(str, 6, 2))
+                        return false;
+                    return col.data_type == DataType::TIME;
+                }
+            case LT::LiterType::DATETIME:
+                {
+                    auto &str = std::get<std::string>(root->info.liter.liter_info);
+                    if (str.size() != 19)
+                        return false;
+                    if (!continuousNumExamination(str, 0, 4))
+                        return false;
+                    if (str[4] != '-')
+                        return false;
+                    if (!continuousNumExamination(str, 5, 2))
+                        return false;
+                    if (str[7] != '-')
+                        return false;
+                    if (!continuousNumExamination(str, 8, 2))
+                        return false;
+                    if (str[10] != '-')
+                        return false;
+                    if (!continuousNumExamination(str, 11, 2))
+                        return false;
+                    if (str[13] != ':')
+                        return false;
+                    if (!continuousNumExamination(str, 14, 2))
+                        return false;
+                    if (str[16] != ':')
+                        return false;
+                    if (!continuousNumExamination(str, 17, 2))
+                        return false;
+                    return col.data_type == DataType::DATETIME;
+                }
+            default:
+                return false;
+            }
+        }
+        catch(...)
+        {
+            return false;
+        }
+    }
+
+    const LT::LiterType Table::getLiterType(std::shared_ptr<LT::LT> node) const
+    {
+        switch (node->type)
+        {
+        case LT::NodeType::OPERATOR:
+            return LT::LiterType::BOOLEAN;
+        case LT::NodeType::CALCULATION:
+        {
+            assert(node->children.size() == 2);
+            assert(getLiterType(node->children[0]) != LT::LiterType::STR && getLiterType(node->children[1]) != LT::LiterType::STR);
+            assert(getLiterType(node->children[0]) != LT::LiterType::DATE && getLiterType(node->children[1]) != LT::LiterType::DATE);
+            assert(getLiterType(node->children[0]) != LT::LiterType::TIME && getLiterType(node->children[1]) != LT::LiterType::TIME);
+            assert(getLiterType(node->children[0]) != LT::LiterType::DATETIME && getLiterType(node->children[1]) != LT::LiterType::DATETIME);
+            if (getLiterType(node->children[0]) == LT::LiterType::FLOAT || getLiterType(node->children[1]) == LT::LiterType::FLOAT)
+                return LT::LiterType::FLOAT;
+            else
+                return LT::LiterType::INT;
+        }
+        case LT::NodeType::LITERAL:
+            assert(node->children.size() == 0);
+            try
+            {
+                switch (node->info.liter.liter_type)
+                {
+                case LT::LiterType::INT:
+                    std::get<int64_t>(node->info.liter.liter_info);
+                    break;
+                case LT::LiterType::FLOAT:
+                    std::get<double>(node->info.liter.liter_info);
+                    break;
+                case LT::LiterType::BOOLEAN:
+                    std::get<bool>(node->info.liter.liter_info);
+                case LT::LiterType::STR:
+                    [[fallthrough]];
+                case LT::LiterType::DATE:
+                    [[fallthrough]];
+                case LT::LiterType::TIME:
+                    [[fallthrough]];
+                case LT::LiterType::DATETIME:
+                    std::get<std::string>(node->info.liter.liter_info);
+                default:
+                    break;
+                }
+            }
+            catch(...)
+            {
+                return LT::LiterType::null;
+            }
+            
+            return node->info.liter.liter_type;
+        case LT::NodeType::COL:
+        {
+            auto col = std::find_if(this->columns.begin(), this->columns.end(), [&](const Column &c)
+                                    { return c.name == std::get<std::string>(node->info.liter.liter_info); });
+            if (col == this->columns.end())
+            {
+                return LT::LiterType::null;
+            }
+            else
+            {
+                return dataTypeToLiteralType(col->data_type);
+            }
+        }
+        default:
+            return LT::LiterType::null;
+        }
+    }
+
+    // void Table::rowExpressionStr(std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColAndIndex> &column_map, std::vector<std::string> &result) const
+    // {
+    //     std::vector<std::optional<std::string>> buffer(this->columns.size());
+    //     std::vector<bool> lock(this->columns.size());
+    //     for (size_t index = 0; index < this->columns.size(); index++)
+    //     {
+    //         if (!buffer[index].has_value())
+    //         {
+
+    //             expressionStr(index, row, column_map, buffer, lock);
+    //         }
+    //     }
+
+    //     result.resize(buffer.size());
+    //     for (size_t i = 0; i < result.size(); i++)
+    //     {
+    //         result[i] = buffer[i].value();
+    //     }
+    // }
+
+    // const std::string Table::expressionStr(size_t index, std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColAndIndex> &column_map, std::vector<std::optional<std::string>> &buffer, std::vector<bool> &lock) const
+    // {
+    //     if (buffer[index].has_value())
+    //         return buffer[index].value();
+    //     if (lock[index])
+    //     {
+    //         throw std::runtime_error("Circular dependence.");
+    //     }
+    //     lock[index] = true;
+
+    //     auto it = column_map.find(this->columns[index].name);
+    //     auto &str = buffer[index];
+        
+    //     if (it != column_map.end())
+    //     {
+    //         auto &val = row[it->second.index];
+    //         switch(val->type)
+    //         {
+    //             case LT::NodeType::LITERAL:
+    //                 switch (val->info.liter.liter_type)
+    //                 {
+    //                 case LT::LiterType::INT:
+    //                     str = std::to_string(std::get<int64_t>(val->info.liter.liter_info));
+    //                     break;
+    //                 case LT::LiterType::FLOAT:
+    //                     str = std::to_string(std::get<double>(val->info.liter.liter_info));
+    //                     break;
+    //                 case LT::LiterType::BOOLEAN:
+    //                     str = std::get<bool>(val->info.liter.liter_info) ? "true" : "false";
+    //                     break;
+    //                 case LT::LiterType::STR:
+    //                     [[fallthrough]];
+    //                 case LT::LiterType::DATE:
+    //                     [[fallthrough]];
+    //                 case LT::LiterType::TIME:
+    //                     [[fallthrough]];
+    //                 case LT::LiterType::DATETIME:
+    //                     str = std::get<std::string>(val->info.liter.liter_info);
+    //                     break;
+    //                 default:
+    //                     str = "";
+    //                     break;
+    //                 }
+    //                 break;
+    //             case LT::NodeType::OPERATOR:
+    //                 {
+    //                     bool result = false;
+    //                     switch (val->info.op_type)
+    //                     {
+    //                     case LT::OpType::EQUAL:
+                            
+    //                         break;
+                        
+    //                     default:
+    //                         break;
+    //                     }
+    //                 }
+    //                 break;
+    //             case LT::NodeType::CALCULATION:
+    //                 break;
+    //             case LT::NodeType::COL:
+
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         // fill with default value;
+    //         auto &constraints = this->columns[index].constraints;
+    //         auto default_con = std::find_if(constraints.begin(), constraints.end(), [&](Constraint &c)
+    //                                         { c.type == ConstraintType::DEFAULT; });
+    //         if (default_con != constraints.end())
+    //         {
+    //             str = default_con->details;
+    //         }
+    //         else
+    //         {
+    //             switch (dataTypeToLiteralType(this->columns[index].data_type))
+    //             {
+    //                 case LT::LiterType::INT:
+    //                     str = "0";
+    //                     break;
+    //                 case LT::LiterType::FLOAT:
+    //                     str = "0.0";
+    //                     break;
+    //                 case LT::LiterType::STR:
+    //                     str = "";
+    //                     break;
+    //                 case LT::LiterType::DATE:
+    //                     str = "0000-00-00";
+    //                     break;
+    //                 case LT::LiterType::TIME:
+    //                     str = "00:00:00";
+    //                     break;
+    //                 case LT::LiterType::DATETIME:
+    //                     str = "0000-00-00-00:00:00";
+    //                     break;
+    //                 default:
+    //                     str = "";
+    //                     break;
+    //             }
+    //         }
+    //     }
+
+    //     lock[index] = false;
+    //     return str.value();
+    // }
+
+    [[nodiscart]] void Table::calRowExpr(const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &result) const
+    {
+        std::vector<std::optional<Data>> buffer(this->columns.size());
+        std::vector<bool> lock(this->columns.size(), false);
+
+        for (size_t col_index = 0; col_index < this->columns.size(); col_index++)
+        {
+            if (!buffer[col_index].has_value())
+            {
+                calExpr(col_index, row[col_index], row, column_map, buffer, lock, true);
+            }
+        }
+
+        result.resize(this->columns.size());
+        for (size_t i = 0; i < this->columns.size(); i++)
+        {
+            result[i] = buffer[i].value(); 
+        }
+    }
+
+    void Table::updateRowExpr(const std::vector<std::shared_ptr<LT::LT>> &row_expr, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &row_data) const
+    {
+        std::vector<Data> new_row(this->columns.size());
+        for (size_t col_index = 0; col_index < this->columns.size(); col_index++)
+        {
+            auto it = column_map.find(this->columns[col_index].name)->second;
+            if (it.selected)
+            {
+                updateExpr(col_index, row_expr[it.key_index], row_expr, column_map, row_data, new_row, true);
+            }
+            else
+            {
+                new_row[col_index] = row_data[col_index];
+            }
+        }
+
+        row_data = std::move(new_row);
+    }
+
+    const Table::Data Table::calExpr(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<std::optional<Data>> &buffer, std::vector<bool> &lock, const bool is_root) const
+    {
+        assert(buffer.size() == this->columns.size());
+        assert(lock.size() == this->columns.size());
+        assert(col_index < this->columns.size());
+
+        if (is_root && buffer[col_index].has_value())
+            return buffer[col_index].value();
+
+        Data data;
+        if (node == nullptr)
+        {
+            // fill with default value
+            auto &constraints = this->columns[col_index].constraints;
+            auto default_con = std::find_if(constraints.begin(), constraints.end(), [&](const Constraint &c)
+                                           { return c.type == ConstraintType::DEFAULT; });
+            if (default_con != constraints.end())
+            {
+                auto &detail = default_con->details;
+                switch (dataTypeToLiteralType(this->columns[col_index].data_type))
+                {
+                case LT::LiterType::INT:
+                    data.emplace<int64_t>(std::stoll(detail));
+                    break;
+                case LT::LiterType::FLOAT:
+                    data.emplace<double>(std::stod(detail));
+                    break;
+                case LT::LiterType::STR:
+                    data.emplace<std::string>(detail);
+                    break;
+                case LT::LiterType::DATE:
+                    {
+                        int32_t num;
+                        dateStrToNum(detail, num);
+                        data.emplace<int64_t>(num);
+                    }
+                    break;
+                case LT::LiterType::TIME:
+                    {
+                        int32_t num;
+                        timeStrToNum(detail, num);
+                        data.emplace<int64_t>(num);
+                    }
+                    break;
+                case LT::LiterType::DATETIME:
+                    {
+                        int64_t num;
+                        datetimeStrToNum(detail, num);
+                        data.emplace<int64_t>(num);
+                    }
+                break;
+                default:
+                    break;
+                }
+            }
+            else
+            {
+                switch (dataTypeToLiteralType(this->columns[col_index].data_type))
+                {
+                    case LT::LiterType::INT:
+                        data.emplace<int64_t>(0);
+                        break;
+                    case LT::LiterType::FLOAT:
+                        data.emplace<double>(0.0);
+                        break;
+                    case LT::LiterType::STR:
+                        data.emplace<std::string>("");
+                        break;
+                    case LT::LiterType::DATE:
+                        [[fallthrough]];
+                    case LT::LiterType::TIME:
+                        [[fallthrough]];
+                    case LT::LiterType::DATETIME:
+                        data.emplace<int64_t>(0);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        else
+        {
+            switch (node->type)
+            {
+            case LT::NodeType::LITERAL:
+                {
+                    switch (node->info.liter.liter_type)
+                    {
+                    case LT::LiterType::INT:
+                        {
+                            data.emplace<int64_t>(std::get<int64_t>(node->info.liter.liter_info));
+                        }
+                        break;
+                    case LT::LiterType::BOOLEAN:
+                        {
+                            data.emplace<bool>(std::get<bool>(node->info.liter.liter_info));
+                        }
+                        break;
+                    case LT::LiterType::FLOAT:
+                        {
+                            data.emplace<double>(std::get<double>(node->info.liter.liter_info));
+                        }
+                        break;
+                    case LT::LiterType::STR:
+                        {
+                            data.emplace<std::string>(std::get<std::string>(node->info.liter.liter_info));
+                        }
+                        break;
+                    case LT::LiterType::DATE:
+                        {
+                            int32_t num;
+                            dateStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                            data.emplace<int64_t>(num);
+                        }
+                        break;
+                    case LT::LiterType::TIME:
+                        {
+                            int32_t num;
+                            timeStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                            data.emplace<int64_t>(num);
+                        }
+                        break;
+                    case LT::LiterType::DATETIME:
+                        {
+                            int64_t num;
+                            datetimeStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                            data.emplace<int64_t>(num);
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                break;
+            case LT::NodeType::OPERATOR:
+                {
+                    switch (node->info.op_type)
+                    {
+                    case LT::OpType::NOT:
+                        {
+                            assert(node->children.size() == 1);
+                            assert(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN);
+                            data.emplace<bool>(!std::get<bool>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)));
+                        }
+                        break;
+                    case LT::OpType::AND:
+                        {
+                            assert(node->children.size() == 2);
+                            assert(node->children.size() == 2);
+                            assert(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN
+                                && getLiterType(node->children[1]) == LT::LiterType::BOOLEAN);
+                            data.emplace<bool>(std::get<bool>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false))
+                                            && std::get<bool>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                        }
+                        break;
+                    case LT::OpType::OR:
+                        {
+                            assert(node->children.size() == 2);
+                            assert(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN
+                                && getLiterType(node->children[1]) == LT::LiterType::BOOLEAN);
+                            data.emplace<bool>(std::get<bool>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false))
+                                            || std::get<bool>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                        }
+                        break;
+                    case LT::OpType::EQUAL:
+                        {
+                            data.emplace<bool>(calEqual(col_index, node, row, column_map, buffer, lock));
+                        }
+                        break;
+                    case LT::OpType::NOT_EQUAL:
+                        {
+                            data.emplace<bool>(!calEqual(col_index, node, row, column_map, buffer, lock));
+                        }
+                        break;
+                    case LT::OpType::GREATER:
+                        {
+                            data.emplace<bool>(calGreater(col_index, node, row, column_map, buffer, lock));
+                        }
+                        break;
+                    case LT::OpType::LESS:
+                        {
+                            data.emplace<bool>(!(calGreater(col_index, node, row, column_map, buffer, lock) 
+                                            || calEqual(col_index, node, row, column_map, buffer, lock)));
+                        }
+                        break;
+                    case LT::OpType::GREATER_EQUAL:
+                        {
+                            data.emplace<bool>(calGreater(col_index, node, row, column_map, buffer, lock) 
+                                            || calEqual(col_index, node, row, column_map, buffer, lock));
+                        }
+                        break;
+                    case LT::OpType::LESS_EQUAL:
+                        {
+                            data.emplace<bool>(!calGreater(col_index, node, row, column_map, buffer, lock));
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                break;
+            case LT::NodeType::CALCULATION:
+                {
+                    assert(node->children.size() == 2);
+                    assert(getLiterType(node->children[0]) == LT::LiterType::INT
+                        || getLiterType(node->children[0]) == LT::LiterType::FLOAT);
+                    assert(getLiterType(node->children[1]) == LT::LiterType::INT
+                        || getLiterType(node->children[1]) == LT::LiterType::FLOAT);
+                    switch (node->info.cal_type)
+                    {
+                    case LT::CalType::ADD:
+                        {
+                            auto type0 = getLiterType(node->children[0]);
+                            auto type1 = getLiterType(node->children[1]);
+                            if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+                            {
+                                double a;
+                                double b;
+                                if (type0 == LT::LiterType::FLOAT)
+                                    a = std::get<double>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false));
+                                else
+                                    a = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)));
+                                if (type1 == LT::LiterType::FLOAT)
+                                    b = std::get<double>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+                                else
+                                    b = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                                data.emplace<double>(a + b);
+                            }
+                            else
+                            {
+                                data.emplace<int64_t>(
+                                    std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)) 
+                                + std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                            }
+                        }
+                        break;
+                    case LT::CalType::MINUS:
+                        {
+                            auto type0 = getLiterType(node->children[0]);
+                            auto type1 = getLiterType(node->children[1]);
+                            if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+                            {
+                                double a;
+                                double b;
+                                if (type0 == LT::LiterType::FLOAT)
+                                    a = std::get<double>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false));
+                                else
+                                    a = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)));
+                                if (type1 == LT::LiterType::FLOAT)
+                                    b = std::get<double>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+                                else
+                                    b = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                                data.emplace<double>(a - b);
+                            }
+                            else
+                            {
+                                data.emplace<int64_t>(
+                                    std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)) 
+                                - std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                            }
+                        }
+                        break;
+                    case LT::CalType::MULTIPLY:
+                        {
+                            auto type0 = getLiterType(node->children[0]);
+                            auto type1 = getLiterType(node->children[1]);
+                            if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+                            {
+                                double a;
+                                double b;
+                                if (type0 == LT::LiterType::FLOAT)
+                                    a = std::get<double>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false));
+                                else
+                                    a = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)));
+                                if (type1 == LT::LiterType::FLOAT)
+                                    b = std::get<double>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+                                else
+                                    b = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                                data.emplace<double>(a * b);
+                            }
+                            else
+                            {
+                                data.emplace<int64_t>(
+                                    std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)) 
+                                * std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                            }
+                        }
+                        break;
+                    case LT::CalType::DIVIDE:
+                        {
+                            auto type0 = getLiterType(node->children[0]);
+                            auto type1 = getLiterType(node->children[1]);
+                            if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+                            {
+                                double a;
+                                double b;
+                                if (type0 == LT::LiterType::FLOAT)
+                                    a = std::get<double>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false));
+                                else
+                                    a = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)));
+                                if (type1 == LT::LiterType::FLOAT)
+                                    b = std::get<double>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+                                else
+                                    b = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                                data.emplace<double>(a / b);
+                            }
+                            else
+                            {
+                                data.emplace<int64_t>(
+                                    std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)) 
+                                / std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)));
+                            }
+                        }
+                        break;
+                    case LT::CalType::MODULO:
+                        {
+                            assert(getLiterType(node->children[0]) == LT::LiterType::INT
+                                && getLiterType(node->children[1]) == LT::LiterType::INT);
+                            
+                            data.emplace<int64_t>(
+                                std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)) 
+                                % std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                break;
+            case LT::NodeType::COL:
+                {
+                    if (lock[col_index])
+                    {
+                        throw std::runtime_error("Circular dependence.");
+                    }
+                    lock[col_index] = true;
+
+                    // read / generate col
+                    auto new_col_index = column_map.find(std::get<std::string>((node->info.liter.liter_info)))->second.col_index;
+                    auto new_col_root = row[new_col_index];
+                    data =  calExpr(new_col_index, new_col_root, row, column_map, buffer, lock, true);
+
+                    lock[col_index] = false;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+
+        if (is_root)
+            buffer[col_index] = data;
+        return data;
+    }
+
+    const Table::Data Table::updateExpr(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &origine_row, std::vector<Data> &new_row, const bool is_root) const
+    {
+        assert(node != nullptr);
+        assert(origine_row.size() == this->columns.size());
+        assert(new_row.size() == this->columns.size());
+        assert(col_index < this->columns.size());
+
+        // if (is_root && buffer[col_index].has_value())
+        //     return buffer[col_index].value();
+
+        Data data;
+        switch (node->type)
+        {
+        case LT::NodeType::LITERAL:
+        {
+            switch (node->info.liter.liter_type)
+            {
+            case LT::LiterType::INT:
+            {
+                data.emplace<int64_t>(std::get<int64_t>(node->info.liter.liter_info));
+            }
+            break;
+            case LT::LiterType::BOOLEAN:
+            {
+                data.emplace<bool>(std::get<bool>(node->info.liter.liter_info));
+            }
+            break;
+            case LT::LiterType::FLOAT:
+            {
+                data.emplace<double>(std::get<double>(node->info.liter.liter_info));
+            }
+            break;
+            case LT::LiterType::STR:
+            {
+                data.emplace<std::string>(std::get<std::string>(node->info.liter.liter_info));
+            }
+            break;
+            case LT::LiterType::DATE:
+            {
+                int32_t num;
+                dateStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                data.emplace<int64_t>(num);
+            }
+            break;
+            case LT::LiterType::TIME:
+            {
+                int32_t num;
+                timeStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                data.emplace<int64_t>(num);
+            }
+            break;
+            case LT::LiterType::DATETIME:
+            {
+                int64_t num;
+                datetimeStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                data.emplace<int64_t>(num);
+            }
+            break;
+            default:
+                break;
+            }
+        }
+        break;
+        case LT::NodeType::OPERATOR:
+        {
+            switch (node->info.op_type)
+            {
+            case LT::OpType::NOT:
+            {
+                assert(node->children.size() == 1);
+                assert(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN);
+                data.emplace<bool>(!std::get<bool>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)));
+            }
+            break;
+            case LT::OpType::AND:
+            {
+                assert(node->children.size() == 2);
+                assert(node->children.size() == 2);
+                assert(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN && getLiterType(node->children[1]) == LT::LiterType::BOOLEAN);
+                data.emplace<bool>(std::get<bool>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)) && std::get<bool>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+            }
+            break;
+            case LT::OpType::OR:
+            {
+                assert(node->children.size() == 2);
+                assert(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN && getLiterType(node->children[1]) == LT::LiterType::BOOLEAN);
+                data.emplace<bool>(std::get<bool>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)) || std::get<bool>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+            }
+            break;
+            case LT::OpType::EQUAL:
+            {
+                data.emplace<bool>(updateEqual(col_index, node, row, column_map, origine_row, new_row));
+            }
+            break;
+            case LT::OpType::NOT_EQUAL:
+            {
+                data.emplace<bool>(!updateEqual(col_index, node, row, column_map, origine_row, new_row));
+            }
+            break;
+            case LT::OpType::GREATER:
+            {
+                data.emplace<bool>(updateGreater(col_index, node, row, column_map, origine_row, new_row));
+            }
+            break;
+            case LT::OpType::LESS:
+            {
+                data.emplace<bool>(!(updateGreater(col_index, node, row, column_map, origine_row, new_row) || updateEqual(col_index, node, row, column_map, origine_row, new_row)));
+            }
+            break;
+            case LT::OpType::GREATER_EQUAL:
+            {
+                data.emplace<bool>(updateGreater(col_index, node, row, column_map, origine_row, new_row) || updateEqual(col_index, node, row, column_map, origine_row, new_row));
+            }
+            break;
+            case LT::OpType::LESS_EQUAL:
+            {
+                data.emplace<bool>(!updateGreater(col_index, node, row, column_map, origine_row, new_row));
+            }
+            break;
+            default:
+                break;
+            }
+        }
+        break;
+        case LT::NodeType::CALCULATION:
+        {
+            assert(node->children.size() == 2);
+            assert(getLiterType(node->children[0]) == LT::LiterType::INT || getLiterType(node->children[0]) == LT::LiterType::FLOAT);
+            assert(getLiterType(node->children[1]) == LT::LiterType::INT || getLiterType(node->children[1]) == LT::LiterType::FLOAT);
+            switch (node->info.cal_type)
+            {
+            case LT::CalType::ADD:
+            {
+                auto type0 = getLiterType(node->children[0]);
+                auto type1 = getLiterType(node->children[1]);
+                if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+                {
+                    double a;
+                    double b;
+                    if (type0 == LT::LiterType::FLOAT)
+                        a = std::get<double>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false));
+                    else
+                        a = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)));
+                    if (type1 == LT::LiterType::FLOAT)
+                        b = std::get<double>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false));
+                    else
+                        b = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+                    data.emplace<double>(a + b);
+                }
+                else
+                {
+                    data.emplace<int64_t>(
+                        std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)) + std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+                }
+            }
+            break;
+            case LT::CalType::MINUS:
+            {
+                auto type0 = getLiterType(node->children[0]);
+                auto type1 = getLiterType(node->children[1]);
+                if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+                {
+                    double a;
+                    double b;
+                    if (type0 == LT::LiterType::FLOAT)
+                        a = std::get<double>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false));
+                    else
+                        a = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)));
+                    if (type1 == LT::LiterType::FLOAT)
+                        b = std::get<double>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false));
+                    else
+                        b = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+                    data.emplace<double>(a - b);
+                }
+                else
+                {
+                    data.emplace<int64_t>(
+                        std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)) - std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+                }
+            }
+            break;
+            case LT::CalType::MULTIPLY:
+            {
+                auto type0 = getLiterType(node->children[0]);
+                auto type1 = getLiterType(node->children[1]);
+                if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+                {
+                    double a;
+                    double b;
+                    if (type0 == LT::LiterType::FLOAT)
+                        a = std::get<double>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false));
+                    else
+                        a = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)));
+                    if (type1 == LT::LiterType::FLOAT)
+                        b = std::get<double>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false));
+                    else
+                        b = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+                    data.emplace<double>(a * b);
+                }
+                else
+                {
+                    data.emplace<int64_t>(
+                        std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)) * std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+                }
+            }
+            break;
+            case LT::CalType::DIVIDE:
+            {
+                auto type0 = getLiterType(node->children[0]);
+                auto type1 = getLiterType(node->children[1]);
+                if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+                {
+                    double a;
+                    double b;
+                    if (type0 == LT::LiterType::FLOAT)
+                        a = std::get<double>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false));
+                    else
+                        a = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)));
+                    if (type1 == LT::LiterType::FLOAT)
+                        b = std::get<double>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false));
+                    else
+                        b = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+                    data.emplace<double>(a / b);
+                }
+                else
+                {
+                    data.emplace<int64_t>(
+                        std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)) / std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+                }
+            }
+            break;
+            case LT::CalType::MODULO:
+            {
+                assert(getLiterType(node->children[0]) == LT::LiterType::INT && getLiterType(node->children[1]) == LT::LiterType::INT);
+
+                data.emplace<int64_t>(
+                    std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, origine_row, new_row, false)) % std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, origine_row, new_row, false)));
+            }
+            break;
+            default:
+                break;
+            }
+        }
+        break;
+        case LT::NodeType::COL:
+        {
+            // read col
+            auto new_col_index = column_map.find(std::get<std::string>((node->info.liter.liter_info)))->second.col_index;
+            data = origine_row[new_col_index];
+        }
+        break;
+        default:
+            break;
+        }
+
+        if (is_root)
+            new_row[col_index] = data;
+
+        return data;
+    }
+
+    const bool Table::calEqual(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<std::optional<Data>> &buffer, std::vector<bool> &lock) const
+    {
+        assert(node != nullptr);
+        assert(node->children.size() == 2);
+        assert(!((getLiterType(node->children[0]) == LT::LiterType::STR && getLiterType(node->children[1]) != LT::LiterType::STR) || (getLiterType(node->children[0]) != LT::LiterType::STR && getLiterType(node->children[1]) == LT::LiterType::STR)));
+        assert(!(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN || getLiterType(node->children[1]) == LT::LiterType::BOOLEAN));
+        const auto type0 = getLiterType(node->children[0]);
+        const auto type1 = getLiterType(node->children[1]);
+        if (type0 == LT::LiterType::STR && type1 == LT::LiterType::STR)
+        {
+            return std::get<std::string>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)) 
+                == std::get<std::string>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+        }
+        else if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+        {
+            double a, b;
+            if (type0 == LT::LiterType::FLOAT)
+                a = std::get<double>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false));
+            else
+                a = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)));
+            if (type1 == LT::LiterType::FLOAT)
+                b = std::get<double>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+            else
+                b = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+            return a == b;
+        }
+        else
+        {
+            return std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false))
+                == std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+        }
+    }
+
+    const bool Table::calGreater(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<std::optional<Data>> &buffer, std::vector<bool> &lock) const
+    {
+        assert(node != nullptr);
+        assert(node->children.size() == 2);
+        assert(!((getLiterType(node->children[0]) == LT::LiterType::STR && getLiterType(node->children[1]) != LT::LiterType::STR) || (getLiterType(node->children[0]) != LT::LiterType::STR && getLiterType(node->children[1]) == LT::LiterType::STR)));
+        assert(!(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN || getLiterType(node->children[1]) == LT::LiterType::BOOLEAN));
+        const auto type0 = getLiterType(node->children[0]);
+        const auto type1 = getLiterType(node->children[1]);
+        if (type0 == LT::LiterType::STR && type1 == LT::LiterType::STR)
+        {
+            return std::get<std::string>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)) 
+                > std::get<std::string>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+        }
+        else if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+        {
+            double a, b;
+            if (type0 == LT::LiterType::FLOAT)
+                a = std::get<double>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false));
+            else
+                a = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false)));
+            if (type1 == LT::LiterType::FLOAT)
+                b = std::get<double>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+            else
+                b = static_cast<double>(std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false)));
+            return a > b;
+        }
+        else
+        {
+            return std::get<int64_t>(calExpr(col_index, node->children[0], row, column_map, buffer, lock, false))
+                 > std::get<int64_t>(calExpr(col_index, node->children[1], row, column_map, buffer, lock, false));
+        }
+    }
+
+    const bool Table::updateEqual(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &original_row, std::vector<Data> &new_row) const
+    {
+        assert(node != nullptr);
+        assert(node->children.size() == 2);
+        assert(!((getLiterType(node->children[0]) == LT::LiterType::STR && getLiterType(node->children[1]) != LT::LiterType::STR) || (getLiterType(node->children[0]) != LT::LiterType::STR && getLiterType(node->children[1]) == LT::LiterType::STR)));
+        assert(!(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN || getLiterType(node->children[1]) == LT::LiterType::BOOLEAN));
+        const auto type0 = getLiterType(node->children[0]);
+        const auto type1 = getLiterType(node->children[1]);
+        if (type0 == LT::LiterType::STR && type1 == LT::LiterType::STR)
+        {
+            return std::get<std::string>(updateExpr(col_index, node->children[0], row, column_map, original_row, new_row, false)) == std::get<std::string>(updateExpr(col_index, node->children[1], row, column_map, original_row, new_row, false));
+        }
+        else if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+        {
+            double a, b;
+            if (type0 == LT::LiterType::FLOAT)
+                a = std::get<double>(updateExpr(col_index, node->children[0], row, column_map, original_row, new_row, false));
+            else
+                a = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, original_row, new_row, false)));
+            if (type1 == LT::LiterType::FLOAT)
+                b = std::get<double>(updateExpr(col_index, node->children[1], row, column_map, original_row, new_row, false));
+            else
+                b = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, original_row, new_row, false)));
+            return a == b;
+        }
+        else
+        {
+            return std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, original_row, new_row, false)) == std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, original_row, new_row, false));
+        }
+    }
+
+    const bool Table::updateGreater(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &original_row, std::vector<Data> &new_row) const
+    {
+        assert(node != nullptr);
+        assert(node->children.size() == 2);
+        assert(!((getLiterType(node->children[0]) == LT::LiterType::STR && getLiterType(node->children[1]) != LT::LiterType::STR) || (getLiterType(node->children[0]) != LT::LiterType::STR && getLiterType(node->children[1]) == LT::LiterType::STR)));
+        assert(!(getLiterType(node->children[0]) == LT::LiterType::BOOLEAN || getLiterType(node->children[1]) == LT::LiterType::BOOLEAN));
+        const auto type0 = getLiterType(node->children[0]);
+        const auto type1 = getLiterType(node->children[1]);
+        if (type0 == LT::LiterType::STR && type1 == LT::LiterType::STR)
+        {
+            return std::get<std::string>(updateExpr(col_index, node->children[0], row, column_map, original_row, new_row, false)) > std::get<std::string>(updateExpr(col_index, node->children[1], row, column_map, original_row, new_row, false));
+        }
+        else if (type0 == LT::LiterType::FLOAT || type1 == LT::LiterType::FLOAT)
+        {
+            double a, b;
+            if (type0 == LT::LiterType::FLOAT)
+                a = std::get<double>(updateExpr(col_index, node->children[0], row, column_map, original_row, new_row, false));
+            else
+                a = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, original_row, new_row, false)));
+            if (type1 == LT::LiterType::FLOAT)
+                b = std::get<double>(updateExpr(col_index, node->children[1], row, column_map, original_row, new_row, false));
+            else
+                b = static_cast<double>(std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, original_row, new_row, false)));
+            return a > b;
+        }
+        else
+        {
+            return std::get<int64_t>(updateExpr(col_index, node->children[0], row, column_map, original_row, new_row, false)) > std::get<int64_t>(updateExpr(col_index, node->children[1], row, column_map, original_row, new_row, false));
+        }
     }
 
     const bool Table::continuousNumExamination(const std::string &str, const size_t begin, const size_t length)
@@ -1485,20 +2912,113 @@ namespace HydroSQL::Server::Engine
         break;
         case DataType::DATETIME:
         {
-            int64_t buffer = 0;
             int64_t datetime = 0;
-            buffer = std::stoi(val.substr(17, 2));
-            datetime += buffer * 1e0;
-            buffer = std::stoi(val.substr(14, 2));
-            datetime += buffer * 1e2;
-            buffer = std::stoi(val.substr(11, 2));
-            datetime += buffer * 1e4;
-            buffer = std::stoi(val.substr(8, 2));
-            datetime += buffer * 1e6;
-            buffer = std::stoi(val.substr(5, 2));
-            datetime += buffer * 1e8;
-            buffer = std::stoi(val.substr(0, 4));
-            datetime += buffer * 1e10;
+            datetimeStrToNum(val, datetime);
+            for (size_t i = 0; i < sizeof(datetime) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((datetime >> i) & 0xFF);
+            }
+        }
+        break;
+        default:
+            break;
+        }
+    }
+
+    void Table::it_insertVal(std::vector<char>::iterator &it, const DataType type, const Data &val, const size_t len)
+    {
+        switch (type)
+        {
+        case DataType::INT:
+        {
+            int32_t num = static_cast<decltype(num)>(std::get<int64_t>(val));
+            for (size_t i = 0; i < sizeof(num) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((num >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::SMALLINT:
+        {
+            int16_t num = static_cast<decltype(num)>(std::get<int64_t>(val));
+            for (size_t i = 0; i < sizeof(num) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((num >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::BIGINT:
+        {
+            int64_t num = static_cast<decltype(num)>(std::get<int64_t>(val));
+            for (size_t i = 0; i < sizeof(num) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((num >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::FLOAT:
+        {
+            float num = static_cast<decltype(num)>(std::get<double>(val));
+            char *bytes = reinterpret_cast<char *>(&num);
+            for (size_t i = 0; i < sizeof(float); ++i)
+                *it++ = bytes[i];
+        }
+        break;
+        case DataType::DECIMAL:
+        {
+            // TODO: costumize the presision and scale of the decimal
+            double num = static_cast<decltype(num)>(std::get<double>(val));
+            char *bytes = reinterpret_cast<char *>(&num);
+            for (size_t i = 0; i < sizeof(double); ++i)
+                *it++ = bytes[i];
+        }
+        break;
+        case DataType::CHAR:
+        {
+            *it++ = static_cast<char>(std::get<int64_t>(val));
+        }
+        break;
+        case DataType::VARCHAR:
+        {
+            auto &str = std::get<std::string>(val);
+            for (size_t i = 0; i < len; i++)
+            {
+                if (i < str.size())
+                    *it++ = str[i];
+                else
+                    *it++ = '\0';
+            }
+        }
+        break;
+        case DataType::BOOLEAN:
+        {
+            if (std::get<bool>(val))
+                *it++ = 0xFF;
+            else
+                *it++ = 0x00;
+        }
+        break;
+        case DataType::DATE:
+        {
+            int32_t date = static_cast<int32_t>(std::get<int64_t>(val));
+            for (size_t i = 0; i < sizeof(date) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((date >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::TIME:
+        {
+            int32_t time = static_cast<int32_t>(std::get<int64_t>(val));
+            for (size_t i = 0; i < sizeof(time) * 8; i += 8)
+            {
+                *it++ = static_cast<char>((time >> i) & 0xFF);
+            }
+        }
+        break;
+        case DataType::DATETIME:
+        {
+            int64_t datetime = static_cast<int64_t>(std::get<int64_t>(val));
             for (size_t i = 0; i < sizeof(datetime) * 8; i += 8)
             {
                 *it++ = static_cast<char>((datetime >> i) & 0xFF);
@@ -1892,7 +3412,7 @@ namespace HydroSQL::Server::Engine
 
         str = wss.str();
     }
-    void Table::datetimeStrToNum(const std::string &str, int32_t &num)
+    void Table::datetimeStrToNum(const std::string &str, int64_t &num)
     {
         int64_t buffer = 0;
         num = 0;
@@ -1909,7 +3429,7 @@ namespace HydroSQL::Server::Engine
         buffer = std::stoi(str.substr(0, 4));
         num += buffer * 1e10;
     }
-    void Table::datetimeNumToStr(const int32_t &num, std::string &str)
+    void Table::datetimeNumToStr(const int64_t &num, std::string &str)
     {
         int64_t datePart = num / 1000000;
         int32_t year = datePart / 10000;

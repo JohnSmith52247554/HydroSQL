@@ -251,6 +251,20 @@ void test1()
 //     std::cout << boolOp(root) << std::endl;
 // }
 
+void test4()
+{
+    std::vector<Engine::Column> cols = {
+        Engine::Column{"index", Engine::DataType::INT},
+        Engine::Column{"name", Engine::DataType::VARCHAR, 10},
+        Engine::Column{"age", Engine::DataType::SMALLINT},
+    };
+
+    Engine::Table table("test", std::move(cols));
+
+    table.test();
+}
+
+
 int main()
 {
 #ifdef WIN32
@@ -260,7 +274,9 @@ int main()
 
     auto start = std::chrono::_V2::steady_clock::now();
 
-    test1();
+    test4();
+
+
 
     auto duration = start - std::chrono::_V2::steady_clock::now();
 
