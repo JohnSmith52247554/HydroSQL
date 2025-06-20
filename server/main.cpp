@@ -12,6 +12,7 @@
 #include <windows.h>
 #include <engine/include/table.hpp>
 #include <engine/include/LogicalTree.hpp>
+#include <parser/include/parser.hpp>
 
 using namespace HydroSQL::Server;
 
@@ -264,6 +265,36 @@ void test4()
     table.test();
 }
 
+void readSTR(const std::string command)
+{
+    for (auto it = command.begin(); it != command.end(); it++)
+    {
+        if (*it == ' ' || *it == ',')
+            continue;
+        if (*it == '(')
+            std::cout << '(' << std::endl;
+        else if (*it == ')')
+            std::cout << ')' << std::endl;
+        else if ((*it >= 'a' && *it <= 'z') || (*it >= 'A' && *it <= 'Z'))
+        {
+            auto start_it = it;
+            while (true)
+            {
+                if (it + 1 == command.end())
+                    break;
+                it++;
+                if (!(((*it >= 'a' && *it <= 'z') || (*it >= 'A' && *it <= 'Z') || (*it >= '0' && *it <= '9'))))
+                {
+                    it--;
+                    break;
+                }
+            }
+            std::string str(start_it, it + 1);
+            std::cout << str << std::endl;
+        }
+    }
+}
+
 
 int main()
 {
@@ -274,9 +305,28 @@ int main()
 
     auto start = std::chrono::_V2::steady_clock::now();
 
-    test4();
+    std::string str = "CREATE TABLE test\n\
+    index INT\n\
+    name VARCHAR(10)\n\
+    age SMALLINT";
 
+    std::string str2 = "INSERT INTO test\n\
+    (index, name, age)\n\
+    VALUES\n\
+    (1, \"张三\", 20)";
 
+    std::string str3 = "SELECT * FROM test\n\
+    WHERE index + age >= 20\n\
+    ORDER BY index ASC";
+
+    std::string str4 = "UPDATE test\n\
+    SET name = \"李四\", age = index + age\n\
+    WHERE index > 10 AND age < 50;";
+
+    std::string str5 = "DELETE FROM test\n\
+    WHERE index = 10 OR (name = \"王五\" AND age = \'\\a\')";
+    
+    auto list = Parser::tokenize(str5);
 
     auto duration = start - std::chrono::_V2::steady_clock::now();
 

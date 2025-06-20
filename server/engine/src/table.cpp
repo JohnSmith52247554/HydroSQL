@@ -1908,7 +1908,7 @@ namespace HydroSQL::Server::Engine
         row_data = std::move(new_row);
     }
 
-    const Table::Data Table::calExpr(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<std::optional<Data>> &buffer, std::vector<bool> &lock, const bool is_root) const
+    const Data Table::calExpr(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<std::optional<Data>> &buffer, std::vector<bool> &lock, const bool is_root) const
     {
         assert(buffer.size() == this->columns.size());
         assert(lock.size() == this->columns.size());
@@ -2263,7 +2263,7 @@ namespace HydroSQL::Server::Engine
         return data;
     }
 
-    const Table::Data Table::updateExpr(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &origine_row, std::vector<Data> &new_row, const bool is_root) const
+    const Data Table::updateExpr(const size_t col_index, const std::shared_ptr<LT::LT> node, const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &origine_row, std::vector<Data> &new_row, const bool is_root) const
     {
         assert(node != nullptr);
         assert(origine_row.size() == this->columns.size());
@@ -3377,6 +3377,7 @@ namespace HydroSQL::Server::Engine
         buffer = std::stoi(str.substr(0, 4));
         num += buffer * 1e4;
     }
+
     void Table::dateNumToStr(const int32_t &num, std::string &str)
     {
         int32_t year = num / 10000;
@@ -3388,6 +3389,7 @@ namespace HydroSQL::Server::Engine
             << std::setw(2) << std::setfill('0') << day;
         str = wss.str();
     }
+
     void Table::timeStrToNum(const std::string &str, int32_t &num)
     {
         int32_t buffer = 0;
@@ -3399,6 +3401,7 @@ namespace HydroSQL::Server::Engine
         buffer = std::stoi(str.substr(0, 2));
         num += buffer * 1e4;
     }
+
     void Table::timeNumToStr(const int32_t &num, std::string &str)
     {
         int32_t hour = num / 10000;
@@ -3412,6 +3415,7 @@ namespace HydroSQL::Server::Engine
 
         str = wss.str();
     }
+
     void Table::datetimeStrToNum(const std::string &str, int64_t &num)
     {
         int64_t buffer = 0;
@@ -3429,6 +3433,7 @@ namespace HydroSQL::Server::Engine
         buffer = std::stoi(str.substr(0, 4));
         num += buffer * 1e10;
     }
+
     void Table::datetimeNumToStr(const int64_t &num, std::string &str)
     {
         int64_t datePart = num / 1000000;

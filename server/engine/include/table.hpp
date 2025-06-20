@@ -150,8 +150,6 @@ namespace HydroSQL::Server::Engine
     class HYDROSQL_ENGINE_API Table
     {
     private:
-        using Data = std::variant<bool, int64_t, double, std::string>;
-
         struct ColAndIndex
         {
             const Column *col;
@@ -286,7 +284,7 @@ namespace HydroSQL::Server::Engine
             std::vector<std::shared_ptr<LT::LT>> expr_list = {expr};
             updateV2(update_key, expr_list, requir, result);
             std::cout << result << std::endl;
-            
+
             select(k, nullptr, nullptr, output, result);
             for (const auto &row : output)
             {

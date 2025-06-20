@@ -9,8 +9,6 @@
  * 
  */
 
-#pragma once
-
 /**
  * CREATE_TABLE_STMT = CREATE TABLE table_name
  *                     (column_definition (, column_definition)*
@@ -20,7 +18,7 @@
  *               [ORDER BY order_by_condition]
  *
  * INSERT_STMT = INSERT INTO table_name (column_list)
- *               VALUE (value_list)
+ *               VALUES (value_list)
  *
  * UPDATE_STMT = UPDATE table_name
  *               SET column_name = expression (, column_name = literal)*  TODO:
@@ -59,7 +57,105 @@
  * value_list = expression (, expression)*
  */
 
+#pragma once
+
+#include <pch.hpp>
+#include <engine/include/struct.hpp>
+
 namespace HydroSQL::Server::Parser
 {
-    
+    enum class TokenT : char
+    {
+        KEYWORD = 0,
+        COLANDTABLE,
+        BOOL_OPERATOR,
+        CALCULATION_OPERATOR,
+        LITERAL,
+        LBRACKET,
+        RBRACKET,
+        COMMA
+    };
+
+    enum class KeywordE : char
+    {
+        CREATE,
+        TABLE,
+        INSERT,
+        INTO,
+        VALUES,
+        SELECT,
+        FROM,
+        UPDATE,
+        SET,
+        DELETE_,
+        WHERE,
+        ORDER,
+        BY,
+        ASC,
+        DESC,
+
+        INT,
+        SMALLINT,
+        BIGINT,
+        FLOAT,
+        DECIMAL,
+        CHAR,
+        VARCHAR,
+        BOOLEAN,
+        DATE,
+        TIME,
+        DATETIME,
+    };
+
+    const std::vector<std::pair<std::string, KeywordE>> keywords = {
+        {"CREATE", KeywordE::CREATE},
+        {"TABLE", KeywordE::TABLE},
+        {"INSERT", KeywordE::INSERT},
+        {"INTO", KeywordE::INTO},
+        {"VALUES", KeywordE::VALUES},
+        {"SELECT", KeywordE::SELECT},
+        {"FROM", KeywordE::FROM},
+        {"UPDATE", KeywordE::UPDATE},
+        {"SET", KeywordE::SET},
+        {"DELETE", KeywordE::DELETE_},
+        {"WHERE", KeywordE::WHERE},
+        {"ORDER", KeywordE::ORDER},
+        {"BY", KeywordE::BY},
+        {"ASC", KeywordE::ASC},
+        {"DESC", KeywordE::DESC},
+
+        {"INT", KeywordE::INT},
+        {"SMALLINT", KeywordE::SMALLINT},
+        {"BIGINT", KeywordE::BIGINT},
+        {"FLOAT", KeywordE::FLOAT},
+        {"DECIMAL", KeywordE::DECIMAL},
+        {"CHAR", KeywordE::CHAR},
+        {"VARCHAR", KeywordE::VARCHAR},
+        {"BOOLEAN", KeywordE::BOOLEAN},
+        {"DATE", KeywordE::DATE},
+        {"TIME", KeywordE::TIME},
+        {"DATETIME", KeywordE::DATETIME},
+    };
+
+    using BoolOp = HydroSQL::Server::Engine::LT::OpType;
+    using CalOp = HydroSQL::Server::Engine::LT::CalType;
+    using LiteralT = HydroSQL::Server::Engine::LT::LiterType;
+    using ColTableName = std::string;
+
+    struct LiteralInfo
+    {
+        LiteralT type;
+        HydroSQL::Server::Engine::Data data;
+    };
+
+    using TokenInfo = std::variant<BoolOp, CalOp, LiteralInfo, ColTableName, KeywordE>;
+
+    struct Token
+    {
+        TokenT type;
+        TokenInfo info;
+    };
+
+    const std::list<Token> tokenize(const std::string &command);
+
 } // namespace HydroSQL::Server::Parser

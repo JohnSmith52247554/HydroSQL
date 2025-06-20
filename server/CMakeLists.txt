@@ -27,13 +27,15 @@ LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/release
 RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/release)
 
 file(GLOB_RECURSE SRC 
-"network/src/*.cpp" 
+"network/src/*.cpp"
+"parser/src/*.cpp" 
 "./main.cpp")
 
 add_executable(${PROJECT_NAME} ${SRC})
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/pch.hpp)
 target_include_directories(${PROJECT_NAME} PRIVATE
 ${CMAKE_SOURCE_DIR}/engine/include
+${CMAKE_SOURCE_DIR}/parser/include
 ${CMAKE_SOURCE_DIR}/network/include
 ${CMAKE_SOURCE_DIR}
 )

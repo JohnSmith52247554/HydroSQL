@@ -23,6 +23,8 @@
 
 namespace HydroSQL::Server::Engine
 {
+    using Data = std::variant<bool, int64_t, double, std::string>;
+
     enum class DataType : char
     {
         INT = 0,
@@ -93,7 +95,7 @@ namespace HydroSQL::Server::Engine
         struct Literal
         {
             LiterType liter_type;
-            std::variant<bool, int64_t, double, std::string> liter_info;
+            Data liter_info;
         };
 
         union Info
