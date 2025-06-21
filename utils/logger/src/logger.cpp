@@ -194,6 +194,7 @@ namespace HydroSQL::Utils::Logger
 
     void BasicFileSink::updateOfile(const TimeStamp &timestamp) const
     {
+        std::lock_guard<std::mutex> lock(file_mutex);
         std::filesystem::path path = getFilePath(timestamp);
         if (path != file_path || ofile == nullptr)
         {
@@ -204,7 +205,6 @@ namespace HydroSQL::Utils::Logger
 
             file_path = path;
 
-            std::lock_guard<std::mutex> lock(file_mutex);
             if (ofile != nullptr)
                 ofile->close();
             ofile = std::make_unique<std::ofstream>(file_path, std::ios::app);
@@ -314,7 +314,7 @@ int main()
         // Logger::get().setLevel(Level::WARNING);
         Logger::get().addSink(std::move(std::make_unique<BasicConsoleSink>(Level::WARNING, "hh:mm:ss.SSS")));
         Logger::get().addSink(std::move(std::make_unique<BasicFileSink>("log")));
-        for (size_t i = 0; i < 1000; i++)
+        for (size_t i = 0; i < 10000; i++)
         {
             Logger::get().info(std::to_string(i));
             Logger::get().warning(std::to_string(2 * i));
@@ -326,7 +326,6 @@ int main()
     {
         std::cerr << e.what() << '\n';
     }
-    
 
     return 0;
 }
