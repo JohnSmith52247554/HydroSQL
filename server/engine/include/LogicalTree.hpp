@@ -15,7 +15,7 @@
 
 namespace HydroSQL::Server::Engine::LT
 {
-    [[nodiscard]] const int getOpParaNum(const OpType type);
+    HYDROSQL_ENGINE_API [[nodiscard]] const int getOpParaNum(const OpType type);
 
     [[nodiscard]] const bool boolOp(std::shared_ptr<LT> root, RowInfo &info);
     [[nodiscard]] const int64_t calInt(std::shared_ptr<LT> root, RowInfo &info);

@@ -21,7 +21,7 @@
  *               VALUES (value_list)
  *
  * UPDATE_STMT = UPDATE table_name
- *               SET column_name = expression (, column_name = literal)*  TODO:
+ *               SET column_name = expression (, column_name = expression)*
  *               [WHERE where_condition]
  *
  * DELETE_STMT = DELETE FROM table_name
@@ -61,6 +61,7 @@
 
 #include <pch.hpp>
 #include <engine/include/struct.hpp>
+#include <affairs.hpp>
 
 namespace HydroSQL::Server::Parser
 {
@@ -78,7 +79,7 @@ namespace HydroSQL::Server::Parser
 
     enum class KeywordE : char
     {
-        CREATE,
+        CREATE = 0,
         TABLE,
         INSERT,
         INTO,
@@ -105,6 +106,10 @@ namespace HydroSQL::Server::Parser
         DATE,
         TIME,
         DATETIME,
+
+        AND,
+        OR,
+        NOT,
     };
 
     const std::vector<std::pair<std::string, KeywordE>> keywords = {
@@ -135,6 +140,10 @@ namespace HydroSQL::Server::Parser
         {"DATE", KeywordE::DATE},
         {"TIME", KeywordE::TIME},
         {"DATETIME", KeywordE::DATETIME},
+
+        {"AND", KeywordE::AND},
+        {"OR", KeywordE::OR},
+        {"NOT", KeywordE::NOT},
     };
 
     using BoolOp = HydroSQL::Server::Engine::LT::OpType;
@@ -157,5 +166,19 @@ namespace HydroSQL::Server::Parser
     };
 
     const std::list<Token> tokenize(const std::string &command);
+
+    std::unique_ptr<Affair> parse(const std::list<Token> &token);
+
+    std::unique_ptr<Affair> parseCreate(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
+
+    std::unique_ptr<Affair> parseInsert(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
+
+    std::unique_ptr<Affair> parseSelect(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
+
+    std::unique_ptr<Affair> parseUpdate(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
+
+    std::unique_ptr<Affair> parseDelete(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
+
+    std::shared_ptr<Engine::LT::LT> parseExpr(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
 
 } // namespace HydroSQL::Server::Parser

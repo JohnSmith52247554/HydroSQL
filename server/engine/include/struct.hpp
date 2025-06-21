@@ -49,15 +49,14 @@ namespace HydroSQL::Server::Engine
             COL,
             LITERAL,
             OPERATOR,
-            CALCULATION
+            CALCULATION,
+            LBRACKET,
+            RBRACKET
         };
 
         enum class OpType : char
         {
             null = 0,
-            AND,
-            OR,
-            NOT,
 
             EQUAL,
             NOT_EQUAL,
@@ -67,17 +66,21 @@ namespace HydroSQL::Server::Engine
             LESS_EQUAL,
 
             LIKE,
-            IN
+            IS_IN,
+
+            AND,
+            OR,
+            NOT
         };
 
         enum class CalType : char
         {
             null = 0,
-            ADD,
-            MINUS,
             MULTIPLY,
             DIVIDE,
-            MODULO
+            MODULO,
+            ADD,
+            MINUS,
         };
 
         enum class LiterType : char
@@ -132,8 +135,8 @@ namespace HydroSQL::Server::Engine
 
         using RowInfo = std::vector<ColInfo>;
 
-        const LiterType dataTypeToLiteralType(const DataType type);
-        
+        [[nodiscard]] const LiterType dataTypeToLiteralType(const DataType type);
+
     } // namespace LT
     
 } // namespace HydroSQL::Server::Engine

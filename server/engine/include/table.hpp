@@ -223,79 +223,79 @@ namespace HydroSQL::Server::Engine
 
         [[nodiscard]] int delete_(const std::shared_ptr<LT::LT> requirements, std::string &result);
 
-        void test()
-        {
-            std::vector<std::string> keys = {"index", "name", "age"};
-            std::vector<std::vector<std::shared_ptr<LT::LT>>> value(1);
-            value[0].resize(3);
-            value[0][0] = std::make_shared<LT::LT>(LT::NodeType::CALCULATION);
-            value[0][0]->info.cal_type = LT::CalType::MULTIPLY;
-            value[0][0]->children.resize(2);
-            value[0][1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
-            value[0][1]->info.liter.liter_type = LT::LiterType::STR;
-            value[0][1]->info.liter.liter_info.emplace<std::string>("张三");
-            value[0][2] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
-            value[0][2]->info.liter.liter_type = LT::LiterType::INT;
-            value[0][2]->info.liter.liter_info.emplace<int64_t>(2);
-            auto &vec = value[0][0]->children;
-            vec[0] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
-            vec[0]->info.liter.liter_type = LT::LiterType::INT;
-            vec[0]->info.liter.liter_info.emplace<int64_t>(2);
-            vec[1] = std::make_shared<LT::LT>(LT::NodeType::COL);
-            vec[1]->info.liter.liter_type = LT::LiterType::STR;
-            vec[1]->info.liter.liter_info.emplace<std::string>("age");
-            std::string result;
-            insertV2(keys, value, result);
+        // void test()
+        // {
+        //     std::vector<std::string> keys = {"index", "name", "age"};
+        //     std::vector<std::vector<std::shared_ptr<LT::LT>>> value(1);
+        //     value[0].resize(3);
+        //     value[0][0] = std::make_shared<LT::LT>(LT::NodeType::CALCULATION);
+        //     value[0][0]->info.cal_type = LT::CalType::MULTIPLY;
+        //     value[0][0]->children.resize(2);
+        //     value[0][1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+        //     value[0][1]->info.liter.liter_type = LT::LiterType::STR;
+        //     value[0][1]->info.liter.liter_info.emplace<std::string>("张三");
+        //     value[0][2] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+        //     value[0][2]->info.liter.liter_type = LT::LiterType::INT;
+        //     value[0][2]->info.liter.liter_info.emplace<int64_t>(2);
+        //     auto &vec = value[0][0]->children;
+        //     vec[0] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+        //     vec[0]->info.liter.liter_type = LT::LiterType::INT;
+        //     vec[0]->info.liter.liter_info.emplace<int64_t>(2);
+        //     vec[1] = std::make_shared<LT::LT>(LT::NodeType::COL);
+        //     vec[1]->info.liter.liter_type = LT::LiterType::STR;
+        //     vec[1]->info.liter.liter_info.emplace<std::string>("age");
+        //     std::string result;
+        //     insertV2(keys, value, result);
 
-            std::cout << result << std::endl;
+        //     std::cout << result << std::endl;
 
-            std::vector<std::string> k;
-            std::vector<std::vector<std::string>> output;
-            select(k, nullptr, nullptr, output, result);
-            for (const auto &row : output)
-            {
-                for (const auto &val : row)
-                {
-                    std::cout << val << '\t';
-                }
-                std::cout << std::endl;
-            }
-            std::cout << result << std::endl;
+        //     std::vector<std::string> k;
+        //     std::vector<std::vector<std::string>> output;
+        //     select(k, nullptr, nullptr, output, result);
+        //     for (const auto &row : output)
+        //     {
+        //         for (const auto &val : row)
+        //         {
+        //             std::cout << val << '\t';
+        //         }
+        //         std::cout << std::endl;
+        //     }
+        //     std::cout << result << std::endl;
 
-            std::vector<std::string> update_key = {"age"};
-            auto requir = std::make_shared<LT::LT>(LT::NodeType::OPERATOR);
-            requir->info.op_type = LT::OpType::EQUAL;
-            requir->children.resize(2);
-            requir->children[0] = std::make_shared<LT::LT>(LT::NodeType::COL);
-            requir->children[0]->info.liter.liter_type = LT::LiterType::STR;
-            requir->children[0]->info.liter.liter_info.emplace<std::string>("name");
-            requir->children[1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
-            requir->children[1]->info.liter.liter_type = LT::LiterType::STR;
-            requir->children[1]->info.liter.liter_info.emplace<std::string>("张三");
-            auto expr = std::make_shared<LT::LT>(LT::NodeType::CALCULATION);
-            expr->info.cal_type = LT::CalType::ADD;
-            expr->children.resize(2);
-            expr->children[0] = std::make_shared<LT::LT>(LT::NodeType::COL);
-            expr->children[0]->info.liter.liter_type = LT::LiterType::STR;
-            expr->children[0]->info.liter.liter_info.emplace<std::string>("age");
-            expr->children[1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
-            expr->children[1]->info.liter.liter_type = LT::LiterType::INT;
-            expr->children[1]->info.liter.liter_info.emplace<int64_t>(10);
-            std::vector<std::shared_ptr<LT::LT>> expr_list = {expr};
-            updateV2(update_key, expr_list, requir, result);
-            std::cout << result << std::endl;
+        //     std::vector<std::string> update_key = {"age"};
+        //     auto requir = std::make_shared<LT::LT>(LT::NodeType::OPERATOR);
+        //     requir->info.op_type = LT::OpType::EQUAL;
+        //     requir->children.resize(2);
+        //     requir->children[0] = std::make_shared<LT::LT>(LT::NodeType::COL);
+        //     requir->children[0]->info.liter.liter_type = LT::LiterType::STR;
+        //     requir->children[0]->info.liter.liter_info.emplace<std::string>("name");
+        //     requir->children[1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+        //     requir->children[1]->info.liter.liter_type = LT::LiterType::STR;
+        //     requir->children[1]->info.liter.liter_info.emplace<std::string>("张三");
+        //     auto expr = std::make_shared<LT::LT>(LT::NodeType::CALCULATION);
+        //     expr->info.cal_type = LT::CalType::ADD;
+        //     expr->children.resize(2);
+        //     expr->children[0] = std::make_shared<LT::LT>(LT::NodeType::COL);
+        //     expr->children[0]->info.liter.liter_type = LT::LiterType::STR;
+        //     expr->children[0]->info.liter.liter_info.emplace<std::string>("age");
+        //     expr->children[1] = std::make_shared<LT::LT>(LT::NodeType::LITERAL);
+        //     expr->children[1]->info.liter.liter_type = LT::LiterType::INT;
+        //     expr->children[1]->info.liter.liter_info.emplace<int64_t>(10);
+        //     std::vector<std::shared_ptr<LT::LT>> expr_list = {expr};
+        //     updateV2(update_key, expr_list, requir, result);
+        //     std::cout << result << std::endl;
 
-            select(k, nullptr, nullptr, output, result);
-            for (const auto &row : output)
-            {
-                for (const auto &val : row)
-                {
-                    std::cout << val << '\t';
-                }
-                std::cout << std::endl;
-            }
-            std::cout << result << std::endl;
-        }
+        //     select(k, nullptr, nullptr, output, result);
+        //     for (const auto &row : output)
+        //     {
+        //         for (const auto &val : row)
+        //         {
+        //             std::cout << val << '\t';
+        //         }
+        //         std::cout << std::endl;
+        //     }
+        //     std::cout << result << std::endl;
+        // }
 
 
     private:

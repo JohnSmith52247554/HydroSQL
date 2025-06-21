@@ -37,6 +37,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 ${CMAKE_SOURCE_DIR}/engine/include
 ${CMAKE_SOURCE_DIR}/parser/include
 ${CMAKE_SOURCE_DIR}/network/include
+${CMAKE_SOURCE_DIR}/..
 ${CMAKE_SOURCE_DIR}
 )
 

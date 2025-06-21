@@ -43,7 +43,7 @@ namespace HydroSQL::Server::Engine::LT
             return LiterType::null;
         }
     }
-    
+
     const int getOpParaNum(const OpType type)
     {
         switch (type)
@@ -66,7 +66,7 @@ namespace HydroSQL::Server::Engine::LT
             [[fallthrough]];
         case OpType::LESS_EQUAL:
             return 2;
-        case OpType::IN:
+        case OpType::IS_IN:
             return -1;
         default:
             return -1;
@@ -111,7 +111,7 @@ namespace HydroSQL::Server::Engine::LT
             case OpType::LESS_EQUAL:
                 return !(opGreater(root, info));
             case OpType::LIKE:
-            case OpType::IN:
+            case OpType::IS_IN:
                 // TODO:
             default:
                 break;
