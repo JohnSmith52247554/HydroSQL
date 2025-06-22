@@ -1458,6 +1458,13 @@ namespace HydroSQL::Server::Engine
         return 1;
     }
 
+    int Table::drop(std::string &result)
+    {
+        std::filesystem::remove(data_path);
+        result = "[SUCCESS] 1 table dropped.";
+        return 1;
+    }
+
     const bool Table::dataTypeExamination(const DataType type, const std::string &str, const size_t varchar_length)
     {
         // INT, SMALLINT, FLOAT... should could be interpret as a number.
@@ -1869,7 +1876,7 @@ namespace HydroSQL::Server::Engine
     //     return str.value();
     // }
 
-    [[nodiscart]] void Table::calRowExpr(const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &result) const
+    void Table::calRowExpr(const std::vector<std::shared_ptr<LT::LT>> &row, const std::map<const std::string, const ColSelect> &column_map, std::vector<Data> &result) const
     {
         std::vector<std::optional<Data>> buffer(this->columns.size());
         std::vector<bool> lock(this->columns.size(), false);

@@ -519,7 +519,11 @@ namespace HydroSQL::Server::Parser
         case KeywordE::DELETE_:
             return parseDelete(++token.begin(), token.end());
             break;
+        case KeywordE::DROP:
+            return parseDrop(++token.begin(), token.end());
+            break;
         default:
+            throw std::runtime_error("[FAILED] Command not found.");
             return nullptr;
         }
     }
@@ -847,7 +851,24 @@ namespace HydroSQL::Server::Parser
         return static_cast<std::unique_ptr<Affair>>(std::make_unique<DeleteA>(std::move(table_name), std::move(requirements)));
     }
 
-    
+    std::unique_ptr<Affair> parseDrop(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end)
+    {
+        if (!(start->type == TokenT::KEYWORD && std::get<KeywordE>(start->info) == KeywordE::TABLE))
+        {
+            throw std::runtime_error("[FAILED] Command not found. Do you mean DROP TABLE?");
+        }
+
+        if (start == end)
+            throw std::runtime_error("[FAILED] DROP TABLE should be followed with a table name");
+        start++;
+        if (!(start->type == TokenT::COLANDTABLE))
+        {
+            throw std::runtime_error("[FAILED] DROP TABLE should be followed with a table name");
+        }
+        std::string table_name = std::get<ColTableName>(start->info);
+
+        return static_cast<std::unique_ptr<Affair>>(std::make_unique<DropA>(std::move(table_name)));
+    }
 
     using Stack = Utils::DataStructure::Stack<std::shared_ptr<Engine::LT::LT>>;
 

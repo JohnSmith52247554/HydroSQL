@@ -20,7 +20,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth)
         {
-            result = "Authority Insufficient.";
+            result = "[FAILED] Authority Insufficient.";
             return 0;
         }
 
@@ -44,7 +44,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth)
         {
-            result = "Authority Insufficient.";
+            result = "[FAILED] Authority Insufficient.";
             return 0;
         }
 
@@ -67,7 +67,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth)
         {
-            result = "Authority Insufficient.";
+            result = "[FAILED] Authority Insufficient.";
             return 0;
         }
 
@@ -103,7 +103,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth)
         {
-            result = "Authority Insufficient.";
+            result = "[FAILED] Authority Insufficient.";
             return 0;
         }
 
@@ -126,7 +126,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth)
         {
-            result = "Authority Insufficient.";
+            result = "[FAILED] Authority Insufficient.";
             return 0;
         }
 
@@ -134,6 +134,29 @@ namespace HydroSQL::Server::Parser
         {
             Engine::Table table(table_name);
             return table.delete_(this->requirements, result);
+        }
+        catch (const std::exception &e)
+        {
+            result = e.what();
+            return 0;
+        }
+    }
+
+    const int DropA::execute(const Authority auth, std::string &result) const
+    {
+        result.clear();
+
+        // check authority
+        if (!auth)
+        {
+            result = "[FAILED] Authority Insufficient.";
+            return 0;
+        }
+
+        try
+        {
+            Engine::Table table(table_name);
+            return table.drop(result);
         }
         catch (const std::exception &e)
         {

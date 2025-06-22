@@ -26,6 +26,12 @@
  *
  * DELETE_STMT = DELETE FROM table_name
  *               WHERE where_condition
+ * 
+ * GRANT_STMT = GRANT authority ON table_name TO username
+ * 
+ * DROP_STMT = DROP TABLE table_name
+ * 
+ * authority = NULL | READONLY | MODIFY | ADMIN
  *
  * column_definition = column_name data_type [(, constraint_definition)*)]
  *
@@ -94,6 +100,7 @@ namespace HydroSQL::Server::Parser
         BY,
         ASC,
         DESC,
+        DROP,
 
         INT,
         SMALLINT,
@@ -128,6 +135,7 @@ namespace HydroSQL::Server::Parser
         {"BY", KeywordE::BY},
         {"ASC", KeywordE::ASC},
         {"DESC", KeywordE::DESC},
+        {"DROP", KeywordE::DROP},
 
         {"INT", KeywordE::INT},
         {"SMALLINT", KeywordE::SMALLINT},
@@ -178,6 +186,8 @@ namespace HydroSQL::Server::Parser
     std::unique_ptr<Affair> parseUpdate(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
 
     std::unique_ptr<Affair> parseDelete(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
+
+    std::unique_ptr<Affair> parseDrop(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
 
     std::shared_ptr<Engine::LT::LT> parseExpr(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
 

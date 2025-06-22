@@ -105,4 +105,18 @@ namespace HydroSQL::Server::Parser
         virtual const int execute(const Authority auth, std::string &result) const override;
     };
 
+    class DropA : public Affair
+    {
+    private:
+        std::string table_name;
+
+    public:
+        DropA(std::string &&tn)
+            : table_name(tn)
+        {}
+        ~DropA() = default;
+
+        virtual const int execute(const Authority auth, std::string &result) const override;
+    };
+
 } // namespace HydroSQL::Server::Parser

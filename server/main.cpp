@@ -13,6 +13,7 @@
 #include <engine/include/table.hpp>
 #include <engine/include/LogicalTree.hpp>
 #include <parser/include/parser.hpp>
+#include <authority/include/authority.hpp>
 
 using namespace HydroSQL::Server;
 
@@ -295,16 +296,8 @@ using namespace HydroSQL::Server;
 //     }
 // }
 
-
-int main()
+void testParse()
 {
-#ifdef WIN32
-    SetConsoleOutputCP(65001);
-    SetConsoleCP(65001);
-#endif
-
-    auto start = std::chrono::_V2::steady_clock::now();
-
     std::string str = "CREATE TABLE test\n\
     index INT\n\
     name VARCHAR(10)\n\
@@ -331,6 +324,8 @@ int main()
 
     std::string select_all = "SELECT * FROM test\n\
     ORDER BY index ASC;";
+
+    std::string drop = "DROP TABLE test;";
 
     // std::string expr = "index = 10 OR (name = \"王五\" AND age = \'\\a\')";
 
@@ -379,6 +374,56 @@ int main()
     if (aff != nullptr)
         aff->execute(true, result);
     std::cout << result << std::endl;
+
+    list = Parser::tokenize(drop);
+    aff = Parser::parse(list);
+    if (aff != nullptr)
+        aff->execute(true, result);
+    std::cout << result << std::endl;
+}
+
+void testAuth()
+{
+    using namespace HydroSQL::Server::Authority;
+
+    if (!AuthManager::get().addUser("Alex", "password1"))
+        std::cout << "error" << std::endl;
+    if (!AuthManager::get().addUser("Bob", "password2"))
+        std::cout << "error" << std::endl;
+    if (!AuthManager::get().addUser("Carl", "password3"))
+        std::cout << "error" << std::endl;
+
+    if (!AuthManager::get().addTable("table1", "Alex"))
+        std::cout << "error" << std::endl;
+    if (!AuthManager::get().addTable("table2", "Bob"))
+        std::cout << "error" << std::endl;
+    if (!AuthManager::get().addTable("table3", "Carl"))
+        std::cout << "error" << std::endl;
+
+    // 1
+    std::cout << AuthManager::get().examinePasswordHash("Alex", "password1") << std::endl;
+
+    // 0
+    std::cout << (int)AuthManager::get().getLevel("Bob", "table1") << std::endl;
+
+    // 1
+    std::cout << AuthManager::get().setUserAuth("Carl", "table2", AuthLevel::ADMIN) << std::endl;
+
+    // 3
+    std::cout << (int)AuthManager::get().getLevel("Carl", "table2") << std::endl;
+}
+
+
+int main()
+{
+#ifdef WIN32
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
+#endif
+
+    auto start = std::chrono::_V2::steady_clock::now();
+
+    testParse();
 
     auto duration = start - std::chrono::_V2::steady_clock::now();
 
