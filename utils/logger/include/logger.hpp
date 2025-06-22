@@ -27,7 +27,7 @@ namespace HydroSQL::Utils::Logger
     {
         INFO = 0,
         WARNING,
-        ERROR
+        ERROR_
     };
 
     struct TimeStamp

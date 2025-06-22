@@ -1,0 +1,8 @@
+2025-06-22-19:55:12.922 [INFO] Start listening on port 8080.
+2025-06-22-19:55:25.182 [INFO] New connection from 127.0.0.1:14863
+2025-06-22-19:55:39.245 [ERROR] Client: 4 Recv failed.
+2025-06-22-19:56:20.810 [INFO] Start listening on port 8080.
+2025-06-22-19:56:35.727 [INFO] New connection from 127.0.0.1:14882
+2025-06-22-19:56:35.727 [ERROR] Client: 348 Recv failed.
+2025-06-22-19:56:52.234 [INFO] New connection from 127.0.0.1:14888
+2025-06-22-19:56:56.045 [ERROR] Client: 364 Recv failed.

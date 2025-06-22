@@ -1,0 +1,104 @@
+2025-06-22-21:00:54.077 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:00:54.077 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:00:55.652 [INFO] 1 bytes sent.
+2025-06-22-21:00:58.195 [INFO] 8 bytes sent.
+2025-06-22-21:01:01.527 [INFO] 8 bytes sent.
+2025-06-22-21:01:12.047 [INFO] 27 bytes sent.
+2025-06-22-21:01:57.590 [INFO] 35 bytes sent.
+2025-06-22-21:02:07.496 [INFO] 18 bytes sent.
+2025-06-22-21:06:43.536 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:06:43.540 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:06:45.089 [INFO] 1 bytes sent.
+2025-06-22-21:06:47.258 [INFO] 8 bytes sent.
+2025-06-22-21:06:49.553 [INFO] 8 bytes sent.
+2025-06-22-21:07:00.712 [INFO] 15 bytes sent.
+2025-06-22-21:07:11.638 [INFO] 17 bytes sent.
+2025-06-22-21:08:02.593 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:08:02.603 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:16:39.528 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:16:39.528 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:16:40.977 [INFO] 1 bytes sent.
+2025-06-22-21:16:44.681 [INFO] 8 bytes sent.
+2025-06-22-21:16:46.831 [INFO] 8 bytes sent.
+2025-06-22-21:17:30.214 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:17:30.230 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:17:31.973 [INFO] 1 bytes sent.
+2025-06-22-21:17:34.236 [INFO] 8 bytes sent.
+2025-06-22-21:17:43.622 [INFO] 8 bytes sent.
+2025-06-22-21:18:59.629 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:18:59.636 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:19:01.162 [INFO] 1 bytes sent.
+2025-06-22-21:19:03.127 [INFO] 8 bytes sent.
+2025-06-22-21:19:09.014 [INFO] 8 bytes sent.
+2025-06-22-21:19:31.599 [INFO] 27 bytes sent.
+2025-06-22-21:20:27.236 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:20:27.236 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:20:28.653 [INFO] 1 bytes sent.
+2025-06-22-21:20:30.259 [INFO] 8 bytes sent.
+2025-06-22-21:20:31.882 [INFO] 8 bytes sent.
+2025-06-22-21:20:45.577 [INFO] 27 bytes sent.
+2025-06-22-21:21:04.252 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:21:04.268 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:21:14.116 [INFO] 1 bytes sent.
+2025-06-22-21:21:16.799 [INFO] 8 bytes sent.
+2025-06-22-21:21:18.857 [INFO] 8 bytes sent.
+2025-06-22-21:22:18.432 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:22:18.448 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:22:19.807 [INFO] 1 bytes sent.
+2025-06-22-21:22:21.517 [INFO] 8 bytes sent.
+2025-06-22-21:22:23.781 [INFO] 8 bytes sent.
+2025-06-22-21:22:51.993 [INFO] 60 bytes sent.
+2025-06-22-21:23:05.181 [INFO] 18 bytes sent.
+2025-06-22-21:23:30.645 [INFO] 59 bytes sent.
+2025-06-22-21:23:56.439 [INFO] 17 bytes sent.
+2025-06-22-21:24:16.858 [INFO] 46 bytes sent.
+2025-06-22-21:29:58.115 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:29:58.122 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:29:59.621 [INFO] 1 bytes sent.
+2025-06-22-21:30:03.511 [INFO] 8 bytes sent.
+2025-06-22-21:30:05.313 [INFO] 8 bytes sent.
+2025-06-22-21:30:08.110 [INFO] 1 bytes sent.
+2025-06-22-21:30:11.193 [INFO] 8 bytes sent.
+2025-06-22-21:30:13.172 [INFO] 8 bytes sent.
+2025-06-22-21:30:46.688 [INFO] 59 bytes sent.
+2025-06-22-21:31:41.249 [INFO] 76 bytes sent.
+2025-06-22-21:31:51.812 [INFO] 20 bytes sent.
+2025-06-22-21:32:30.963 [INFO] 42 bytes sent.
+2025-06-22-21:32:54.965 [INFO] 46 bytes sent.
+2025-06-22-21:32:56.767 [ERROR] Receive failed. Error code: 10054.
+2025-06-22-21:32:56.768 [INFO] Disconnected from server.
+2025-06-22-21:33:55.253 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:33:55.269 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:33:59.121 [INFO] 1 bytes sent.
+2025-06-22-21:34:00.893 [INFO] 8 bytes sent.
+2025-06-22-21:34:03.140 [INFO] 8 bytes sent.
+2025-06-22-21:34:36.561 [INFO] 46 bytes sent.
+2025-06-22-21:38:18.490 [INFO] 21 bytes sent.
+2025-06-22-21:38:44.564 [INFO] 17 bytes sent.
+2025-06-22-21:39:21.402 [INFO] 59 bytes sent.
+2025-06-22-21:39:46.641 [INFO] Server disconnected.
+2025-06-22-21:39:46.642 [INFO] Disconnected from server.
+2025-06-22-21:41:11.914 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:41:11.914 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:41:17.015 [INFO] 1 bytes sent.
+2025-06-22-21:41:19.441 [INFO] 8 bytes sent.
+2025-06-22-21:41:21.220 [INFO] 8 bytes sent.
+2025-06-22-21:41:44.817 [INFO] 29 bytes sent.
+2025-06-22-21:41:54.667 [INFO] 18 bytes sent.
+2025-06-22-21:43:00.994 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:43:01.007 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:43:18.446 [INFO] 1 bytes sent.
+2025-06-22-21:43:21.459 [INFO] 8 bytes sent.
+2025-06-22-21:43:24.492 [INFO] 8 bytes sent.
+2025-06-22-21:43:35.066 [INFO] 29 bytes sent.
+2025-06-22-21:43:42.964 [INFO] 17 bytes sent.
+2025-06-22-21:43:55.165 [INFO] 29 bytes sent.
+2025-06-22-21:44:24.872 [INFO] 52 bytes sent.
+2025-06-22-21:44:36.676 [INFO] 20 bytes sent.
+2025-06-22-21:44:39.800 [INFO] 6 bytes sent.
+2025-06-22-21:45:41.228 [INFO] Connecting server 127.0.0.1:8080.
+2025-06-22-21:45:41.239 [INFO] Connected to server 127.0.0.1:8080.
+2025-06-22-21:45:47.256 [INFO] 1 bytes sent.
+2025-06-22-21:45:48.932 [INFO] 8 bytes sent.
+2025-06-22-21:45:51.108 [INFO] 8 bytes sent.
+2025-06-22-21:45:54.291 [INFO] Disconnected from server.

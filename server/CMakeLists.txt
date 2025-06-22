@@ -30,7 +30,8 @@ file(GLOB_RECURSE SRC
 "network/src/*.cpp"
 "parser/src/*.cpp" 
 "authority/src/*.cpp"
-"./main.cpp")
+"./main.cpp"
+"../utils/logger/src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SRC})
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/pch.hpp)
@@ -43,7 +44,9 @@ ${CMAKE_SOURCE_DIR}/..
 ${CMAKE_SOURCE_DIR}
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE HydroSQLEngine)
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+HydroSQLEngine
+ws2_32)
 
 if (MSVC)
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE OFF)

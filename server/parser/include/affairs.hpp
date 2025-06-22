@@ -13,16 +13,18 @@
 
 #include <pch.hpp>
 #include <engine/include/table.hpp>
+#include <authority/include/authority.hpp>
 
 namespace HydroSQL::Server::Parser
 {
-    using Authority = bool;
+    using Authoriser = Authority::Authoriser;
+    using AuthLevel = Authority::AuthLevel;
 
     class Affair
     {
     public:
         virtual ~Affair() = default;
-        virtual const int execute(const Authority auth, std::string &result) const = 0;
+        virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const = 0;
     };
 
     class CreateTableA : public Affair
@@ -37,7 +39,7 @@ namespace HydroSQL::Server::Parser
         {}
         ~CreateTableA() override = default;
 
-        virtual const int execute(const Authority auth, std::string &result) const override;
+        virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const override;
     };
 
     class InsertA : public Affair
@@ -53,7 +55,7 @@ namespace HydroSQL::Server::Parser
         {}
         ~InsertA() override = default;
 
-        virtual const int execute(const Authority auth, std::string &result) const override;
+        virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const override;
     };
 
     class SelectA : public Affair
@@ -70,7 +72,7 @@ namespace HydroSQL::Server::Parser
         {}
         ~SelectA() override = default;
 
-        virtual const int execute(const Authority auth, std::string &result) const override;
+        virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const override;
     };
 
     class UpdateA : public Affair
@@ -87,7 +89,7 @@ namespace HydroSQL::Server::Parser
         {}
         ~UpdateA() override = default;
 
-        virtual const int execute(const Authority auth, std::string &result) const override;
+        virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const override;
     };
 
     class DeleteA : public Affair
@@ -102,7 +104,7 @@ namespace HydroSQL::Server::Parser
         {}
         ~DeleteA() override = default;
 
-        virtual const int execute(const Authority auth, std::string &result) const override;
+        virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const override;
     };
 
     class DropA : public Affair
@@ -116,7 +118,7 @@ namespace HydroSQL::Server::Parser
         {}
         ~DropA() = default;
 
-        virtual const int execute(const Authority auth, std::string &result) const override;
+        virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const override;
     };
 
 } // namespace HydroSQL::Server::Parser

@@ -143,6 +143,34 @@ namespace HydroSQL::Server::Authority
         return 1;
     }
 
+    const int AuthManager::removeTable(const std::string &table_name)
+    {
+        std::vector<std::string> username_vec;
+        std::vector<std::string> password_hash_vec;
+        std::vector<std::string> table_name_vec;
+        std::vector<std::vector<AuthLevel>> level_vec;
+
+        {
+            std::shared_lock lock(shared_mutex);
+            read(username_vec, password_hash_vec, table_name_vec, level_vec);
+        }
+
+        auto table_it = std::find(table_name_vec.begin(), table_name_vec.end(), table_name);
+        if (table_it == table_name_vec.end())
+            throw std::runtime_error("[FAILED] Table not found.");
+        size_t coord_y = table_it - table_name_vec.begin();
+        auto level_it = level_vec.begin() + coord_y;
+
+        table_name_vec.erase(table_it);
+        level_vec.erase(level_it);
+
+        std::unique_lock lock(shared_mutex);
+        if (!write(username_vec, password_hash_vec, table_name_vec, level_vec))
+            throw std::runtime_error("[ERROR] Write user configuration failed.");
+
+        return 1;
+    }
+
     const int AuthManager::setUserAuth(const std::string &username, const std::string &table_name, const AuthLevel level)
     {
         std::vector<std::string> username_vec;
@@ -302,5 +330,11 @@ namespace HydroSQL::Server::Authority
         ofile.close();
 
         return 1;
+    }
+
+    const bool Authoriser::authorise(const std::string &table_name, const AuthLevel level) const
+    {
+        auto auth_level = AuthManager::get().getLevel(this->username, table_name);
+        return static_cast<char>(auth_level) >= static_cast<char>(level);
     }
 } // namespace HydroSQL::Server::Authority

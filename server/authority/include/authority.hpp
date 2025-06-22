@@ -66,6 +66,8 @@ namespace HydroSQL::Server::Authority
 
         [[nodiscard]] const int addTable(const std::string &table_name, const std::string &creator);
 
+        [[nodiscard]] const int removeTable(const std::string &table_name);
+
         // note: It necessary to examine whether the caller has administrator authority before calling this function.
         [[nodiscard]] const int setUserAuth(const std::string &username, const std::string &table_name, const AuthLevel level);
 
@@ -101,5 +103,10 @@ namespace HydroSQL::Server::Authority
         {}
 
         const bool authorise(const std::string &table_name, const AuthLevel level) const;
+
+        inline const std::string &getUsername() const
+        {
+            return username;
+        }
     };
 };

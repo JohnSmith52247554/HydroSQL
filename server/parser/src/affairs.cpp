@@ -13,20 +13,19 @@
 
 namespace HydroSQL::Server::Parser
 {
-    const int CreateTableA::execute(const Authority auth, std::string &result) const
+    const int CreateTableA::execute(const std::unique_ptr<Authoriser> auth, std::string &result) const
     {
         result.clear();
 
         // check authority
-        if (!auth)
-        {
-            result = "[FAILED] Authority Insufficient.";
-            return 0;
-        }
-
         try
         {
             Engine::Table table(this->table_name, std::move(this->col));
+
+            if (!Authority::AuthManager::get().addTable(table_name, auth->getUsername()))
+            {
+                return 0;
+            }
             result = "[SUCCESS] Create table " + this->table_name + ".";
         }
         catch(const std::exception& e)
@@ -37,7 +36,7 @@ namespace HydroSQL::Server::Parser
         return 1;
     }
 
-    const int InsertA::execute(const Authority auth, std::string &result) const
+    const int InsertA::execute(const std::unique_ptr<Authoriser> auth, std::string &result) const
     {
         result.clear();
 
@@ -60,7 +59,7 @@ namespace HydroSQL::Server::Parser
         }
     }
 
-    const int SelectA::execute(const Authority auth, std::string &result) const
+    const int SelectA::execute(const std::unique_ptr<Authoriser> auth, std::string &result) const
     {
         result.clear();
 
@@ -96,7 +95,7 @@ namespace HydroSQL::Server::Parser
         }
     }
 
-    const int UpdateA::execute(const Authority auth, std::string &result) const
+    const int UpdateA::execute(const std::unique_ptr<Authoriser> auth, std::string &result) const
     {
         result.clear();
 
@@ -119,7 +118,7 @@ namespace HydroSQL::Server::Parser
         }
     }
 
-    const int DeleteA::execute(const Authority auth, std::string &result) const
+    const int DeleteA::execute(const std::unique_ptr<Authoriser> auth, std::string &result) const
     {
         result.clear();
 
@@ -142,7 +141,7 @@ namespace HydroSQL::Server::Parser
         }
     }
 
-    const int DropA::execute(const Authority auth, std::string &result) const
+    const int DropA::execute(const std::unique_ptr<Authoriser> auth, std::string &result) const
     {
         result.clear();
 
@@ -156,6 +155,7 @@ namespace HydroSQL::Server::Parser
         try
         {
             Engine::Table table(table_name);
+            Authority::AuthManager::get().removeTable(table_name);
             return table.drop(result);
         }
         catch (const std::exception &e)

@@ -1,0 +1,90 @@
+2025-06-22-20:00:30.022 [INFO] Start listening on port 8080.
+2025-06-22-20:00:39.595 [INFO] New connection from 127.0.0.1:14966
+2025-06-22-20:00:42.161 [ERROR] Client: 364 Recv failed.
+2025-06-22-20:01:07.094 [INFO] Start listening on port 8080.
+2025-06-22-20:03:02.768 [INFO] Start listening on port 8080.
+2025-06-22-20:03:53.044 [INFO] Start listening on port 8080.
+2025-06-22-20:04:02.138 [INFO] New connection from 127.0.0.1:1050
+2025-06-22-20:04:04.438 [ERROR] Client: 360 Recv failed.
+2025-06-22-20:05:11.394 [INFO] Start listening on port 8080.
+2025-06-22-20:06:55.073 [INFO] Start listening on port 8080.
+2025-06-22-20:07:50.534 [INFO] Start listening on port 8080.
+2025-06-22-20:08:06.833 [INFO] New connection from 127.0.0.1:1131
+2025-06-22-20:08:28.957 [ERROR] Client: 356 Client disconnected.
+2025-06-22-20:09:28.329 [INFO] New connection from 127.0.0.1:1145
+2025-06-22-20:09:29.991 [ERROR] Client: 368 Recv failed.
+2025-06-22-20:11:16.758 [INFO] Start listening on port 8080.
+2025-06-22-20:11:34.583 [INFO] New connection from 127.0.0.1:1169
+2025-06-22-20:11:53.641 [ERROR] Client 200: Recv failed.
+2025-06-22-20:12:27.859 [INFO] Start listening on port 8080.
+2025-06-22-20:12:41.478 [INFO] New connection from 127.0.0.1:1191
+2025-06-22-20:12:49.264 [INFO] Client 352: Sign up success.
+2025-06-22-20:13:31.989 [INFO] Client 352: CREATE
+2025-06-22-20:13:31.991 [WARNING] Client 352: [FAILED] Command not found. Do you mean CREATE TABLE?
+2025-06-22-20:13:32.205 [INFO] Client 352: TABLE
+2025-06-22-20:13:32.205 [WARNING] Client 352: [FAILED] Command not found.
+2025-06-22-20:13:32.410 [INFO] Client 352: test
+2025-06-22-20:13:32.631 [INFO] Client 352: index
+2025-06-22-20:13:32.837 [INFO] Client 352: INT
+2025-06-22-20:13:32.837 [WARNING] Client 352: [FAILED] Command not found.
+2025-06-22-20:13:33.042 [INFO] Client 352: name
+2025-06-22-20:13:33.248 [INFO] Client 352: VARCHAR(10)
+2025-06-22-20:13:33.252 [WARNING] Client 352: [FAILED] Command not found.
+2025-06-22-20:13:33.469 [INFO] Client 352: age
+2025-06-22-20:13:33.675 [INFO] Client 352: SMALLINT
+2025-06-22-20:13:33.678 [WARNING] Client 352: [FAILED] Command not found.
+2025-06-22-20:14:46.468 [INFO] Start listening on port 8080.
+2025-06-22-20:15:01.988 [INFO] New connection from 127.0.0.1:1224
+2025-06-22-20:15:11.074 [ERROR] Client 352: Recv failed.
+2025-06-22-20:15:55.901 [INFO] Start listening on port 8080.
+2025-06-22-20:16:07.565 [INFO] New connection from 127.0.0.1:1243
+2025-06-22-20:16:24.410 [ERROR] Client 356: Recv failed.
+2025-06-22-20:18:05.220 [INFO] Start listening on port 8080.
+2025-06-22-20:18:16.442 [INFO] New connection from 127.0.0.1:1275
+2025-06-22-20:18:36.714 [INFO] Start listening on port 8080.
+2025-06-22-20:18:48.521 [INFO] New connection from 127.0.0.1:1278
+2025-06-22-20:19:14.261 [ERROR] Client 96: Client disconnected.
+2025-06-22-20:21:27.308 [INFO] Start listening on port 8080.
+2025-06-22-20:21:38.106 [INFO] New connection from 127.0.0.1:1320
+2025-06-22-20:22:16.410 [INFO] Start listening on port 8080.
+2025-06-22-20:22:31.132 [INFO] New connection from 127.0.0.1:1327
+2025-06-22-20:23:12.200 [ERROR] Client 324: Client disconnected.
+2025-06-22-20:26:01.644 [INFO] Start listening on port 8080.
+2025-06-22-20:26:15.898 [INFO] New connection from 127.0.0.1:1419
+2025-06-22-20:29:49.968 [INFO] Start listening on port 8080.
+2025-06-22-20:30:02.052 [INFO] New connection from 127.0.0.1:1473
+2025-06-22-20:34:27.680 [INFO] Start listening on port 8080.
+2025-06-22-20:34:38.261 [INFO] New connection from 127.0.0.1:1532
+2025-06-22-20:34:46.919 [ERROR] Client 360: Recv failed.
+2025-06-22-20:35:14.651 [INFO] Start listening on port 8080.
+2025-06-22-20:35:31.509 [INFO] New connection from 127.0.0.1:1547
+2025-06-22-20:35:52.583 [INFO] Start listening on port 8080.
+2025-06-22-20:36:05.655 [INFO] New connection from 127.0.0.1:1555
+2025-06-22-20:36:39.954 [INFO] Start listening on port 8080.
+2025-06-22-20:36:54.790 [INFO] New connection from 127.0.0.1:1585
+2025-06-22-20:37:04.966 [ERROR] Client 356: Client disconnected.
+2025-06-22-20:38:08.491 [INFO] New connection from 127.0.0.1:1601
+2025-06-22-20:38:28.936 [INFO] Client 364: L
+2025-06-22-20:42:41.789 [INFO] Start listening on port 8080.
+2025-06-22-20:42:46.321 [INFO] New connection from 127.0.0.1:1628
+2025-06-22-20:42:56.150 [INFO] Client 380: Log in success.
+2025-06-22-20:43:39.327 [INFO] Client 380: CREATE TABLE test index INT name VARCHAR(10) age SMALLINT
+2025-06-22-20:45:27.488 [INFO] Start listening on port 8080.
+2025-06-22-20:45:39.304 [INFO] New connection from 127.0.0.1:1665
+2025-06-22-20:45:43.443 [ERROR] Client 336: Recv failed.
+2025-06-22-20:48:23.827 [INFO] Start listening on port 8080.
+2025-06-22-20:48:35.103 [INFO] New connection from 127.0.0.1:1691
+2025-06-22-20:48:41.741 [INFO] Client 356: Log in success.
+2025-06-22-20:48:54.502 [INFO] Client 356: CREATE TABLE test index INT
+2025-06-22-20:52:50.180 [INFO] Start listening on port 8080.
+2025-06-22-20:53:04.150 [INFO] New connection from 127.0.0.1:1719
+2025-06-22-20:53:12.372 [INFO] Client 384: Log in success.
+2025-06-22-20:53:32.595 [INFO] Client 384: CREATE TABLE test index INT
+2025-06-22-20:54:15.542 [INFO] Start listening on port 8080.
+2025-06-22-20:54:43.079 [INFO] New connection from 127.0.0.1:1732
+2025-06-22-20:54:49.868 [INFO] Client 336: Log in success.
+2025-06-22-20:55:53.727 [INFO] Start listening on port 8080.
+2025-06-22-20:56:09.238 [INFO] New connection from 127.0.0.1:1744
+2025-06-22-20:56:15.662 [INFO] Client 380: Log in success.
+2025-06-22-20:56:23.636 [INFO] Client 380: CREATE TABLE test index INT
+2025-06-22-20:56:52.839 [INFO] Start listening on port 8080.

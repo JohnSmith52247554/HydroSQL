@@ -143,7 +143,7 @@ namespace HydroSQL::Utils::Logger
 
     void BasicConsoleSink::error(const TimeStamp &timestamp, const std::string &log) const
     {
-        if (level <= Level::ERROR)
+        if (level <= Level::ERROR_)
             std::cout << getTimeStr(timestamp) << " [ERROR] " + log << std::endl;
     }
 
@@ -179,7 +179,7 @@ namespace HydroSQL::Utils::Logger
 
     void BasicFileSink::error(const TimeStamp &timestamp, const std::string &log) const
     {
-        if (level <= Level::ERROR)
+        if (level <= Level::ERROR_)
         {
             updateOfile(timestamp);
             std::lock_guard<std::mutex> lock(file_mutex);
@@ -234,7 +234,7 @@ namespace HydroSQL::Utils::Logger
                         case Level::WARNING:
                             sink->warning(time, log.second);
                             break;
-                        case Level::ERROR:
+                        case Level::ERROR_:
                             sink->error(time, log.second);
                             break;
                         default:
@@ -277,7 +277,7 @@ namespace HydroSQL::Utils::Logger
     void Logger::error(std::string log)
     {
         std::unique_lock<std::mutex> lock(buffer_mutex);
-        buffer.push_back({Level::ERROR, std::move(log)});
+        buffer.push_back({Level::ERROR_, std::move(log)});
         lock.unlock();
         wait_for_log.notify_one();
     }
@@ -303,29 +303,4 @@ namespace HydroSQL::Utils::Logger
 
         return timestamp;
     }
-}
-
-int main()
-{
-    using namespace HydroSQL::Utils::Logger;
-
-    try
-    {
-        // Logger::get().setLevel(Level::WARNING);
-        Logger::get().addSink(std::move(std::make_unique<BasicConsoleSink>(Level::WARNING, "hh:mm:ss.SSS")));
-        Logger::get().addSink(std::move(std::make_unique<BasicFileSink>("log")));
-        for (size_t i = 0; i < 10000; i++)
-        {
-            Logger::get().info(std::to_string(i));
-            Logger::get().warning(std::to_string(2 * i));
-            Logger::get().error(std::to_string(i * i));
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    return 0;
 }
