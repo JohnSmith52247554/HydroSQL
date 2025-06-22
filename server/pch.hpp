@@ -13,6 +13,7 @@
 
 #include <string>
 #include <vector>
+#include <array>
 #include <map>
 #include <unordered_map>
 #include <unordered_set>
@@ -31,3 +32,5 @@
 #include <optional>
 #include <algorithm>
 #include <mutex>
+#include <shared_mutex>
+#include <atomic>

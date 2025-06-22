@@ -11,6 +11,7 @@
 
 #include <table.hpp>
 #include <LogicalTree.hpp>
+#include <LockPool.hpp>
 
 namespace HydroSQL::Server::Engine
 {
@@ -209,6 +210,8 @@ namespace HydroSQL::Server::Engine
 
     int Table::insert(const std::vector<std::string> &keys, const std::vector<std::vector<std::string>> &values, std::string &result)
     {
+        std::unique_lock lock(LockPool::get().getLock(this->name));
+
         // legality examination
         // The amount of values each row should be the same as the keys.
         for (size_t i = 0; i < values.size(); i++)
@@ -531,6 +534,8 @@ namespace HydroSQL::Server::Engine
 
     int Table::insertV2(const std::vector<std::string> &keys, const std::vector<std::vector<std::shared_ptr<LT::LT>>> &values, std::string &result)
     {
+        std::unique_lock lock(LockPool::get().getLock(this->name));
+
         // legality examination
         // The amount of values each row should be the same as the keys.
         for (size_t i = 0; i < values.size(); i++)
@@ -705,6 +710,8 @@ namespace HydroSQL::Server::Engine
 
     int Table::select(const std::vector<std::string> &keys, const std::shared_ptr<LT::LT> requirements, const std::shared_ptr<SelectOrder> order, std::vector<std::vector<std::string>> &output, std::string &result) const
     {
+        std::shared_lock lock(LockPool::get().getLock(this->name));
+
         // legality examination
         // The keys should exist.
         struct SelectInfo
@@ -947,6 +954,8 @@ namespace HydroSQL::Server::Engine
 
     int Table::update(const std::vector<UpdateInfo> &info, const std::shared_ptr<LT::LT> requirements, std::string &result)
     {
+        std::unique_lock lock(LockPool::get().getLock(this->name));
+
         // legality examination
         // the columns to be update should exist
         struct ColUpdate
@@ -1218,6 +1227,8 @@ namespace HydroSQL::Server::Engine
 
     int Table::updateV2(const std::vector<std::string> &keys, const std::vector<std::shared_ptr<LT::LT>> &expr, const std::shared_ptr<LT::LT> requirements, std::string &result)
     {
+        std::unique_lock lock(LockPool::get().getLock(this->name));
+
         // legality examination
         // The size of expression each row should be the same as the size of keys.
         
@@ -1387,6 +1398,8 @@ namespace HydroSQL::Server::Engine
 
     int Table::delete_(const std::shared_ptr<LT::LT> requirements, std::string &result)
     {
+        std::unique_lock lock(LockPool::get().getLock(this->name));
+
         if (requirements == nullptr)
         {
             result = "[FAILED] The DELETE requires a WHERE statement.";
@@ -1460,6 +1473,8 @@ namespace HydroSQL::Server::Engine
 
     int Table::drop(std::string &result)
     {
+        std::unique_lock lock(LockPool::get().getLock(this->name));
+
         std::filesystem::remove(data_path);
         result = "[SUCCESS] 1 table dropped.";
         return 1;

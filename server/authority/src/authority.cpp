@@ -27,14 +27,16 @@ namespace HydroSQL::Server::Authority
         }
     }
 
-    const bool AuthManager::examinePasswordHash(const std::string &username, const std::string &password_hash) const
+    const bool AuthManager::examinePasswordHash(const std::string &username, const std::string &password_hash)
     {
         std::vector<std::string> username_vec;
         std::vector<std::string> password_hash_vec;
         std::vector<std::string> table_name_vec;
 
-        auto header_size = read(username_vec, password_hash_vec, table_name_vec);
-
+        {
+            std::shared_lock lock(shared_mutex);
+            auto header_size = read(username_vec, password_hash_vec, table_name_vec);
+        }
         auto name = std::find(username_vec.begin(), username_vec.end(), username);
         if (name == username_vec.end())
             throw std::runtime_error("[ERROR] Username not found");
@@ -42,12 +44,13 @@ namespace HydroSQL::Server::Authority
         return password_hash == password_hash_vec[name - username_vec.begin()];
     }
 
-    const AuthLevel AuthManager::getLevel(const std::string &username, const std::string tablename) const
+    const AuthLevel AuthManager::getLevel(const std::string &username, const std::string tablename)
     {
         std::vector<std::string> username_vec;
         std::vector<std::string> password_hash_vec;
         std::vector<std::string> table_name_vec;
 
+        std::shared_lock lock(shared_mutex);
         auto header_size = read(username_vec, password_hash_vec, table_name_vec);
 
         auto col_num = username_vec.size();
@@ -85,7 +88,10 @@ namespace HydroSQL::Server::Authority
         std::vector<std::string> table_name_vec;
         std::vector<std::vector<AuthLevel>> level_vec;
 
-        read(username_vec, password_hash_vec, table_name_vec, level_vec);
+        {
+            std::shared_lock lock(shared_mutex);
+            read(username_vec, password_hash_vec, table_name_vec, level_vec);
+        }
 
         auto user = std::find(username_vec.begin(), username_vec.end(), username);
         if (user != username_vec.end())
@@ -99,7 +105,8 @@ namespace HydroSQL::Server::Authority
             row.emplace_back(AuthLevel::null);
         }
 
-        std::lock_guard<std::mutex> lock(write_mutex);
+
+        std::unique_lock u_lock(shared_mutex);
 
         if (!write(username_vec, password_hash_vec, table_name_vec, level_vec))
             throw std::runtime_error("[ERROR] Write user configuration failed.");
@@ -114,8 +121,10 @@ namespace HydroSQL::Server::Authority
         std::vector<std::string> table_name_vec;
         std::vector<std::vector<AuthLevel>> level_vec;
 
-        read(username_vec, password_hash_vec, table_name_vec, level_vec);
-
+        {
+            std::shared_lock lock(shared_mutex);
+            read(username_vec, password_hash_vec, table_name_vec, level_vec);
+        }
         auto table_it = std::find(table_name_vec.begin(), table_name_vec.end(), table_name);
         if (table_it != table_name_vec.end())
             throw std::runtime_error("[FAILED] The table name has been occupied. Please choose another.");
@@ -127,7 +136,7 @@ namespace HydroSQL::Server::Authority
         new_row[user - username_vec.begin()] = AuthLevel::ADMIN;
         level_vec.push_back(std::move(new_row));
 
-        std::lock_guard<std::mutex> lock(write_mutex);
+        std::unique_lock lock(shared_mutex);
         if (!write(username_vec, password_hash_vec, table_name_vec, level_vec))
             throw std::runtime_error("[ERROR] Write user configuration failed.");
 
@@ -140,8 +149,11 @@ namespace HydroSQL::Server::Authority
         std::vector<std::string> password_hash_vec;
         std::vector<std::string> table_name_vec;
 
-        auto header_size = read(username_vec, password_hash_vec, table_name_vec);
-
+        std::streampos header_size;
+        {
+            std::shared_lock lock(shared_mutex);
+            header_size = read(username_vec, password_hash_vec, table_name_vec);
+        }
         auto col_num = username_vec.size();
         auto row_num = table_name_vec.size();
 
@@ -159,6 +171,7 @@ namespace HydroSQL::Server::Authority
         std::streamoff coord_x = user - username_vec.begin();
         std::streamoff coord_y = table - table_name_vec.begin();
 
+        std::unique_lock u_lock(shared_mutex);
         std::fstream file(USER_CONFIG_PATH, std::ios::binary | std::ios::out | std::ios::in);
         if (!file.is_open())
             throw std::runtime_error("[ERROR] Unable to open user configuration file.");

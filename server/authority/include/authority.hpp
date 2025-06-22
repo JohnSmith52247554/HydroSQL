@@ -26,7 +26,7 @@ namespace HydroSQL::Server::Authority
     class AuthManager
     {
     private:
-        std::mutex write_mutex;
+        std::shared_mutex shared_mutex;
 
         AuthManager();
         ~AuthManager() = default;
@@ -58,9 +58,9 @@ namespace HydroSQL::Server::Authority
          * 
          */
 
-        [[nodiscard]] const bool examinePasswordHash(const std::string &username, const std::string &password_hash) const;
+        [[nodiscard]] const bool examinePasswordHash(const std::string &username, const std::string &password_hash);
 
-        [[nodiscard]] const AuthLevel getLevel(const std::string &username, const std::string tablename) const;
+        [[nodiscard]] const AuthLevel getLevel(const std::string &username, const std::string tablename);
 
         [[nodiscard]] const int addUser(const std::string &username, const std::string &password_hash);
 
