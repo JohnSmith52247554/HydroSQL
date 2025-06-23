@@ -139,13 +139,13 @@ namespace HydroSQL::Server::Engine
         case DataType::DECIMAL:
             return LT::LiterType::FLOAT;
         case DataType::VARCHAR:
-            [[fallthrough]];
-        case DataType::DATE:
-            [[fallthrough]];
-        case DataType::TIME:
-            [[fallthrough]];
-        case DataType::DATETIME:
             return LT::LiterType::STR;
+        case DataType::DATE:
+            return LT::LiterType::DATE;
+        case DataType::TIME:
+            return LT::LiterType::TIME;
+        case DataType::DATETIME:
+            return LT::LiterType::DATETIME;
         default:
             return LT::LiterType::null;
         }
@@ -1622,65 +1622,17 @@ namespace HydroSQL::Server::Engine
                        col.length >= std::get<std::string>(root->info.liter.liter_info).size();
             case LT::LiterType::DATE:
                 {
-                    auto &str = std::get<std::string>(root->info.liter.liter_info);
-                    if (str.size() != 10)
-                        return false;
-                    if (!continuousNumExamination(str, 0, 4))
-                        return false;
-                    if (str[4] != '-')
-                        return false;
-                    if (!continuousNumExamination(str, 5, 2))
-                        return false;
-                    if (str[7] != '-')
-                        return false;
-                    if (!continuousNumExamination(str, 8, 2))
-                        return false;
+                    auto &date = std::get<int64_t>(root->info.liter.liter_info);
                     return col.data_type == DataType::DATE;
                 }
             case LT::LiterType::TIME:
                 {
-                    auto &str = std::get<std::string>(root->info.liter.liter_info);
-                    if (str.size() != 8)
-                        return false;
-                    if (!continuousNumExamination(str, 0, 2))
-                        return false;
-                    if (str[2] != ':')
-                        return false;
-                    if (!continuousNumExamination(str, 3, 2))
-                        return false;
-                    if (str[5] != ':')
-                        return false;
-                    if (!continuousNumExamination(str, 6, 2))
-                        return false;
+                    auto &time = std::get<int64_t>(root->info.liter.liter_info);
                     return col.data_type == DataType::TIME;
                 }
             case LT::LiterType::DATETIME:
                 {
-                    auto &str = std::get<std::string>(root->info.liter.liter_info);
-                    if (str.size() != 19)
-                        return false;
-                    if (!continuousNumExamination(str, 0, 4))
-                        return false;
-                    if (str[4] != '-')
-                        return false;
-                    if (!continuousNumExamination(str, 5, 2))
-                        return false;
-                    if (str[7] != '-')
-                        return false;
-                    if (!continuousNumExamination(str, 8, 2))
-                        return false;
-                    if (str[10] != '-')
-                        return false;
-                    if (!continuousNumExamination(str, 11, 2))
-                        return false;
-                    if (str[13] != ':')
-                        return false;
-                    if (!continuousNumExamination(str, 14, 2))
-                        return false;
-                    if (str[16] != ':')
-                        return false;
-                    if (!continuousNumExamination(str, 17, 2))
-                        return false;
+                    auto &datetime = std::get<int64_t>(root->info.liter.liter_info);
                     return col.data_type == DataType::DATETIME;
                 }
             default:
@@ -1725,14 +1677,17 @@ namespace HydroSQL::Server::Engine
                     break;
                 case LT::LiterType::BOOLEAN:
                     std::get<bool>(node->info.liter.liter_info);
+                    break;
                 case LT::LiterType::STR:
-                    [[fallthrough]];
+                    std::get<std::string>(node->info.liter.liter_info);
+                    break;
                 case LT::LiterType::DATE:
                     [[fallthrough]];
                 case LT::LiterType::TIME:
                     [[fallthrough]];
                 case LT::LiterType::DATETIME:
-                    std::get<std::string>(node->info.liter.liter_info);
+                    std::get<int64_t>(node->info.liter.liter_info);
+                    break;
                 default:
                     break;
                 }
@@ -2040,23 +1995,17 @@ namespace HydroSQL::Server::Engine
                         break;
                     case LT::LiterType::DATE:
                         {
-                            int32_t num;
-                            dateStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
-                            data.emplace<int64_t>(num);
+                            data.emplace<int64_t>(std::get<int64_t>(node->info.liter.liter_info));
                         }
                         break;
                     case LT::LiterType::TIME:
                         {
-                            int32_t num;
-                            timeStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
-                            data.emplace<int64_t>(num);
+                            data.emplace<int64_t>(std::get<int64_t>(node->info.liter.liter_info));
                         }
                         break;
                     case LT::LiterType::DATETIME:
                         {
-                            int64_t num;
-                            datetimeStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
-                            data.emplace<int64_t>(num);
+                            data.emplace<int64_t>(std::get<int64_t>(node->info.liter.liter_info));
                         }
                         break;
                     default:
@@ -2324,22 +2273,19 @@ namespace HydroSQL::Server::Engine
             break;
             case LT::LiterType::DATE:
             {
-                int32_t num;
-                dateStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                int32_t num = std::get<int64_t>(node->info.liter.liter_info);
                 data.emplace<int64_t>(num);
             }
             break;
             case LT::LiterType::TIME:
             {
-                int32_t num;
-                timeStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                int32_t num = std::get<int64_t>(node->info.liter.liter_info);
                 data.emplace<int64_t>(num);
             }
             break;
             case LT::LiterType::DATETIME:
             {
-                int64_t num;
-                datetimeStrToNum(std::get<std::string>(node->info.liter.liter_info), num);
+                int64_t num = std::get<int64_t>(node->info.liter.liter_info);
                 data.emplace<int64_t>(num);
             }
             break;
@@ -2980,7 +2926,13 @@ namespace HydroSQL::Server::Engine
         break;
         case DataType::FLOAT:
         {
-            float num = static_cast<decltype(num)>(std::get<double>(val));
+            float num;
+            if (std::holds_alternative<double>(val))
+                num = static_cast<decltype(num)>(std::get<double>(val));
+            else if (std::holds_alternative<int64_t>(val))
+                num = static_cast<decltype(num)>(std::get<int64_t>(val));
+            else
+                assert(false);
             char *bytes = reinterpret_cast<char *>(&num);
             for (size_t i = 0; i < sizeof(float); ++i)
                 *it++ = bytes[i];
@@ -2989,7 +2941,13 @@ namespace HydroSQL::Server::Engine
         case DataType::DECIMAL:
         {
             // TODO: costumize the presision and scale of the decimal
-            double num = static_cast<decltype(num)>(std::get<double>(val));
+            double num;
+            if (std::holds_alternative<double>(val))
+                num = static_cast<decltype(num)>(std::get<double>(val));
+            else if (std::holds_alternative<int64_t>(val))
+                num = static_cast<decltype(num)>(std::get<int64_t>(val));
+            else
+                assert(false);
             char *bytes = reinterpret_cast<char *>(&num);
             for (size_t i = 0; i < sizeof(double); ++i)
                 *it++ = bytes[i];

@@ -43,7 +43,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth->authorise(this->table_name, Authority::AuthLevel::MODIFY))
         {
-            result = "[FAILED] Authority Insufficient.";
+            result = "[FAILED] Premission Insufficient.";
             return 0;
         }
 
@@ -66,7 +66,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth->authorise(this->table_name, Authority::AuthLevel::READONLY))
         {
-            result = "[FAILED] Authority Insufficient.";
+            result = "[FAILED] Premission Insufficient.";
             return 0;
         }
 
@@ -102,7 +102,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth->authorise(this->table_name, Authority::AuthLevel::MODIFY))
         {
-            result = "[FAILED] Authority Insufficient.";
+            result = "[FAILED] Premission Insufficient.";
             return 0;
         }
 
@@ -125,7 +125,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth->authorise(this->table_name, Authority::AuthLevel::MODIFY))
         {
-            result = "[FAILED] Authority Insufficient.";
+            result = "[FAILED] Premission Insufficient.";
             return 0;
         }
 
@@ -148,7 +148,7 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth->authorise(this->table_name, Authority::AuthLevel::ADMIN))
         {
-            result = "[FAILED] Authority Insufficient.";
+            result = "[FAILED] Premission Insufficient.";
             return 0;
         }
 
@@ -173,14 +173,14 @@ namespace HydroSQL::Server::Parser
         // check authority
         if (!auth->authorise(this->table_name, Authority::AuthLevel::ADMIN))
         {
-            result = "[FAILED] Authority Insufficient.";
+            result = "[FAILED] Premission Insufficient.";
             return 0;
         }
 
         try
         {
             auto num = Authority::AuthManager::get().setUserAuth(this->user_list, this->table_name, this->level);
-            result = "[SUCCESS] " + std::to_string(user_list.size()) + " users' authority level updated.";
+            result = "[SUCCESS] " + std::to_string(user_list.size()) + " users' premission level updated.";
             return num;
         }
         catch (const std::exception &e)

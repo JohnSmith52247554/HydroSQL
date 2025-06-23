@@ -14,6 +14,10 @@
 #include <utils/logger/include/logger.hpp>
 
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 int main()
 {
 #ifdef WIN32
@@ -23,7 +27,7 @@ int main()
 
     try
     {
-        HydroSQL::Server::Network::Server server(8080, 4);
+        HydroSQL::Server::Network::Server server(8080, 8);
         server.run();
     }
     catch(std::exception &e)

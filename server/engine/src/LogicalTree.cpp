@@ -222,13 +222,12 @@ namespace HydroSQL::Server::Engine::LT
         }
         else if (root->type == NodeType::COL)
         {
-            // TODO:
-            assert(root->info.liter.liter_type == LiterType::FLOAT);
+            assert(root->info.liter.liter_type == LiterType::STR);
             double result;
-            if(!getCol<double>(info, std::get<std::string>(root->info.liter.liter_info), result))
-            {
-                return 0.0;
-            }
+            auto col = std::find_if(info.begin(), info.end(), [&](const ColInfo &col_info)
+                                    { return col_info.col_name == std::get<std::string>(root->info.liter.liter_info); });
+            assert(col->col_type == DataType::FLOAT || col->col_type == DataType::DECIMAL);
+            result = std::get<double>(col->liter.liter_info);
             return result;
         }
 

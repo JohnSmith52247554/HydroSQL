@@ -51,6 +51,8 @@ int main()
 
         if (!client.connect())
         {
+            std::cout << "Unable connect the server. Press any key to exit." << std::endl;
+            std::cin.get();
             return -1;
         }
 

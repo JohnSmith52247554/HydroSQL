@@ -434,7 +434,7 @@ namespace HydroSQL::Server::Parser
                     if (it + 1 == command.end())
                         break;
                     it++;
-                    if (!(((*it >= 'a' && *it <= 'z') || (*it >= 'A' && *it <= 'Z') || (*it >= '0' && *it <= '9'))))
+                    if (!(((*it >= 'a' && *it <= 'z') || (*it >= 'A' && *it <= 'Z') || (*it >= '0' && *it <= '9') || (*it == '_'))))
                     {
                         it--;
                         break;
