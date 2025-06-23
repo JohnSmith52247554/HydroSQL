@@ -133,7 +133,7 @@ namespace HydroSQL::Server::Network
 
 
             if (!thread_pool.busy())
-                thread_pool.post(std::bind(handleClient, this, client_socket));
+                thread_pool.post(std::bind(handleClient, this, client_socket, std::string(client_ip) + ":" + std::to_string(ntohs(client_addr.sin_port))));
             else
             {
                 Logger::get().warning("Server busy. Reject connection from"+ std::string(client_ip) + ":" + std::to_string(ntohs(client_addr.sin_port)));
@@ -149,28 +149,28 @@ namespace HydroSQL::Server::Network
         return 1;
     }
 
-    const int Server::send(std::string &msg, const SOCKET client_socket)
+    const int Server::send(std::string &msg, const SOCKET client_socket, const std::string &username)
     {
         if (::send(client_socket, msg.c_str(), msg.size(), 0) == SOCKET_ERROR)
         {
-            Logger::get().error("Client " + std::to_string(client_socket) + ": Send reponse failed.");
+            Logger::get().error(username + ": Send reponse failed.");
             return 0;
         }
         return 1;
     }
 
-    const int Server::recieve(std::string &msg, const SOCKET client_socket)
+    const int Server::recieve(std::string &msg, const SOCKET client_socket, const std::string &username)
     {
         char buffer[4096];
         int bytes_received = recv(client_socket, buffer, sizeof(buffer), 0);
         if (bytes_received == 0)
         {
-            Logger::get().info("Client " + std::to_string(client_socket) + ": Client disconnected.");
+            Logger::get().info(username + ": Client disconnected.");
             return 0;
         }
         else if (bytes_received < 0)
         {
-            Logger::get().error("Client " + std::to_string(client_socket) + ": Recv failed.");
+            Logger::get().error(username + ": Recv failed.");
             return 0;
         }
 
@@ -178,44 +178,55 @@ namespace HydroSQL::Server::Network
         return 1;
     }
 
-    void Server::handleClient(const SOCKET client_socket)
+    void Server::handleClient(const SOCKET client_socket, const std::string client_addr)
     {
         try
         {
             std::string msg = "(L)Log In\n(S)Sign Up";
-            std::string username;
+            std::string username = client_addr;
             while (true)
             {
-                if (!send(msg, client_socket))
+                if (!send(msg, client_socket, username))
                     return;
-                
-                if (!recieve(msg, client_socket))
+
+                if (!recieve(msg, client_socket, username))
                     return;
                 if (msg == "L" || msg == "l" || msg == "Log In")
                 {
                     // log in
                     msg = "Username: ";
-                    if (!send(msg, client_socket))
+                    if (!send(msg, client_socket, username))
                         return;
 
-                    if (!recieve(username, client_socket))
+                    if (!recieve(username, client_socket, username))
                         return;
 
                     msg = "Password: ";
-                    if (!send(msg, client_socket))
+                    if (!send(msg, client_socket, username))
                         return;
 
-                    std::string password_hash;
-                    if (!recieve(password_hash, client_socket))
-                        return;
-
+                    std::string buffer;
+                    while (true)
+                    {
+                        if (!recieve(buffer, client_socket, username))
+                            return;
+                        if (buffer == "Get stored password hash.")
+                            break;
+                    }
                     try
                     {
-                        if (Authority::AuthManager::get().examinePasswordHash(username, password_hash))
+                        auto password_hash = Authority::AuthManager::get().getPasswordHash(username);
+                        if (!send(password_hash, client_socket, username))
+                            return;
+
+                        if (!recieve(msg, client_socket, username))
+                            return;
+
+                        if (msg == "Password correct.")
                         {
                             msg = "Log in success.";
-                            Logger::get().info("Client " + std::to_string(client_socket) + ": " + msg);
-                            if (!send(msg, client_socket))
+                            Logger::get().info(username + ": " + msg);
+                            if (!send(msg, client_socket, username))
                                 return;
                             break;
                         }
@@ -223,6 +234,19 @@ namespace HydroSQL::Server::Network
                         {
                             msg = "Password incorrect.\n(L)Log In\n(S)Sign Up";
                         }
+
+                        // if (Authority::AuthManager::get().examinePasswordHash(username, password_hash))
+                        // {
+                        //     msg = "Log in success.";
+                        //     Logger::get().info(username + ": " + msg);
+                        //     if (!send(msg, client_socket, username))
+                        //         return;
+                        //     break;
+                        // }
+                        // else
+                        // {
+                        //     msg = "Password incorrect.\n(L)Log In\n(S)Sign Up";
+                        // }
                     }
                     catch (std::exception &e)
                     {
@@ -234,18 +258,18 @@ namespace HydroSQL::Server::Network
                 {
                     // sign up
                     msg = "Username: ";
-                    if (!send(msg, client_socket))
+                    if (!send(msg, client_socket, username))
                         return;
 
-                    if (!recieve(username, client_socket))
+                    if (!recieve(username, client_socket, username))
                         return;
 
                     msg = "Password: ";
-                    if (!send(msg, client_socket))
+                    if (!send(msg, client_socket, username))
                         return;
 
                     std::string password_hash;
-                    if (!recieve(password_hash, client_socket))
+                    if (!recieve(password_hash, client_socket, username))
                         return;
 
                     try
@@ -253,8 +277,8 @@ namespace HydroSQL::Server::Network
                         if (Authority::AuthManager::get().addUser(username, password_hash))
                         {
                             msg = "Sign up success.";
-                            Logger::get().info("Client " + std::to_string(client_socket) + ": " + msg);
-                            if (!send(msg, client_socket))
+                            Logger::get().info(username + ": " + msg);
+                            if (!send(msg, client_socket, username))
                                 return;
                             break;
                         }
@@ -272,17 +296,17 @@ namespace HydroSQL::Server::Network
             {
                 try
                 {
-                    if (!recieve(msg, client_socket))
+                    if (!recieve(msg, client_socket, username))
                         return;
 
-                    Logger::get().info("Client " + std::to_string(client_socket) + ": " + msg);
+                    Logger::get().info(username + ": " + msg);
 
                     auto tokens = Parser::tokenize(msg);
                     auto affair = Parser::parse(tokens);
                     if (affair == nullptr)
                     {
                         msg = "Parse failed.";
-                        if (!send(msg, client_socket))
+                        if (!send(msg, client_socket, username))
                             return;
                         continue;
                     }
@@ -291,7 +315,7 @@ namespace HydroSQL::Server::Network
                     std::string result;
                     affair->execute(std::move(auth), result);
 
-                    if (!send(result, client_socket))
+                    if (!send(result, client_socket, username))
                         return;
                 }
                 catch(const std::exception& e)
@@ -299,10 +323,10 @@ namespace HydroSQL::Server::Network
                     static const std::string warning_pref = "[FAILED]";
                     std::string err = e.what();
                     if (err.substr(0, warning_pref.size()) == warning_pref)
-                        Logger::get().warning("Client " + std::to_string(client_socket) + ": " + err);
+                        Logger::get().warning(username + ": " + err);
                     else
-                        Logger::get().error("Client " + std::to_string(client_socket) + ": " + err);
-                    if (!send(err, client_socket))
+                        Logger::get().error(username + ": " + err);
+                    if (!send(err, client_socket, username))
                         return;
                 }
             }

@@ -43,11 +43,11 @@ namespace HydroSQL::Server::Network
         const int run();
 
     private:
-        const int send(std::string &msg, const SOCKET client_socket);
-        const int recieve(std::string &msg, const SOCKET client_socket);
+        const int send(std::string &msg, const SOCKET client_socket, const std::string &username);
+        const int recieve(std::string &msg, const SOCKET client_socket, const std::string &username);
 
 #ifdef WIN32
-        void handleClient(const SOCKET client_socket);
+        void handleClient(const SOCKET client_socket, const std::string client_addr);
 #endif
     };
 }

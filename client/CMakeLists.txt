@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 file(GLOB_RECURSE SRC 
 "network/src/*.cpp"
+"encrypt/src/*.cpp"
 "./main.cpp"
 "../utils/logger/src/*.cpp")
 
@@ -15,6 +16,7 @@ add_executable(${PROJECT_NAME} ${SRC})
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/pch.hpp)
 target_include_directories(${PROJECT_NAME} PRIVATE
 ${CMAKE_SOURCE_DIR}/network/include
+${CMAKE_SOURCE_DIR}/encrypt/include
 ${CMAKE_SOURCE_DIR}/..
 ${CMAKE_SOURCE_DIR}
 )
@@ -31,7 +33,13 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 PROJECT_PATH="${CMAKE_SOURCE_DIR}"
 )
 
-target_link_libraries(${PROJECT_NAME} ws2_32)
+find_package(PkgConfig REQUIRED)
+pkg_search_module(LIBSODIUM REQUIRED libsodium)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${LIBSODIUM_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+${LIBSODIUM_LIBRARIES}
+ws2_32)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")

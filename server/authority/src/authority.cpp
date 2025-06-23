@@ -44,6 +44,23 @@ namespace HydroSQL::Server::Authority
         return password_hash == password_hash_vec[name - username_vec.begin()];
     }
 
+    const std::string AuthManager::getPasswordHash(const std::string &username)
+    {
+        std::vector<std::string> username_vec;
+        std::vector<std::string> password_hash_vec;
+        std::vector<std::string> table_name_vec;
+
+        {
+            std::shared_lock lock(shared_mutex);
+            auto header_size = read(username_vec, password_hash_vec, table_name_vec);
+        }
+        auto name = std::find(username_vec.begin(), username_vec.end(), username);
+        if (name == username_vec.end())
+            throw std::runtime_error("[ERROR] Username not found");
+
+        return password_hash_vec[name - username_vec.begin()];
+    }
+
     const AuthLevel AuthManager::getLevel(const std::string &username, const std::string tablename)
     {
         std::vector<std::string> username_vec;

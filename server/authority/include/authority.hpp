@@ -58,7 +58,9 @@ namespace HydroSQL::Server::Authority
          * 
          */
 
-        [[nodiscard]] const bool examinePasswordHash(const std::string &username, const std::string &password_hash);
+        [[deprecated]] const bool examinePasswordHash(const std::string &username, const std::string &password_hash);
+
+        [[nodiscard]] const std::string getPasswordHash(const std::string &username);
 
         [[nodiscard]] const AuthLevel getLevel(const std::string &username, const std::string tablename);
 

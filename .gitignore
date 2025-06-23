@@ -33,6 +33,9 @@
 *.dll
 *.lib
 
+*.log
+*.bin
+
 # Folder
 .vscode
 build

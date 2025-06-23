@@ -41,7 +41,7 @@ namespace HydroSQL::Server::Parser
         result.clear();
 
         // check authority
-        if (!auth)
+        if (!auth->authorise(this->table_name, Authority::AuthLevel::MODIFY))
         {
             result = "[FAILED] Authority Insufficient.";
             return 0;
@@ -64,7 +64,7 @@ namespace HydroSQL::Server::Parser
         result.clear();
 
         // check authority
-        if (!auth)
+        if (!auth->authorise(this->table_name, Authority::AuthLevel::READONLY))
         {
             result = "[FAILED] Authority Insufficient.";
             return 0;
@@ -100,7 +100,7 @@ namespace HydroSQL::Server::Parser
         result.clear();
 
         // check authority
-        if (!auth)
+        if (!auth->authorise(this->table_name, Authority::AuthLevel::MODIFY))
         {
             result = "[FAILED] Authority Insufficient.";
             return 0;
@@ -123,7 +123,7 @@ namespace HydroSQL::Server::Parser
         result.clear();
 
         // check authority
-        if (!auth)
+        if (!auth->authorise(this->table_name, Authority::AuthLevel::MODIFY))
         {
             result = "[FAILED] Authority Insufficient.";
             return 0;
@@ -146,7 +146,7 @@ namespace HydroSQL::Server::Parser
         result.clear();
 
         // check authority
-        if (!auth)
+        if (!auth->authorise(this->table_name, Authority::AuthLevel::ADMIN))
         {
             result = "[FAILED] Authority Insufficient.";
             return 0;
@@ -155,7 +155,8 @@ namespace HydroSQL::Server::Parser
         try
         {
             Engine::Table table(table_name);
-            Authority::AuthManager::get().removeTable(table_name);
+            if (!Authority::AuthManager::get().removeTable(table_name))
+                return 0;
             return table.drop(result);
         }
         catch (const std::exception &e)
