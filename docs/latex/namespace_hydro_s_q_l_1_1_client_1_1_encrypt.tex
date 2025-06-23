@@ -1,0 +1,78 @@
+\doxysection{Hydro\+SQL\+::Client\+::Encrypt Namespace Reference}
+\hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt}{}\label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a9f06f44fcbf6c1e872ae41a670bb4f8c}{Logger}} = Hydro\+SQL\+::\+Utils\+::\+Logger\+::\+Logger
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::string \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a089a2b9685ae56334c032d419dd369bf}{secure\+Enter}} ()
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a1e15829c50f18a57d2f86a8933a62f3b}{valid\+Password}} (const std\+::string \&password, std\+::string \&result)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_af3eeb50d4d9ef7c7758de365fae704a0}{valid\+Username}} (const std\+::string \&username, std\+::string \&result)
+\item 
+void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a08238d145ec19b7200f28c0973fd7ded}{hash}} (std\+::string \&password)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a07d5f5675c12fc11bd291f9d9eafc9df}{verify\+Hash}} (std\+::string \&\&password, const std\+::string \&\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a08238d145ec19b7200f28c0973fd7ded}{hash}})
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a71fb160c3853ca192da2b90f2894bae9}{chararcher\+Check}} (const std\+::string \&password)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_abd8c65c5e37f10e029739b917e18067f}{consecutive\+Check}} (const std\+::string \&password, const unsigned char max\+\_\+repeat\+\_\+time)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a9f06f44fcbf6c1e872ae41a670bb4f8c}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}!Logger@{Logger}}
+\index{Logger@{Logger}!HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection{\texorpdfstring{Logger}{Logger}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a9f06f44fcbf6c1e872ae41a670bb4f8c} 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a9f06f44fcbf6c1e872ae41a670bb4f8c}{Hydro\+SQL\+::\+Client\+::\+Encrypt\+::\+Logger}} = Hydro\+SQL\+::\+Utils\+::\+Logger\+::\+Logger}
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a71fb160c3853ca192da2b90f2894bae9}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}!chararcherCheck@{chararcherCheck}}
+\index{chararcherCheck@{chararcherCheck}!HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection{\texorpdfstring{chararcherCheck()}{chararcherCheck()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a71fb160c3853ca192da2b90f2894bae9} 
+const bool Hydro\+SQL\+::\+Client\+::\+Encrypt\+::chararcher\+Check (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{password}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_abd8c65c5e37f10e029739b917e18067f}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}!consecutiveCheck@{consecutiveCheck}}
+\index{consecutiveCheck@{consecutiveCheck}!HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection{\texorpdfstring{consecutiveCheck()}{consecutiveCheck()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_abd8c65c5e37f10e029739b917e18067f} 
+const bool Hydro\+SQL\+::\+Client\+::\+Encrypt\+::consecutive\+Check (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{password}{, }\item[{const unsigned char}]{max\+\_\+repeat\+\_\+time}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a08238d145ec19b7200f28c0973fd7ded}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}!hash@{hash}}
+\index{hash@{hash}!HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection{\texorpdfstring{hash()}{hash()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a08238d145ec19b7200f28c0973fd7ded} 
+void Hydro\+SQL\+::\+Client\+::\+Encrypt\+::hash (\begin{DoxyParamCaption}\item[{std\+::string \&}]{password}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a089a2b9685ae56334c032d419dd369bf}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}!secureEnter@{secureEnter}}
+\index{secureEnter@{secureEnter}!HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection{\texorpdfstring{secureEnter()}{secureEnter()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a089a2b9685ae56334c032d419dd369bf} 
+const std\+::string Hydro\+SQL\+::\+Client\+::\+Encrypt\+::secure\+Enter (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a1e15829c50f18a57d2f86a8933a62f3b}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}!validPassword@{validPassword}}
+\index{validPassword@{validPassword}!HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection{\texorpdfstring{validPassword()}{validPassword()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a1e15829c50f18a57d2f86a8933a62f3b} 
+const bool Hydro\+SQL\+::\+Client\+::\+Encrypt\+::valid\+Password (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{password}{, }\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_af3eeb50d4d9ef7c7758de365fae704a0}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}!validUsername@{validUsername}}
+\index{validUsername@{validUsername}!HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection{\texorpdfstring{validUsername()}{validUsername()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_af3eeb50d4d9ef7c7758de365fae704a0} 
+const bool Hydro\+SQL\+::\+Client\+::\+Encrypt\+::valid\+Username (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{username}{, }\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a07d5f5675c12fc11bd291f9d9eafc9df}\index{HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}!verifyHash@{verifyHash}}
+\index{verifyHash@{verifyHash}!HydroSQL::Client::Encrypt@{HydroSQL::Client::Encrypt}}
+\doxysubsubsection{\texorpdfstring{verifyHash()}{verifyHash()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_client_1_1_encrypt_a07d5f5675c12fc11bd291f9d9eafc9df} 
+const bool Hydro\+SQL\+::\+Client\+::\+Encrypt\+::verify\+Hash (\begin{DoxyParamCaption}\item[{std\+::string \&\&}]{password}{, }\item[{const std\+::string \&}]{hash}{}\end{DoxyParamCaption})}
+

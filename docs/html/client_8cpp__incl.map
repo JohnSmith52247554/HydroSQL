@@ -1,0 +1,9 @@
+<map id="client/network/src/client.cpp" name="client/network/src/client.cpp">
+<area shape="rect" id="Node000001" title="TCP client." alt="" coords="46,5,170,48"/>
+<area shape="rect" id="Node000002" href="$client_8hpp.html" title="TCP client." alt="" coords="5,104,83,131"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,50,64,93,60,90,91,47"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="107,96,237,139"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="125,47,151,82,146,85,121,50"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="10,187,78,213"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="47,131,47,171,41,171,41,131"/>
+</map>

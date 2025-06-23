@@ -111,6 +111,10 @@ namespace HydroSQL::Server::Engine
             ~Info() {}
         };
 
+        /**
+         * @brief Logical tree node. After converting an expression into a logical tree, the expression can be calculated recursively from the root node.
+         * 
+         */
         struct HYDROSQL_ENGINE_API LT
         {
             NodeType type;

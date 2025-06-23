@@ -19,6 +19,10 @@
 
 namespace HydroSQL::Client::Network
 {
+    /**
+     * @brief TCP client
+     * 
+     */
     class Client
     {
     private:

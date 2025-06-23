@@ -1,0 +1,84 @@
+\doxysection{Thread\+Pool.\+hpp}
+\hypertarget{_thread_pool_8hpp_source}{}\label{_thread_pool_8hpp_source}\index{server/network/include/ThreadPool.hpp@{server/network/include/ThreadPool.hpp}}
+\mbox{\hyperlink{_thread_pool_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <pch.hpp>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_network}{HydroSQL::Server::Network}}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_blocking_queue_af3dbae997a0f3534643131bbdcaea785}{BlockingQueue}}}
+\DoxyCodeLine{00020\ \ \ \ \ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ non\_block;}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ std::queue<T>\ queue;}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ std::mutex\ mutex;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ std::condition\_variable\ not\_empty;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_blocking_queue_af3dbae997a0f3534643131bbdcaea785}{BlockingQueue}}(\textcolor{keywordtype}{bool}\ non\_block\_\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ :\ non\_block(non\_block\_)}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_blocking_queue_a9595f34bb1ff1727929c4a4419fa73b3}{\string~BlockingQueue}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_blocking_queue_adb93df0f8055ca32d2e3eb7b630f53a1}{push}}(\textcolor{keyword}{const}\ T\ \&value)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_lock<std::mutex>\ lock(mutex);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ queue.push(value);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ not\_empty.notify\_one();}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_blocking_queue_abba7e55884f32c968f1f855c91fb085d}{pop}}(T\ \&value)}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_lock<std::mutex>\ lock(mutex);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ not\_empty.wait(lock,\ [\textcolor{keyword}{this}]()}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ !queue.empty()\ ||\ non\_block;\ \});}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (queue.empty())}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ value\ =\ queue.front();}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ queue.pop();}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_blocking_queue_a49438596f299991d621ddaed1b16e3e2}{cancel}}()}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ std::lock\_guard<std::mutex>\ lock(mutex);}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ non\_block\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ not\_empty.notify\_all();}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_abdfb1010c256d0fef222db0bb899f359}{ThreadPool}}}
+\DoxyCodeLine{00062\ \ \ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ std::vector<std::thread>\ workers;}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_blocking_queue}{BlockingQueue}}<std::function<void()>>\ tasks;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ std::atomic<size\_t>\ working\_counter;}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_abdfb1010c256d0fef222db0bb899f359}{ThreadPool}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ thread\_num);}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_ac7bc1087b0391dbb80cf2fc1ab3edc8a}{\string~ThreadPool}}();}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Callable,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_acb8ede43d5beddfce7c31fa50cada3aa}{post}}(Callable\ \&\&callable,\ Args\ \&\&...args)}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ task\ =\ std::bind(std::forward<Callable>(callable),\ std::forward<Args>(args)...);}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ tasks.push(task);}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_ac7304b8f38c5479728bdc2a9a96e3be1}{busy}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00080\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ working\_counter\ ==\ workers.size();}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ work();}
+\DoxyCodeLine{00086\ \ \ \ \ \};}
+\DoxyCodeLine{00087\ \}}
+
+\end{DoxyCode}

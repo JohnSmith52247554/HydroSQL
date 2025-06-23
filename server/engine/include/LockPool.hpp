@@ -13,10 +13,14 @@
 
 namespace HydroSQL::Server::Engine
 {
+    /**
+     * @brief A pool of std::shared_lock. Used to distribute lock to each database.
+     * 
+     */
     class LockPool
     {
     private:
-        static const size_t POOL_SIZE = 4;
+        static const size_t POOL_SIZE = 8;
         std::array<std::shared_mutex, POOL_SIZE> locks;
         std::hash<std::string> hash;
 

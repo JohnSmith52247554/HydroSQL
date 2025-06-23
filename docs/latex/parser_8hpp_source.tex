@@ -1,0 +1,143 @@
+\doxysection{parser.\+hpp}
+\hypertarget{parser_8hpp_source}{}\label{parser_8hpp_source}\index{server/parser/include/parser.hpp@{server/parser/include/parser.hpp}}
+\mbox{\hyperlink{parser_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#include\ <pch.hpp>}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{struct_8hpp}{engine/include/struct.hpp}}>}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{affairs_8hpp}{affairs.hpp}}>}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{authority_8hpp}{authority/include/authority.hpp}}>}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser}{HydroSQL::Server::Parser}}}
+\DoxyCodeLine{00074\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aab}{TokenT}}\ :\ \textcolor{keywordtype}{char}}
+\DoxyCodeLine{00076\ \ \ \ \ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba780bc0722dd01d4a8d9869f060734be6}{KEYWORD}}\ =\ 0,}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabaa639a32fa39f3534a4c1b659a19d38a5}{COLANDTABLE}},}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba464e3b5bf2daba9695dfc6b22db9cbfa}{BOOL\_OPERATOR}},}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba84ef54b67f108425d98d463acd49af9c}{CALCULATION\_OPERATOR}},}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabaa0000d7769148184776f1d17656921b0}{LITERAL}},}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba53638ab2476a6fab1544efe54f2f61d9}{AUTH\_LEVEL}},}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabad500138bf8f61d4b0b80413f4b76a82a}{LBRACKET}},}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba270adbd249f9997adc3208e92a57e066}{RBRACKET}},}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba4d9b3e9fc12849d060371eb65154c751}{COMMA}}}
+\DoxyCodeLine{00086\ \ \ \ \ \};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14}{KeywordE}}\ :\ \textcolor{keywordtype}{char}}
+\DoxyCodeLine{00089\ \ \ \ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a294ce20cdefa29be3be0735cb62e715d}{CREATE}}\ =\ 0,}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34bbae0aee41ddd6a73697584a20afc6}{TABLE}},}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a61ee777e7f71dc466c3b2c685d8d313b}{INSERT}},}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d2ecaa5ec8ed113394cdfc31bdde959}{INTO}},}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab7db4588385c4fc7ed5211c35c711598}{VALUES}},}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a63225f19fccb18e7c709f1fa11bc738e}{SELECT}},}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a9cb26dba96b451a88aeb73e3be10a4ce}{FROM}},}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a15a8022d0ed9cd9c2a2e756822703eb4}{UPDATE}},}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a8c52684db8f49511e9b44471716bf164}{SET}},}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a941c42b9719734fbe289f8e65d7a7574}{DELETE\_}},}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a5105e0481cb9b1e1d0dd3e10bab1f1c0}{WHERE}},}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a6575d9a58f0b41a108f2d6a565a0650d}{ORDER}},}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a925ab312a51a924ab68d9812baa788ff}{BY}},}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac6e421eaad140c1bc1a39980502df80c}{ASC}},}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a65a6d757dbb571ccc3af9706e9a5f607}{DESC}},}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14abf8f3be424eb6a72b21549fbb24ffb57}{DROP}},}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ad9fdc8f875b86df6d7a2f5b2aece1ef2}{GRANT}},}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a90651ebea9a35ec4e018c8157492e17c}{ON}},}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a304917b92bc3dc0953aab8356f74c02c}{TO}},}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a53f93baa3057821107c750323892fa92}{INT}},}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a42a2165cd790300c66917317b8bf7818}{SMALLINT}},}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a7f4c937d16ac710f52c288124cc886ae}{BIGINT}},}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ae738c26bf4ce1037fa81b039a915cbf6}{FLOAT}},}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a13d992d671957e9a2b3e936ca0cf14a4}{DECIMAL}},}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a027acd3aa6b1dd7f26119d3cf0f9a063}{CHAR}},}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14add6a4850d8ccf48d79886d5281d1dbcb}{VARCHAR}},}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac48d5da12d702e73d6966069f2687376}{BOOLEAN}},}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a633a6c7a6b9958f8174250094daf1e6a}{DATE}},}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a346ff32eaa3c09983fb2ec057816d352}{TIME}},}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa3eb957bd02f4780a599d5ec4464ca46}{DATETIME}},}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a558ffc8f5770d8e4f95f51d822685532}{AND}},}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d00e7dce692e8dc3f6877f035e3a616}{OR}},}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a10df3d67626099df882920ba6552f16d}{NOT}},}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa4dacd717398e0c601170333eba96219}{AUTH\_NULL}},}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34db6698cff32ac89724758fdaa5512e}{READONLY}},}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab9f20f7748e2e578e81ea9ae1a0dfb30}{MODIFY}},}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a73acd9a5972130b75066c82595a1fae3}{ADMIN}},}
+\DoxyCodeLine{00130\ \ \ \ \ \};}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{const}\ std::unordered\_map<std::string,\ KeywordE>\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a570dd65843741e471e9647661ad3b490}{keywords}}\ =\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}CREATE"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a294ce20cdefa29be3be0735cb62e715d}{KeywordE::CREATE}}\},}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}TABLE"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34bbae0aee41ddd6a73697584a20afc6}{KeywordE::TABLE}}\},}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}INSERT"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a61ee777e7f71dc466c3b2c685d8d313b}{KeywordE::INSERT}}\},}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}INTO"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d2ecaa5ec8ed113394cdfc31bdde959}{KeywordE::INTO}}\},}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}VALUES"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab7db4588385c4fc7ed5211c35c711598}{KeywordE::VALUES}}\},}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}SELECT"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a63225f19fccb18e7c709f1fa11bc738e}{KeywordE::SELECT}}\},}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}FROM"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a9cb26dba96b451a88aeb73e3be10a4ce}{KeywordE::FROM}}\},}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}UPDATE"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a15a8022d0ed9cd9c2a2e756822703eb4}{KeywordE::UPDATE}}\},}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}SET"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a8c52684db8f49511e9b44471716bf164}{KeywordE::SET}}\},}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}DELETE"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a941c42b9719734fbe289f8e65d7a7574}{KeywordE::DELETE\_}}\},}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}WHERE"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a5105e0481cb9b1e1d0dd3e10bab1f1c0}{KeywordE::WHERE}}\},}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}ORDER"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a6575d9a58f0b41a108f2d6a565a0650d}{KeywordE::ORDER}}\},}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}BY"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a925ab312a51a924ab68d9812baa788ff}{KeywordE::BY}}\},}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}ASC"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac6e421eaad140c1bc1a39980502df80c}{KeywordE::ASC}}\},}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}DESC"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a65a6d757dbb571ccc3af9706e9a5f607}{KeywordE::DESC}}\},}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}DROP"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14abf8f3be424eb6a72b21549fbb24ffb57}{KeywordE::DROP}}\},}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}GRANT"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ad9fdc8f875b86df6d7a2f5b2aece1ef2}{KeywordE::GRANT}}\},}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}ON"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a90651ebea9a35ec4e018c8157492e17c}{KeywordE::ON}}\},}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}TO"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a304917b92bc3dc0953aab8356f74c02c}{KeywordE::TO}}\},}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}INT"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a53f93baa3057821107c750323892fa92}{KeywordE::INT}}\},}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}SMALLINT"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a42a2165cd790300c66917317b8bf7818}{KeywordE::SMALLINT}}\},}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}BIGINT"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a7f4c937d16ac710f52c288124cc886ae}{KeywordE::BIGINT}}\},}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}FLOAT"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ae738c26bf4ce1037fa81b039a915cbf6}{KeywordE::FLOAT}}\},}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}DECIMAL"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a13d992d671957e9a2b3e936ca0cf14a4}{KeywordE::DECIMAL}}\},}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}CHAR"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a027acd3aa6b1dd7f26119d3cf0f9a063}{KeywordE::CHAR}}\},}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}VARCHAR"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14add6a4850d8ccf48d79886d5281d1dbcb}{KeywordE::VARCHAR}}\},}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}BOOLEAN"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac48d5da12d702e73d6966069f2687376}{KeywordE::BOOLEAN}}\},}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}DATE"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a633a6c7a6b9958f8174250094daf1e6a}{KeywordE::DATE}}\},}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}TIME"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a346ff32eaa3c09983fb2ec057816d352}{KeywordE::TIME}}\},}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}DATETIME"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa3eb957bd02f4780a599d5ec4464ca46}{KeywordE::DATETIME}}\},}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}AND"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a558ffc8f5770d8e4f95f51d822685532}{KeywordE::AND}}\},}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}OR"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d00e7dce692e8dc3f6877f035e3a616}{KeywordE::OR}}\},}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}NOT"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a10df3d67626099df882920ba6552f16d}{KeywordE::NOT}}\},}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}NULL"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa4dacd717398e0c601170333eba96219}{KeywordE::AUTH\_NULL}}\},}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}READONLY"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34db6698cff32ac89724758fdaa5512e}{KeywordE::READONLY}}\},}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}MODIFY"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab9f20f7748e2e578e81ea9ae1a0dfb30}{KeywordE::MODIFY}}\},}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}ADMIN"{}},\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a73acd9a5972130b75066c82595a1fae3}{KeywordE::ADMIN}}\},}
+\DoxyCodeLine{00173\ \ \ \ \ \};}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_afda3748c37d2396f36a76a6fd3804438}{BoolOp}}\ =\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{HydroSQL::Server::Engine::LT::OpType}};}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0036ad735d7447ebb921dcd5ae5414b4}{CalOp}}\ =\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70fa}{HydroSQL::Server::Engine::LT::CalType}};}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a249d66a46e23fc4a82d1ca5c1edb0f17}{LiteralT}}\ =\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{HydroSQL::Server::Engine::LT::LiterType}};}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0119a6d077731c16cb5a6e71f6f6746a}{ColTableName}}\ =\ std::string;}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_afb6f9842fa470172c86f7d62438c0bab}{AuthLevel}}\ =\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{HydroSQL::Server::Authority::AuthLevel}};}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_literal_info}{LiteralInfo}}}
+\DoxyCodeLine{00182\ \ \ \ \ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a249d66a46e23fc4a82d1ca5c1edb0f17}{LiteralT}}\ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_literal_info_a6dbbce15e256857d1418e2ddbc2dc222}{type}};}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_aae8c3b0cd8c936149a746b8fb9b32926}{HydroSQL::Server::Engine::Data}}\ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_literal_info_a3a8e82e3cd7dcef8d736ae0dbf612c17}{data}};}
+\DoxyCodeLine{00185\ \ \ \ \ \};}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a4895fe38005049c12dbfd35b51d4dbc6}{TokenInfo}}\ =\ std::variant<BoolOp,\ CalOp,\ LiteralInfo,\ ColTableName,\ KeywordE,\ AuthLevel>;}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}}}
+\DoxyCodeLine{00190\ \ \ \ \ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aab}{TokenT}}\ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token_a597075226e3fd0399447712e4542712b}{type}};}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a4895fe38005049c12dbfd35b51d4dbc6}{TokenInfo}}\ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token_ad604c6d2cf54b310abc5583c889f4a80}{info}};}
+\DoxyCodeLine{00193\ \ \ \ \ \};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keyword}{const}\ std::list<Token>\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a37e560631d728488ba38b3a18fc9b50e}{tokenize}}(\textcolor{keyword}{const}\ std::string\ \&command);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00206\ \ \ \ \ std::unique\_ptr<Affair>\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ae4debeb166ab63e0748bb9cc5e56348d}{parse}}(\textcolor{keyword}{const}\ std::list<Token>\ \&token);}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \}\ \textcolor{comment}{//\ namespace\ HydroSQL::Server::Parser}}
+
+\end{DoxyCode}

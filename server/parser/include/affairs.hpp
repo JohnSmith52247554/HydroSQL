@@ -20,6 +20,10 @@ namespace HydroSQL::Server::Parser
     using Authoriser = Authority::Authoriser;
     using AuthLevel = Authority::AuthLevel;
 
+    /**
+     * @brief Used to stored the data parsed from the command and excute the SQL operation (INSERT, UPDATE...etc).
+     * 
+     */
     class Affair
     {
     public:

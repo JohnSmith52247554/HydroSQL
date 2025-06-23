@@ -1,0 +1,94 @@
+\doxysection{authority.\+hpp}
+\hypertarget{authority_8hpp_source}{}\label{authority_8hpp_source}\index{server/authority/include/authority.hpp@{server/authority/include/authority.hpp}}
+\mbox{\hyperlink{authority_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <pch.hpp>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority}{HydroSQL::Server::Authority}}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{AuthLevel}}\ :\ \textcolor{keywordtype}{char}}
+\DoxyCodeLine{00019\ \ \ \ \ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406a37a6259cc0c1dae299a7866489dff0bd}{null}},\ \ \ \ \ \ \ \textcolor{comment}{//\ can\ not\ read\ or\ write}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406a34db6698cff32ac89724758fdaa5512e}{READONLY}},\ \ \ \textcolor{comment}{//\ only\ can\ read}}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406ab9f20f7748e2e578e81ea9ae1a0dfb30}{MODIFY}},\ \ \ \ \ \textcolor{comment}{//\ read\ and\ write}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406a73acd9a5972130b75066c82595a1fae3}{ADMIN}}\ \ \ \ \ \ \ \textcolor{comment}{//\ be\ able\ to\ remove\ the\ database\ and\ manager\ the\ authority\ level\ of\ other\ user}}
+\DoxyCodeLine{00024\ \ \ \ \ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{class\ }AuthManager}
+\DoxyCodeLine{00031\ \ \ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ std::shared\_mutex\ shared\_mutex;}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ AuthManager();}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \string~AuthManager()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ AuthManager\ \&\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_a61d2316e2a83fc5259a48823f45e1914}{get}}()}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ AuthManager\ instance;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ instance;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ [[deprecated]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aeee2925ea5f5dd01bcda938f61f507aa}{examinePasswordHash}}(\textcolor{keyword}{const}\ std::string\ \&username,\ \textcolor{keyword}{const}\ std::string\ \&password\_hash);}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aa61f55e6833728f0d37accf2312b44fe}{getPasswordHash}}(\textcolor{keyword}{const}\ std::string\ \&username);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{AuthLevel}}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_acb895d66389a282e29c379d0fa6e2342}{getLevel}}(\textcolor{keyword}{const}\ std::string\ \&username,\ \textcolor{keyword}{const}\ std::string\ tablename);}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ae0e0894c33f131c3ac83f6c7b4bcb106}{addUser}}(\textcolor{keyword}{const}\ std::string\ \&username,\ \textcolor{keyword}{const}\ std::string\ \&password\_hash);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ac7d47d5bc462dcee20e56c17607942cd}{addTable}}(\textcolor{keyword}{const}\ std::string\ \&table\_name,\ \textcolor{keyword}{const}\ std::string\ \&creator);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ab60c22a7cb014a6f35e463fdfedf28c7}{removeTable}}(\textcolor{keyword}{const}\ std::string\ \&table\_name);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ note:\ It\ necessary\ to\ examine\ whether\ the\ caller\ has\ administrator\ authority\ before\ calling\ this\ function.}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aefa9eac0e1c8a8832dd823bc7b2145bd}{setUserAuth}}(\textcolor{keyword}{const}\ std::string\ \&username,\ \textcolor{keyword}{const}\ std::string\ \&table\_name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{AuthLevel}}\ level);}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aefa9eac0e1c8a8832dd823bc7b2145bd}{setUserAuth}}(\textcolor{keyword}{const}\ std::vector<std::string>\ \&usernames,\ \textcolor{keyword}{const}\ std::string\ \&table\_name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{AuthLevel}}\ level);}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ @return\ the\ size\ of\ header.}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::streampos\ read(std::vector<std::string>\ \&username,\ std::vector<std::string>\ \&password\_hash,\ std::vector<std::string>\ \&table\_name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ read(std::vector<std::string>\ \&username,\ std::vector<std::string>\ \&password\_hash,\ std::vector<std::string>\ \&table\_name,\ std::vector<std::vector<AuthLevel>>\ \&level)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ write(\textcolor{keyword}{const}\ std::vector<std::string>\ \&username,\ \textcolor{keyword}{const}\ std::vector<std::string>\ \&password\_hash,\ \textcolor{keyword}{const}\ std::vector<std::string>\ \&table\_name,\ \textcolor{keyword}{const}\ std::vector<std::vector<AuthLevel>>\ \&level);}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ saveStr(std::ostream\ \&os,\ \textcolor{keyword}{const}\ std::string\ \&str);}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadStr(std::istream\ \&is,\ std::string\ \&str);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ saveVector(std::ostream\ \&os,\ \textcolor{keyword}{const}\ std::vector<std::string>\ \&vec);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadVector(std::istream\ \&is,\ std::vector<std::string>\ \&vec);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ saveVectorWithoutSize(std::ostream\ \&os,\ \textcolor{keyword}{const}\ std::vector<std::string>\ \&vec);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadVectorWithoutSize(std::istream\ \&is,\ std::vector<std::string>\ \&vec,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \&size);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ saveVecLevel(std::ostream\ \&os,\ \textcolor{keyword}{const}\ std::vector<AuthLevel>\ \&vec);}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadVecLevel(std::istream\ \&is,\ std::vector<AuthLevel>\ \&vec,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \&size);}
+\DoxyCodeLine{00101\ \ \ \ \ \};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_authoriser_a9bb2a4c30adc929542ca323c0fde1920}{Authoriser}}}
+\DoxyCodeLine{00108\ \ \ \ \ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ std::string\ username;}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_authoriser_a9bb2a4c30adc929542ca323c0fde1920}{Authoriser}}(\textcolor{keyword}{const}\ std::string\ \&un)}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ :\ username(un)}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_authoriser_a9e208e1e14619ee3f61d84b77abfdc83}{authorise}}(\textcolor{keyword}{const}\ std::string\ \&table\_name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{AuthLevel}}\ level)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ std::string\ \&\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_authoriser_ab068908438cc236edffea50803929c7c}{getUsername}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00120\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ username;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \};}
+\DoxyCodeLine{00124\ \};}
+
+\end{DoxyCode}

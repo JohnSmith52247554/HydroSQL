@@ -1,0 +1,233 @@
+\doxysection{Hydro\+SQL\+::Server\+::Engine\+::Table Class Reference}
+\hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{}\label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+
+
+SQL table.  
+
+
+
+
+{\ttfamily \#include $<$table.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_ab79645b90144a313d4bc0b4b91f6060a}{Table}} (const std\+::string \&name\+\_\+)
+\begin{DoxyCompactList}\small\item\em Construct a new \doxylink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table} object and load is columns from database. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a509dda200af906fd734156fc268b1058}{Table}} (const std\+::string \&name\+\_\+, const std\+::vector$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} $>$ \&\&columns\+\_\+)
+\begin{DoxyCompactList}\small\item\em Construct a new \doxylink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table} object and create a database. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a3b060c8f6658745a2f95e80f0101df4d}{Table}} (const \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table}} \&other)=delete
+\item 
+\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_ab4d78afb4f6b6b5a5f940b4bd2d3c892}{Table}} (const \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table}} \&\&other)=delete
+\item 
+void \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a4bd5f223cf0acbb06c55f1d8a9a94d44}{operator=}} (const \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table}} \&other)=delete
+\item 
+int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_af3f7048a232a86e634948a7fc0b00b6c}{insert}} (const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::vector$<$ std\+::vector$<$ std\+::string $>$ $>$ \&values, std\+::string \&result)
+\begin{DoxyCompactList}\small\item\em insert some rows into the table \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_afdadb7d2a1c64662949634ddfccce263}{insert\+V2}} (const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::vector$<$ std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$ $>$ $>$ \&values, std\+::string \&result)
+\begin{DoxyCompactList}\small\item\em A better insert that support expression. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a2a622e0dcbb20b9177a8dadbce607282}{select}} (const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$ requirements, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_select_order}{Select\+Order}} $>$ order, std\+::vector$<$ std\+::vector$<$ std\+::string $>$ $>$ \&output, std\+::string \&result) const
+\begin{DoxyCompactList}\small\item\em select some rows in the table \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_aae3c11803ae51c1f5f33107cde6d8e39}{update}} (const std\+::vector$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_update_info}{Update\+Info}} $>$ \&info, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$ requirements, std\+::string \&result)
+\begin{DoxyCompactList}\small\item\em Update columns in the table. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_aca4f4d045997f1f0b64b08fc689c00ed}{update\+V2}} (const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$ $>$ \&expr, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$ requirements, std\+::string \&result)
+\begin{DoxyCompactList}\small\item\em Better update that support expression. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a2afbd08d3a4f04b2425ba082cd14e077}{delete\+\_\+}} (const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$ requirements, std\+::string \&result)
+\begin{DoxyCompactList}\small\item\em Delete rows in the table. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a614ab6f9b96d844d8eb2f3acbd2e845c}{drop}} (std\+::string \&result)
+\begin{DoxyCompactList}\small\item\em Delete the table. ACTUALLY, FOREVER. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+SQL table. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_ab79645b90144a313d4bc0b4b91f6060a}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!Table@{Table}}
+\index{Table@{Table}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{Table()}{Table()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_ab79645b90144a313d4bc0b4b91f6060a} 
+Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::\+Table (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name\+\_\+}{}\end{DoxyParamCaption})}
+
+
+
+Construct a new \doxylink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table} object and load is columns from database. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name\+\_\+} & table name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The database should exist. 
+\end{DoxyNote}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a509dda200af906fd734156fc268b1058}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!Table@{Table}}
+\index{Table@{Table}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{Table()}{Table()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a509dda200af906fd734156fc268b1058} 
+Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::\+Table (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name\+\_\+}{, }\item[{const std\+::vector$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} $>$ \&\&}]{columns\+\_\+}{}\end{DoxyParamCaption})}
+
+
+
+Construct a new \doxylink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table} object and create a database. 
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a3b060c8f6658745a2f95e80f0101df4d}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!Table@{Table}}
+\index{Table@{Table}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{Table()}{Table()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a3b060c8f6658745a2f95e80f0101df4d} 
+Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::\+Table (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table}} \&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\begin{DoxyNote}{Note}
+\doxylink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table} should not be copy/move. 
+\end{DoxyNote}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_ab4d78afb4f6b6b5a5f940b4bd2d3c892}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!Table@{Table}}
+\index{Table@{Table}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{Table()}{Table()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_ab4d78afb4f6b6b5a5f940b4bd2d3c892} 
+Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::\+Table (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table}} \&\&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a2afbd08d3a4f04b2425ba082cd14e077}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!delete\_@{delete\_}}
+\index{delete\_@{delete\_}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{delete\_()}{delete\_()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a2afbd08d3a4f04b2425ba082cd14e077} 
+int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::delete\+\_\+ (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$}]{requirements}{, }\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Delete rows in the table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em requirements} & The WHERE statement. \\
+\hline
+{\em result} & The result (or error message) to be outputed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 0 for failed and 1 for succeeded
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Will not actually DELETE the rows, but mark them with a delete mark. 
+\end{DoxyNote}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a614ab6f9b96d844d8eb2f3acbd2e845c}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!drop@{drop}}
+\index{drop@{drop}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{drop()}{drop()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a614ab6f9b96d844d8eb2f3acbd2e845c} 
+int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::drop (\begin{DoxyParamCaption}\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Delete the table. ACTUALLY, FOREVER. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em result} & The result (or error message) to be outputed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 0 for failed and 1 for succeeded 
+\end{DoxyReturn}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_af3f7048a232a86e634948a7fc0b00b6c}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!insert@{insert}}
+\index{insert@{insert}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_af3f7048a232a86e634948a7fc0b00b6c} 
+int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::insert (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{keys}{, }\item[{const std\+::vector$<$ std\+::vector$<$ std\+::string $>$ $>$ \&}]{values}{, }\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+insert some rows into the table 
+
+
+\begin{DoxyParams}{Parameters}
+{\em keys} & the columns \\
+\hline
+{\em values} & The values. The inner vector represents a row. The values in a certain row should match the keys. \\
+\hline
+{\em result} & The result (or error message) to be outputed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 0 for failed and 1 for succeeded 
+\end{DoxyReturn}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_afdadb7d2a1c64662949634ddfccce263}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!insertV2@{insertV2}}
+\index{insertV2@{insertV2}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{insertV2()}{insertV2()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_afdadb7d2a1c64662949634ddfccce263} 
+int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::insert\+V2 (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{keys}{, }\item[{const std\+::vector$<$ std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$ $>$ $>$ \&}]{values}{, }\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+A better insert that support expression. 
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a4bd5f223cf0acbb06c55f1d8a9a94d44}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!operator=@{operator=}}
+\index{operator=@{operator=}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a4bd5f223cf0acbb06c55f1d8a9a94d44} 
+void Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Table}} \&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a2a622e0dcbb20b9177a8dadbce607282}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!select@{select}}
+\index{select@{select}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{select()}{select()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_a2a622e0dcbb20b9177a8dadbce607282} 
+int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::select (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{keys}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$}]{requirements}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_select_order}{Select\+Order}} $>$}]{order}{, }\item[{std\+::vector$<$ std\+::vector$<$ std\+::string $>$ $>$ \&}]{output}{, }\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+select some rows in the table 
+
+
+\begin{DoxyParams}{Parameters}
+{\em keys} & The columns which will be displayed. An empty vector represent "{}\texorpdfstring{$\ast$}{*}"{}, which means all columns. \\
+\hline
+{\em requirements} & The requirements that the rows should meet. A tree. \\
+\hline
+{\em order} & The order of the output rows. \\
+\hline
+{\em output} & The selected rows in the right order. \\
+\hline
+{\em result} & The result (or error message) to be outputed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 0 for failed and 1 for succeeded 
+\end{DoxyReturn}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_aae3c11803ae51c1f5f33107cde6d8e39}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!update@{update}}
+\index{update@{update}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_aae3c11803ae51c1f5f33107cde6d8e39} 
+int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::update (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_update_info}{Update\+Info}} $>$ \&}]{info}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$}]{requirements}{, }\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Update columns in the table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em info} & The columns that should be update and the new value of that column. \\
+\hline
+{\em requirements} & The WHERE statement. \\
+\hline
+{\em result} & The result (or error message) to be outputed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 0 for failed and 1 for succeeded 
+\end{DoxyReturn}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_aca4f4d045997f1f0b64b08fc689c00ed}\index{HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}!updateV2@{updateV2}}
+\index{updateV2@{updateV2}!HydroSQL::Server::Engine::Table@{HydroSQL::Server::Engine::Table}}
+\doxysubsubsection{\texorpdfstring{updateV2()}{updateV2()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table_aca4f4d045997f1f0b64b08fc689c00ed} 
+int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table\+::update\+V2 (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{keys}{, }\item[{const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$ $>$ \&}]{expr}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT\+::\+LT}} $>$}]{requirements}{, }\item[{std\+::string \&}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Better update that support expression. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+server/engine/include/\mbox{\hyperlink{table_8hpp}{table.\+hpp}}\item 
+server/engine/src/\mbox{\hyperlink{table_8cpp}{table.\+cpp}}\end{DoxyCompactItemize}

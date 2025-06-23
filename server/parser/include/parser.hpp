@@ -1,7 +1,7 @@
 /**
  * @file parser.hpp
  * @author username (username52247554@gmail.com)
- * @brief 
+ * @brief Parser
  * @version 0.1
  * @date 2025-06-18
  * 
@@ -129,7 +129,7 @@ namespace HydroSQL::Server::Parser
         ADMIN,
     };
 
-    const std::vector<std::pair<std::string, KeywordE>> keywords = {
+    const std::unordered_map<std::string, KeywordE> keywords = {
         {"CREATE", KeywordE::CREATE},
         {"TABLE", KeywordE::TABLE},
         {"INSERT", KeywordE::INSERT},
@@ -192,24 +192,17 @@ namespace HydroSQL::Server::Parser
         TokenInfo info;
     };
 
+    /**
+     * @brief Generate a list of token from command;
+     *
+     */
     const std::list<Token> tokenize(const std::string &command);
 
+    /**
+     * @brief Parse the list of token and generate an affair.
+     * 
+     * @return An object with method execute. Calling that method will excute the command.
+     */
     std::unique_ptr<Affair> parse(const std::list<Token> &token);
-
-    std::unique_ptr<Affair> parseCreate(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
-
-    std::unique_ptr<Affair> parseInsert(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
-
-    std::unique_ptr<Affair> parseSelect(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
-
-    std::unique_ptr<Affair> parseUpdate(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
-
-    std::unique_ptr<Affair> parseDelete(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
-
-    std::unique_ptr<Affair> parseDrop(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
-
-    std::unique_ptr<Affair> parseGrant(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
-
-    std::shared_ptr<Engine::LT::LT> parseExpr(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
 
 } // namespace HydroSQL::Server::Parser

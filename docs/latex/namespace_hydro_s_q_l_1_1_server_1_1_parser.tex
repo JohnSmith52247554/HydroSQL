@@ -1,0 +1,606 @@
+\doxysection{Hydro\+SQL\+::Server\+::Parser Namespace Reference}
+\hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser}{}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}
+\begin{DoxyCompactList}\small\item\em Used to stored the data parsed from the command and excute the SQL operation (INSERT, UPDATE...etc). \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_create_table_a}{Create\+TableA}}
+\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_delete_a}{DeleteA}}
+\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_drop_a}{DropA}}
+\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_grant_a}{GrantA}}
+\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_insert_a}{InsertA}}
+\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_literal_info}{Literal\+Info}}
+\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_select_a}{SelectA}}
+\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}}
+\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_update_a}{UpdateA}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6a2795004d4e5506deba0cc28e89f5b6}{Authoriser}} = \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_authoriser}{Authority\+::\+Authoriser}}
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_afb6f9842fa470172c86f7d62438c0bab}{Auth\+Level}} = \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Authority\+::\+Auth\+Level}}
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_afda3748c37d2396f36a76a6fd3804438}{Bool\+Op}} = \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Op\+Type}}
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0036ad735d7447ebb921dcd5ae5414b4}{Cal\+Op}} = \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70fa}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Cal\+Type}}
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a249d66a46e23fc4a82d1ca5c1edb0f17}{LiteralT}} = \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Liter\+Type}}
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0119a6d077731c16cb5a6e71f6f6746a}{Col\+Table\+Name}} = std\+::string
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a4895fe38005049c12dbfd35b51d4dbc6}{Token\+Info}} = std\+::variant$<$\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{Bool\+Op}}, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70fa}{Cal\+Op}}, \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_literal_info}{Literal\+Info}}, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0119a6d077731c16cb5a6e71f6f6746a}{Col\+Table\+Name}}, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14}{KeywordE}}, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Auth\+Level}}$>$
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} = Utils\+::\+Data\+Structure\+::\+Stack$<$std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Engine\+::\+LT\+::\+LT}}$>$$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aab}{TokenT}} \+: char \{ \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba780bc0722dd01d4a8d9869f060734be6}{KEYWORD}} = 0
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabaa639a32fa39f3534a4c1b659a19d38a5}{COLANDTABLE}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba464e3b5bf2daba9695dfc6b22db9cbfa}{BOOL\+\_\+\+OPERATOR}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba84ef54b67f108425d98d463acd49af9c}{CALCULATION\+\_\+\+OPERATOR}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabaa0000d7769148184776f1d17656921b0}{LITERAL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba53638ab2476a6fab1544efe54f2f61d9}{AUTH\+\_\+\+LEVEL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabad500138bf8f61d4b0b80413f4b76a82a}{LBRACKET}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba270adbd249f9997adc3208e92a57e066}{RBRACKET}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba4d9b3e9fc12849d060371eb65154c751}{COMMA}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14}{KeywordE}} \+: char \{ \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a294ce20cdefa29be3be0735cb62e715d}{CREATE}} = 0
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34bbae0aee41ddd6a73697584a20afc6}{TABLE}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a61ee777e7f71dc466c3b2c685d8d313b}{INSERT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d2ecaa5ec8ed113394cdfc31bdde959}{INTO}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab7db4588385c4fc7ed5211c35c711598}{VALUES}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a63225f19fccb18e7c709f1fa11bc738e}{SELECT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a9cb26dba96b451a88aeb73e3be10a4ce}{FROM}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a15a8022d0ed9cd9c2a2e756822703eb4}{UPDATE}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a8c52684db8f49511e9b44471716bf164}{SET}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a941c42b9719734fbe289f8e65d7a7574}{DELETE\+\_\+}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a5105e0481cb9b1e1d0dd3e10bab1f1c0}{WHERE}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a6575d9a58f0b41a108f2d6a565a0650d}{ORDER}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a925ab312a51a924ab68d9812baa788ff}{BY}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac6e421eaad140c1bc1a39980502df80c}{ASC}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a65a6d757dbb571ccc3af9706e9a5f607}{DESC}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14abf8f3be424eb6a72b21549fbb24ffb57}{DROP}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ad9fdc8f875b86df6d7a2f5b2aece1ef2}{GRANT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a90651ebea9a35ec4e018c8157492e17c}{ON}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a304917b92bc3dc0953aab8356f74c02c}{TO}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a53f93baa3057821107c750323892fa92}{INT}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a42a2165cd790300c66917317b8bf7818}{SMALLINT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a7f4c937d16ac710f52c288124cc886ae}{BIGINT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ae738c26bf4ce1037fa81b039a915cbf6}{FLOAT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a13d992d671957e9a2b3e936ca0cf14a4}{DECIMAL}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a027acd3aa6b1dd7f26119d3cf0f9a063}{CHAR}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14add6a4850d8ccf48d79886d5281d1dbcb}{VARCHAR}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac48d5da12d702e73d6966069f2687376}{BOOLEAN}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a633a6c7a6b9958f8174250094daf1e6a}{DATE}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a346ff32eaa3c09983fb2ec057816d352}{TIME}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa3eb957bd02f4780a599d5ec4464ca46}{DATETIME}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a558ffc8f5770d8e4f95f51d822685532}{AND}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d00e7dce692e8dc3f6877f035e3a616}{OR}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a10df3d67626099df882920ba6552f16d}{NOT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa4dacd717398e0c601170333eba96219}{AUTH\+\_\+\+NULL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34db6698cff32ac89724758fdaa5512e}{READONLY}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab9f20f7748e2e578e81ea9ae1a0dfb30}{MODIFY}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a73acd9a5972130b75066c82595a1fae3}{ADMIN}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a37e560631d728488ba38b3a18fc9b50e}{tokenize}} (const std\+::string \&command)
+\begin{DoxyCompactList}\small\item\em Generate a list of token from command;. \end{DoxyCompactList}\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ae4debeb166ab63e0748bb9cc5e56348d}{parse}} (const std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$ \&token)
+\begin{DoxyCompactList}\small\item\em Parse the list of token and generate an affair. \end{DoxyCompactList}\item 
+const char \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a47ec99599f045a27aa6925880bbddd97}{escape\+Character}} (std\+::string\+::const\+\_\+iterator \&it, const std\+::string\+::const\+\_\+iterator end)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0af5766f611feba1efb304dcfdfd5b62}{continuous\+Num\+Examination}} (const std\+::string \&str, const size\+\_\+t begin, const size\+\_\+t length)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0eda96a3908db3150d0d08f93ae7d2d5}{date\+Valide\+Examine}} (const std\+::string \&str)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a35ddb34b65abfa43120dcfd2b9eca00b}{time\+Valide\+Examine}} (const std\+::string \&str)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ab21aaeda5599886dd1ae5380cdade6f1}{datetime\+Valide\+Examine}} (const std\+::string \&str)
+\item 
+const int64\+\_\+t \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6a1dc7edf64b24af4879ce628074145f}{date\+Str\+To\+Num}} (const std\+::string \&str)
+\item 
+const int64\+\_\+t \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_af33b4757c65974486a69eb07f791f400}{time\+Str\+To\+Num}} (const std\+::string \&str)
+\item 
+const int64\+\_\+t \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ae7e71d6234e8f41d73e2b75bd3696b7d}{datetime\+Str\+To\+Num}} (const std\+::string \&str)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a762417f3ba0b0d32ecb44d1006e1d79b}{parse\+Create}} (std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator start, std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator end)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a064f2552f0c411b4d05bed85fb8bf71a}{parse\+Insert}} (std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator start, std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator end)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_addc174893d880f310f46f19f6b538fe4}{parse\+Select}} (std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator start, std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator end)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aa18c0bdb449d64ababbc735677445a52}{parse\+Update}} (std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator start, std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator end)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6d45678d27afa737711e1d7686ebd90b}{parse\+Delete}} (std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator start, std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator end)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a45128fe9ae6880dc6bb43f1e69a39b2e}{parse\+Drop}} (std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator start, std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator end)
+\item 
+void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6ee501b3a17b25f991df399974f73f23}{op\+Stack\+Pop\+Once}} (\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&li\+\_\+stack, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&op\+\_\+stack)
+\item 
+void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a426cc894902c3b536f84e3db4282e4da}{op\+Stack\+Pop}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Engine\+::\+LT\+::\+LT}} $>$ \&op, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&li\+\_\+stack, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&op\+\_\+stack)
+\item 
+void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a97059c15040ef923252b8ba30c8b2818}{stack\+Op}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Engine\+::\+LT\+::\+LT}} $>$ \&op, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&li\+\_\+stack, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&op\+\_\+stack)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad135837af132477a9c61c98484a4be86}{parse\+Grant}} (std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator start, std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator end)
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Engine\+::\+LT\+::\+LT}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a5d9dbb1006a4a8bcea8cb2038d57aee5}{parse\+Expr}} (std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator start, std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator end)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14}{KeywordE}} $>$ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a570dd65843741e471e9647661ad3b490}{keywords}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+CREATE\+\_\+\+TABLE\+\_\+\+STMT = CREATE TABLE table\+\_\+name (column\+\_\+definition (, column\+\_\+definition)\texorpdfstring{$\ast$}{*}
+
+SELECT\+\_\+\+STMT = SELECT select\+\_\+list FROM table\+\_\+name \mbox{[}WHERE where\+\_\+condition\mbox{]} \mbox{[}ORDER BY order\+\_\+by\+\_\+condition\mbox{]}
+
+INSERT\+\_\+\+STMT = INSERT INTO table\+\_\+name (column\+\_\+list) VALUES (value\+\_\+list)
+
+UPDATE\+\_\+\+STMT = UPDATE table\+\_\+name SET column\+\_\+name = expression (, column\+\_\+name = expression)\texorpdfstring{$\ast$}{*} \mbox{[}WHERE where\+\_\+condition\mbox{]}
+
+DELETE\+\_\+\+STMT = DELETE FROM table\+\_\+name WHERE where\+\_\+condition
+
+GRANT\+\_\+\+STMT = GRANT authority ON table\+\_\+name TO username \texorpdfstring{$\vert$}{|} (, username)\texorpdfstring{$\ast$}{*}
+
+DROP\+\_\+\+STMT = DROP TABLE table\+\_\+name
+
+authority = NULL \texorpdfstring{$\vert$}{|} READONLY \texorpdfstring{$\vert$}{|} MODIFY \texorpdfstring{$\vert$}{|} ADMIN
+
+column\+\_\+definition = column\+\_\+name data\+\_\+type \mbox{[}(, constraint\+\_\+definition)\texorpdfstring{$\ast$}{*})\mbox{]}
+
+constraint\+\_\+definition = PRIMARY KEY \texorpdfstring{$\vert$}{|} UNIQUE \texorpdfstring{$\vert$}{|} NOT NULL \texorpdfstring{$\vert$}{|} DEFAULT expression
+
+select\+\_\+list = \texorpdfstring{$\ast$}{*} \texorpdfstring{$\vert$}{|} column\+\_\+name (, column\+\_\+name)\texorpdfstring{$\ast$}{*}
+
+where\+\_\+condition = condition ( (AND \texorpdfstring{$\vert$}{|} OR) condition )\texorpdfstring{$\ast$}{*}
+
+condition = expression comparison\+\_\+operator expression \texorpdfstring{$\vert$}{|} expression (NOT)? IN ( value\+\_\+list ) TODO\+: \texorpdfstring{$\vert$}{|} expression (NOT)? BETWEEN expression AND expression \texorpdfstring{$\vert$}{|} expression (NOT)? LIKE pattern \texorpdfstring{$\vert$}{|} NOT condition
+
+comparison\+\_\+operator = = \texorpdfstring{$\vert$}{|} != \texorpdfstring{$\vert$}{|} \texorpdfstring{$>$}{>} \texorpdfstring{$\vert$}{|} \texorpdfstring{$<$}{<} \texorpdfstring{$\vert$}{|} \texorpdfstring{$>$}{>}= \texorpdfstring{$\vert$}{|} \texorpdfstring{$<$}{<}=
+
+order\+\_\+by\+\_\+list = expression (ASC \texorpdfstring{$\vert$}{|} DESC)
+
+expression = literal\+\_\+value \texorpdfstring{$\vert$}{|} column\+\_\+name \texorpdfstring{$\vert$}{|} expression binary\+\_\+operator expression \texorpdfstring{$\vert$}{|} (expression)
+
+value\+\_\+list = expression (, expression)\texorpdfstring{$\ast$}{*} TODO\+:
+
+column\+\_\+list = column\+\_\+name (, column\+\_\+name)\texorpdfstring{$\ast$}{*}
+
+value\+\_\+list = expression (, expression)\texorpdfstring{$\ast$}{*} 
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_afb6f9842fa470172c86f7d62438c0bab}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!AuthLevel@{AuthLevel}}
+\index{AuthLevel@{AuthLevel}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{AuthLevel}{AuthLevel}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_afb6f9842fa470172c86f7d62438c0bab} 
+typedef \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Level}} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+Auth\+Level}} = \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Authority\+::\+Auth\+Level}}}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6a2795004d4e5506deba0cc28e89f5b6}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!Authoriser@{Authoriser}}
+\index{Authoriser@{Authoriser}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{Authoriser}{Authoriser}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6a2795004d4e5506deba0cc28e89f5b6} 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6a2795004d4e5506deba0cc28e89f5b6}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+Authoriser}} = \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_authoriser}{Authority\+::\+Authoriser}}}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_afda3748c37d2396f36a76a6fd3804438}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!BoolOp@{BoolOp}}
+\index{BoolOp@{BoolOp}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{BoolOp}{BoolOp}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_afda3748c37d2396f36a76a6fd3804438} 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+Bool\+Op}} = \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Op\+Type}}}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0036ad735d7447ebb921dcd5ae5414b4}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!CalOp@{CalOp}}
+\index{CalOp@{CalOp}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{CalOp}{CalOp}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0036ad735d7447ebb921dcd5ae5414b4} 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70fa}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+Cal\+Op}} = \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70fa}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Cal\+Type}}}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0119a6d077731c16cb5a6e71f6f6746a}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!ColTableName@{ColTableName}}
+\index{ColTableName@{ColTableName}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{ColTableName}{ColTableName}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0119a6d077731c16cb5a6e71f6f6746a} 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0119a6d077731c16cb5a6e71f6f6746a}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+Col\+Table\+Name}} = std\+::string}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a249d66a46e23fc4a82d1ca5c1edb0f17}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!LiteralT@{LiteralT}}
+\index{LiteralT@{LiteralT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{LiteralT}{LiteralT}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a249d66a46e23fc4a82d1ca5c1edb0f17} 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+LiteralT}} = \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Liter\+Type}}}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!Stack@{Stack}}
+\index{Stack@{Stack}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{Stack}{Stack}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e} 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+Stack}} = Utils\+::\+Data\+Structure\+::\+Stack$<$std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Engine\+::\+LT\+::\+LT}}$>$$>$}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a4895fe38005049c12dbfd35b51d4dbc6}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!TokenInfo@{TokenInfo}}
+\index{TokenInfo@{TokenInfo}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{TokenInfo}{TokenInfo}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a4895fe38005049c12dbfd35b51d4dbc6} 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a4895fe38005049c12dbfd35b51d4dbc6}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+Token\+Info}} = std\+::variant$<$\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{Bool\+Op}}, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70fa}{Cal\+Op}}, \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_literal_info}{Literal\+Info}}, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0119a6d077731c16cb5a6e71f6f6746a}{Col\+Table\+Name}}, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14}{KeywordE}}, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Auth\+Level}}$>$}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!KeywordE@{KeywordE}}
+\index{KeywordE@{KeywordE}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{KeywordE}{KeywordE}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14} 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+KeywordE}} \+: char\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CREATE@{CREATE}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!CREATE@{CREATE}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a294ce20cdefa29be3be0735cb62e715d}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a294ce20cdefa29be3be0735cb62e715d} 
+CREATE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TABLE@{TABLE}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!TABLE@{TABLE}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34bbae0aee41ddd6a73697584a20afc6}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34bbae0aee41ddd6a73697584a20afc6} 
+TABLE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INSERT@{INSERT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!INSERT@{INSERT}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a61ee777e7f71dc466c3b2c685d8d313b}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a61ee777e7f71dc466c3b2c685d8d313b} 
+INSERT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTO@{INTO}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!INTO@{INTO}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d2ecaa5ec8ed113394cdfc31bdde959}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d2ecaa5ec8ed113394cdfc31bdde959} 
+INTO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{VALUES@{VALUES}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!VALUES@{VALUES}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab7db4588385c4fc7ed5211c35c711598}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab7db4588385c4fc7ed5211c35c711598} 
+VALUES&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SELECT@{SELECT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!SELECT@{SELECT}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a63225f19fccb18e7c709f1fa11bc738e}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a63225f19fccb18e7c709f1fa11bc738e} 
+SELECT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FROM@{FROM}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!FROM@{FROM}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a9cb26dba96b451a88aeb73e3be10a4ce}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a9cb26dba96b451a88aeb73e3be10a4ce} 
+FROM&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UPDATE@{UPDATE}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!UPDATE@{UPDATE}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a15a8022d0ed9cd9c2a2e756822703eb4}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a15a8022d0ed9cd9c2a2e756822703eb4} 
+UPDATE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SET@{SET}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!SET@{SET}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a8c52684db8f49511e9b44471716bf164}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a8c52684db8f49511e9b44471716bf164} 
+SET&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DELETE\_@{DELETE\_}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!DELETE\_@{DELETE\_}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a941c42b9719734fbe289f8e65d7a7574}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a941c42b9719734fbe289f8e65d7a7574} 
+DELETE\+\_\+&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{WHERE@{WHERE}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!WHERE@{WHERE}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a5105e0481cb9b1e1d0dd3e10bab1f1c0}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a5105e0481cb9b1e1d0dd3e10bab1f1c0} 
+WHERE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ORDER@{ORDER}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!ORDER@{ORDER}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a6575d9a58f0b41a108f2d6a565a0650d}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a6575d9a58f0b41a108f2d6a565a0650d} 
+ORDER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BY@{BY}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!BY@{BY}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a925ab312a51a924ab68d9812baa788ff}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a925ab312a51a924ab68d9812baa788ff} 
+BY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ASC@{ASC}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!ASC@{ASC}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac6e421eaad140c1bc1a39980502df80c}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac6e421eaad140c1bc1a39980502df80c} 
+ASC&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DESC@{DESC}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!DESC@{DESC}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a65a6d757dbb571ccc3af9706e9a5f607}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a65a6d757dbb571ccc3af9706e9a5f607} 
+DESC&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DROP@{DROP}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!DROP@{DROP}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14abf8f3be424eb6a72b21549fbb24ffb57}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14abf8f3be424eb6a72b21549fbb24ffb57} 
+DROP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{GRANT@{GRANT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!GRANT@{GRANT}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ad9fdc8f875b86df6d7a2f5b2aece1ef2}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ad9fdc8f875b86df6d7a2f5b2aece1ef2} 
+GRANT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ON@{ON}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!ON@{ON}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a90651ebea9a35ec4e018c8157492e17c}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a90651ebea9a35ec4e018c8157492e17c} 
+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TO@{TO}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!TO@{TO}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a304917b92bc3dc0953aab8356f74c02c}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a304917b92bc3dc0953aab8356f74c02c} 
+TO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INT@{INT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!INT@{INT}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a53f93baa3057821107c750323892fa92}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a53f93baa3057821107c750323892fa92} 
+INT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SMALLINT@{SMALLINT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!SMALLINT@{SMALLINT}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a42a2165cd790300c66917317b8bf7818}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a42a2165cd790300c66917317b8bf7818} 
+SMALLINT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BIGINT@{BIGINT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!BIGINT@{BIGINT}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a7f4c937d16ac710f52c288124cc886ae}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a7f4c937d16ac710f52c288124cc886ae} 
+BIGINT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FLOAT@{FLOAT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!FLOAT@{FLOAT}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ae738c26bf4ce1037fa81b039a915cbf6}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ae738c26bf4ce1037fa81b039a915cbf6} 
+FLOAT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DECIMAL@{DECIMAL}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!DECIMAL@{DECIMAL}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a13d992d671957e9a2b3e936ca0cf14a4}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a13d992d671957e9a2b3e936ca0cf14a4} 
+DECIMAL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CHAR@{CHAR}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!CHAR@{CHAR}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a027acd3aa6b1dd7f26119d3cf0f9a063}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a027acd3aa6b1dd7f26119d3cf0f9a063} 
+CHAR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{VARCHAR@{VARCHAR}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!VARCHAR@{VARCHAR}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14add6a4850d8ccf48d79886d5281d1dbcb}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14add6a4850d8ccf48d79886d5281d1dbcb} 
+VARCHAR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOOLEAN@{BOOLEAN}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!BOOLEAN@{BOOLEAN}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac48d5da12d702e73d6966069f2687376}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ac48d5da12d702e73d6966069f2687376} 
+BOOLEAN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DATE@{DATE}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!DATE@{DATE}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a633a6c7a6b9958f8174250094daf1e6a}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a633a6c7a6b9958f8174250094daf1e6a} 
+DATE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TIME@{TIME}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!TIME@{TIME}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a346ff32eaa3c09983fb2ec057816d352}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a346ff32eaa3c09983fb2ec057816d352} 
+TIME&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DATETIME@{DATETIME}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!DATETIME@{DATETIME}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa3eb957bd02f4780a599d5ec4464ca46}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa3eb957bd02f4780a599d5ec4464ca46} 
+DATETIME&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AND@{AND}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!AND@{AND}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a558ffc8f5770d8e4f95f51d822685532}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a558ffc8f5770d8e4f95f51d822685532} 
+AND&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{OR@{OR}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!OR@{OR}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d00e7dce692e8dc3f6877f035e3a616}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a1d00e7dce692e8dc3f6877f035e3a616} 
+OR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NOT@{NOT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!NOT@{NOT}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a10df3d67626099df882920ba6552f16d}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a10df3d67626099df882920ba6552f16d} 
+NOT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AUTH\_NULL@{AUTH\_NULL}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!AUTH\_NULL@{AUTH\_NULL}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa4dacd717398e0c601170333eba96219}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14aa4dacd717398e0c601170333eba96219} 
+AUTH\+\_\+\+NULL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{READONLY@{READONLY}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!READONLY@{READONLY}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34db6698cff32ac89724758fdaa5512e}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a34db6698cff32ac89724758fdaa5512e} 
+READONLY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MODIFY@{MODIFY}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!MODIFY@{MODIFY}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab9f20f7748e2e578e81ea9ae1a0dfb30}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14ab9f20f7748e2e578e81ea9ae1a0dfb30} 
+MODIFY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADMIN@{ADMIN}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!ADMIN@{ADMIN}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a73acd9a5972130b75066c82595a1fae3}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14a73acd9a5972130b75066c82595a1fae3} 
+ADMIN&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aab}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!TokenT@{TokenT}}
+\index{TokenT@{TokenT}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{TokenT}{TokenT}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aab} 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aab}{Hydro\+SQL\+::\+Server\+::\+Parser\+::\+TokenT}} \+: char\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{KEYWORD@{KEYWORD}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!KEYWORD@{KEYWORD}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba780bc0722dd01d4a8d9869f060734be6}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba780bc0722dd01d4a8d9869f060734be6} 
+KEYWORD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COLANDTABLE@{COLANDTABLE}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!COLANDTABLE@{COLANDTABLE}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabaa639a32fa39f3534a4c1b659a19d38a5}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabaa639a32fa39f3534a4c1b659a19d38a5} 
+COLANDTABLE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOOL\_OPERATOR@{BOOL\_OPERATOR}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!BOOL\_OPERATOR@{BOOL\_OPERATOR}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba464e3b5bf2daba9695dfc6b22db9cbfa}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba464e3b5bf2daba9695dfc6b22db9cbfa} 
+BOOL\+\_\+\+OPERATOR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CALCULATION\_OPERATOR@{CALCULATION\_OPERATOR}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!CALCULATION\_OPERATOR@{CALCULATION\_OPERATOR}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba84ef54b67f108425d98d463acd49af9c}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba84ef54b67f108425d98d463acd49af9c} 
+CALCULATION\+\_\+\+OPERATOR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LITERAL@{LITERAL}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!LITERAL@{LITERAL}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabaa0000d7769148184776f1d17656921b0}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabaa0000d7769148184776f1d17656921b0} 
+LITERAL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AUTH\_LEVEL@{AUTH\_LEVEL}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!AUTH\_LEVEL@{AUTH\_LEVEL}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba53638ab2476a6fab1544efe54f2f61d9}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba53638ab2476a6fab1544efe54f2f61d9} 
+AUTH\+\_\+\+LEVEL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LBRACKET@{LBRACKET}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!LBRACKET@{LBRACKET}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabad500138bf8f61d4b0b80413f4b76a82a}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aabad500138bf8f61d4b0b80413f4b76a82a} 
+LBRACKET&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RBRACKET@{RBRACKET}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!RBRACKET@{RBRACKET}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba270adbd249f9997adc3208e92a57e066}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba270adbd249f9997adc3208e92a57e066} 
+RBRACKET&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{COMMA@{COMMA}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!COMMA@{COMMA}}}\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba4d9b3e9fc12849d060371eb65154c751}\label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aabce239d3298526940447554e7c86aaba4d9b3e9fc12849d060371eb65154c751} 
+COMMA&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0af5766f611feba1efb304dcfdfd5b62}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!continuousNumExamination@{continuousNumExamination}}
+\index{continuousNumExamination@{continuousNumExamination}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{continuousNumExamination()}{continuousNumExamination()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0af5766f611feba1efb304dcfdfd5b62} 
+const bool Hydro\+SQL\+::\+Server\+::\+Parser\+::continuous\+Num\+Examination (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{, }\item[{const size\+\_\+t}]{begin}{, }\item[{const size\+\_\+t}]{length}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6a1dc7edf64b24af4879ce628074145f}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!dateStrToNum@{dateStrToNum}}
+\index{dateStrToNum@{dateStrToNum}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{dateStrToNum()}{dateStrToNum()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6a1dc7edf64b24af4879ce628074145f} 
+const int64\+\_\+t Hydro\+SQL\+::\+Server\+::\+Parser\+::date\+Str\+To\+Num (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ae7e71d6234e8f41d73e2b75bd3696b7d}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!datetimeStrToNum@{datetimeStrToNum}}
+\index{datetimeStrToNum@{datetimeStrToNum}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{datetimeStrToNum()}{datetimeStrToNum()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ae7e71d6234e8f41d73e2b75bd3696b7d} 
+const int64\+\_\+t Hydro\+SQL\+::\+Server\+::\+Parser\+::datetime\+Str\+To\+Num (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ab21aaeda5599886dd1ae5380cdade6f1}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!datetimeValideExamine@{datetimeValideExamine}}
+\index{datetimeValideExamine@{datetimeValideExamine}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{datetimeValideExamine()}{datetimeValideExamine()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ab21aaeda5599886dd1ae5380cdade6f1} 
+const bool Hydro\+SQL\+::\+Server\+::\+Parser\+::datetime\+Valide\+Examine (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0eda96a3908db3150d0d08f93ae7d2d5}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!dateValideExamine@{dateValideExamine}}
+\index{dateValideExamine@{dateValideExamine}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{dateValideExamine()}{dateValideExamine()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a0eda96a3908db3150d0d08f93ae7d2d5} 
+const bool Hydro\+SQL\+::\+Server\+::\+Parser\+::date\+Valide\+Examine (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a47ec99599f045a27aa6925880bbddd97}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!escapeCharacter@{escapeCharacter}}
+\index{escapeCharacter@{escapeCharacter}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{escapeCharacter()}{escapeCharacter()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a47ec99599f045a27aa6925880bbddd97} 
+const char Hydro\+SQL\+::\+Server\+::\+Parser\+::escape\+Character (\begin{DoxyParamCaption}\item[{std\+::string\+::const\+\_\+iterator \&}]{it}{, }\item[{const std\+::string\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a426cc894902c3b536f84e3db4282e4da}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!opStackPop@{opStackPop}}
+\index{opStackPop@{opStackPop}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{opStackPop()}{opStackPop()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a426cc894902c3b536f84e3db4282e4da} 
+void Hydro\+SQL\+::\+Server\+::\+Parser\+::op\+Stack\+Pop (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Engine\+::\+LT\+::\+LT}} $>$ \&}]{op}{, }\item[{\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&}]{li\+\_\+stack}{, }\item[{\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&}]{op\+\_\+stack}{}\end{DoxyParamCaption})}
+
+Firstly, op\+\_\+stack pop. Secondly, li\+\_\+stack pop. The time of popping is resolved by the type of the original top of op\+\_\+stack. Thirdly, what li\+\_\+stack has popped become the children of the original top of op\+\_\+stack. Fourthly, the original top of op\+\_\+stack, with its children, will be push into the li\+\_\+stack. Lastly, op will be push into op\+\_\+stack if op isn\textquotesingle{}t right bracket.
+
+If op is not right bracket, the aforesaid steps will be applied only once. If it is, the steps will be applied repeatedly until one left bracket is pop.\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6ee501b3a17b25f991df399974f73f23}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!opStackPopOnce@{opStackPopOnce}}
+\index{opStackPopOnce@{opStackPopOnce}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{opStackPopOnce()}{opStackPopOnce()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6ee501b3a17b25f991df399974f73f23} 
+void Hydro\+SQL\+::\+Server\+::\+Parser\+::op\+Stack\+Pop\+Once (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&}]{li\+\_\+stack}{, }\item[{\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&}]{op\+\_\+stack}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ae4debeb166ab63e0748bb9cc5e56348d}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parse@{parse}}
+\index{parse@{parse}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ae4debeb166ab63e0748bb9cc5e56348d} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse (\begin{DoxyParamCaption}\item[{const std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$ \&}]{token}{}\end{DoxyParamCaption})}
+
+
+
+Parse the list of token and generate an affair. 
+
+\begin{DoxyReturn}{Returns}
+An object with method execute. Calling that method will excute the command. 
+\end{DoxyReturn}
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a762417f3ba0b0d32ecb44d1006e1d79b}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parseCreate@{parseCreate}}
+\index{parseCreate@{parseCreate}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parseCreate()}{parseCreate()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a762417f3ba0b0d32ecb44d1006e1d79b} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse\+Create (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{start}{, }\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6d45678d27afa737711e1d7686ebd90b}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parseDelete@{parseDelete}}
+\index{parseDelete@{parseDelete}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parseDelete()}{parseDelete()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6d45678d27afa737711e1d7686ebd90b} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse\+Delete (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{start}{, }\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a45128fe9ae6880dc6bb43f1e69a39b2e}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parseDrop@{parseDrop}}
+\index{parseDrop@{parseDrop}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parseDrop()}{parseDrop()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a45128fe9ae6880dc6bb43f1e69a39b2e} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse\+Drop (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{start}{, }\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a5d9dbb1006a4a8bcea8cb2038d57aee5}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parseExpr@{parseExpr}}
+\index{parseExpr@{parseExpr}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parseExpr()}{parseExpr()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a5d9dbb1006a4a8bcea8cb2038d57aee5} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Engine\+::\+LT\+::\+LT}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse\+Expr (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{start}{, }\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+Priority\+: bracket \texorpdfstring{$>$}{>} calculation operator \texorpdfstring{$>$}{>} bool operator \texorpdfstring{$>$}{>} literal / column
+
+In calculation operator \& bool operator, the smaller one has higher priority.\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad135837af132477a9c61c98484a4be86}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parseGrant@{parseGrant}}
+\index{parseGrant@{parseGrant}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parseGrant()}{parseGrant()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad135837af132477a9c61c98484a4be86} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse\+Grant (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{start}{, }\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a064f2552f0c411b4d05bed85fb8bf71a}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parseInsert@{parseInsert}}
+\index{parseInsert@{parseInsert}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parseInsert()}{parseInsert()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a064f2552f0c411b4d05bed85fb8bf71a} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse\+Insert (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{start}{, }\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_addc174893d880f310f46f19f6b538fe4}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parseSelect@{parseSelect}}
+\index{parseSelect@{parseSelect}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parseSelect()}{parseSelect()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_addc174893d880f310f46f19f6b538fe4} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse\+Select (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{start}{, }\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_aa18c0bdb449d64ababbc735677445a52}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!parseUpdate@{parseUpdate}}
+\index{parseUpdate@{parseUpdate}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{parseUpdate()}{parseUpdate()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_aa18c0bdb449d64ababbc735677445a52} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::parse\+Update (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{start}{, }\item[{std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a97059c15040ef923252b8ba30c8b2818}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!stackOp@{stackOp}}
+\index{stackOp@{stackOp}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{stackOp()}{stackOp()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a97059c15040ef923252b8ba30c8b2818} 
+void Hydro\+SQL\+::\+Server\+::\+Parser\+::stack\+Op (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Engine\+::\+LT\+::\+LT}} $>$ \&}]{op}{, }\item[{\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&}]{li\+\_\+stack}{, }\item[{\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_aec7bb1c2600af0cc216d2c066e63cb3e}{Stack}} \&}]{op\+\_\+stack}{}\end{DoxyParamCaption})}
+
+Left bracket always push, while right bracket always pop. Otherwise, only when the stack\+\_\+top has a higher or equal priority than the op will op\+\_\+stack pop.\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_af33b4757c65974486a69eb07f791f400}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!timeStrToNum@{timeStrToNum}}
+\index{timeStrToNum@{timeStrToNum}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{timeStrToNum()}{timeStrToNum()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_af33b4757c65974486a69eb07f791f400} 
+const int64\+\_\+t Hydro\+SQL\+::\+Server\+::\+Parser\+::time\+Str\+To\+Num (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a35ddb34b65abfa43120dcfd2b9eca00b}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!timeValideExamine@{timeValideExamine}}
+\index{timeValideExamine@{timeValideExamine}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{timeValideExamine()}{timeValideExamine()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a35ddb34b65abfa43120dcfd2b9eca00b} 
+const bool Hydro\+SQL\+::\+Server\+::\+Parser\+::time\+Valide\+Examine (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a37e560631d728488ba38b3a18fc9b50e}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!tokenize@{tokenize}}
+\index{tokenize@{tokenize}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{tokenize()}{tokenize()}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a37e560631d728488ba38b3a18fc9b50e} 
+const std\+::list$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_parser_1_1_token}{Token}} $>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::tokenize (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Generate a list of token from command;. 
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespace_hydro_s_q_l_1_1_server_1_1_parser_a570dd65843741e471e9647661ad3b490}\index{HydroSQL::Server::Parser@{HydroSQL::Server::Parser}!keywords@{keywords}}
+\index{keywords@{keywords}!HydroSQL::Server::Parser@{HydroSQL::Server::Parser}}
+\doxysubsubsection{\texorpdfstring{keywords}{keywords}}
+{\footnotesize\ttfamily \label{namespace_hydro_s_q_l_1_1_server_1_1_parser_a570dd65843741e471e9647661ad3b490} 
+const std\+::unordered\+\_\+map$<$std\+::string, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_ad54621e43a39bee86972acec70e00d14}{KeywordE}}$>$ Hydro\+SQL\+::\+Server\+::\+Parser\+::keywords}
+

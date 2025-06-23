@@ -1,0 +1,44 @@
+\doxysection{Hydro\+SQL\+::Server\+::Engine\+::Lock\+Pool Class Reference}
+\hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool}{}\label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool}\index{HydroSQL::Server::Engine::LockPool@{HydroSQL::Server::Engine::LockPool}}
+
+
+A pool of std\+::shared\+\_\+lock. Used to distribute lock to each database.  
+
+
+
+
+{\ttfamily \#include $<$Lock\+Pool.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+mutex \& \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool_ade163c990903e143d314578865b850a6}{get\+Lock}} (const std\+::string \&file\+\_\+name)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool}{Lock\+Pool}} \& \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool_a5eaa65659aca0d958bbaccc1abd0163c}{get}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A pool of std\+::shared\+\_\+lock. Used to distribute lock to each database. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool_a5eaa65659aca0d958bbaccc1abd0163c}\index{HydroSQL::Server::Engine::LockPool@{HydroSQL::Server::Engine::LockPool}!get@{get}}
+\index{get@{get}!HydroSQL::Server::Engine::LockPool@{HydroSQL::Server::Engine::LockPool}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool_a5eaa65659aca0d958bbaccc1abd0163c} 
+static \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool}{Lock\+Pool}} \& Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Lock\+Pool\+::get (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool_ade163c990903e143d314578865b850a6}\index{HydroSQL::Server::Engine::LockPool@{HydroSQL::Server::Engine::LockPool}!getLock@{getLock}}
+\index{getLock@{getLock}!HydroSQL::Server::Engine::LockPool@{HydroSQL::Server::Engine::LockPool}}
+\doxysubsubsection{\texorpdfstring{getLock()}{getLock()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool_ade163c990903e143d314578865b850a6} 
+std\+::shared\+\_\+mutex \& Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Lock\+Pool\+::get\+Lock (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+\_\+name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+server/engine/include/\mbox{\hyperlink{_lock_pool_8hpp}{Lock\+Pool.\+hpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,42 @@
+\doxysection{server/engine/src/table.cpp File Reference}
+\hypertarget{table_8cpp}{}\label{table_8cpp}\index{server/engine/src/table.cpp@{server/engine/src/table.cpp}}
+{\ttfamily \#include $<$table.\+hpp$>$}\newline
+{\ttfamily \#include $<$Logical\+Tree.\+hpp$>$}\newline
+{\ttfamily \#include $<$Lock\+Pool.\+hpp$>$}\newline
+Include dependency graph for table.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{table_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l}{Hydro\+SQL}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server}{Hydro\+SQL\+::\+Server}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine}{Hydro\+SQL\+::\+Server\+::\+Engine}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ac4cc3ca61c7369407a48af81ac87837e}{Hydro\+SQL\+::\+Server\+::\+Engine\+::save\+Str}} (std\+::ostream \&os, const std\+::string \&str)
+\begin{DoxyCompactList}\small\item\em save a std\+::string into a stream object (std\+::fstream) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_aee23a807fae26608d6dba403a4b5c7aa}{Hydro\+SQL\+::\+Server\+::\+Engine\+::load\+Str}} (std\+::istream \&is, std\+::string \&str)
+\begin{DoxyCompactList}\small\item\em load a std\+::string from a stream object (std\+::fstream) \end{DoxyCompactList}\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a81449f9b6f0ed8d0d422f729a0afcb01}{Hydro\+SQL\+::\+Server\+::\+Engine\+::data\+Type\+Str}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}} type)
+\begin{DoxyCompactList}\small\item\em get the name of a data type as string \end{DoxyCompactList}\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ad357cb21afd433911fcb313c08f30093}{Hydro\+SQL\+::\+Server\+::\+Engine\+::constraint\+Type\+Str}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ae1f839f7d0d6df3780f36532353d9900}{Constraint\+Type}} type)
+\begin{DoxyCompactList}\small\item\em get the name of a constraint type as string \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ab22c77dc5b33efe96332dd1c25cae5c1}{Hydro\+SQL\+::\+Server\+::\+Engine\+::operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_constraint}{Constraint}} \&constraint)
+\item 
+std\+::istream \& \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a7ea3394ee43573a1705107cea3425075}{Hydro\+SQL\+::\+Server\+::\+Engine\+::operator$>$$>$}} (std\+::istream \&is, \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_constraint}{Constraint}} \&constraint)
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a5ac9305ce60e5ca302d6a925b9db0f46}{Hydro\+SQL\+::\+Server\+::\+Engine\+::operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&col)
+\item 
+std\+::istream \& \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_abd598a2b3ebf9bd9adb8fc37207d31dc}{Hydro\+SQL\+::\+Server\+::\+Engine\+::operator$>$$>$}} (std\+::istream \&is, \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&col)
+\item 
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{LT\+::\+Liter\+Type}} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a45e8e061290410523a90cbe52d7fe2b8}{Hydro\+SQL\+::\+Server\+::\+Engine\+::data\+Type\+To\+Literal\+Type}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}} type)
+\end{DoxyCompactItemize}

@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['savestr_0',['saveStr',['../namespace_hydro_s_q_l_1_1_server_1_1_engine.html#ac4cc3ca61c7369407a48af81ac87837e',1,'HydroSQL::Server::Engine']]],
+  ['savevector_1',['saveVector',['../namespace_hydro_s_q_l_1_1_server_1_1_engine.html#aa859241f04f3220457294b47d6f5e0fe',1,'HydroSQL::Server::Engine']]],
+  ['scale_2',['scale',['../struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column.html#a5d799d322b20400aff15914dfda72d9d',1,'HydroSQL::Server::Engine::Column']]],
+  ['secureenter_3',['secureEnter',['../namespace_hydro_s_q_l_1_1_client_1_1_encrypt.html#a089a2b9685ae56334c032d419dd369bf',1,'HydroSQL::Client::Encrypt']]],
+  ['select_4',['SELECT',['../namespace_hydro_s_q_l_1_1_server_1_1_parser.html#ad54621e43a39bee86972acec70e00d14a63225f19fccb18e7c709f1fa11bc738e',1,'HydroSQL::Server::Parser']]],
+  ['select_5',['select',['../class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table.html#a2a622e0dcbb20b9177a8dadbce607282',1,'HydroSQL::Server::Engine::Table']]],
+  ['selecta_6',['SelectA',['../class_hydro_s_q_l_1_1_server_1_1_parser_1_1_select_a.html',1,'HydroSQL::Server::Parser::SelectA'],['../class_hydro_s_q_l_1_1_server_1_1_parser_1_1_select_a.html#aa1b901ca11c1a4722d3900d7c969b0ba',1,'HydroSQL::Server::Parser::SelectA::SelectA()']]],
+  ['selectorder_7',['SelectOrder',['../struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_select_order.html',1,'HydroSQL::Server::Engine']]],
+  ['send_8',['send',['../class_hydro_s_q_l_1_1_client_1_1_network_1_1_client.html#a65539f0aee4e51e327ede092a07556aa',1,'HydroSQL::Client::Network::Client']]],
+  ['server_9',['Server',['../class_hydro_s_q_l_1_1_server_1_1_network_1_1_server.html',1,'HydroSQL::Server::Network::Server'],['../class_hydro_s_q_l_1_1_server_1_1_network_1_1_server.html#a6611fca435ddddb010353931cfcab610',1,'HydroSQL::Server::Network::Server::Server()']]],
+  ['server_2ecpp_10',['server.cpp',['../server_8cpp.html',1,'']]],
+  ['server_2ehpp_11',['server.hpp',['../server_8hpp.html',1,'']]],
+  ['set_12',['SET',['../namespace_hydro_s_q_l_1_1_server_1_1_parser.html#ad54621e43a39bee86972acec70e00d14a8c52684db8f49511e9b44471716bf164',1,'HydroSQL::Server::Parser']]],
+  ['set_13',['set',['../struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_update_info.html#a36e8b802b9bd0519c0f0bc9468703000',1,'HydroSQL::Server::Engine::UpdateInfo']]],
+  ['setuserauth_14',['setUserAuth',['../class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager.html#aefa9eac0e1c8a8832dd823bc7b2145bd',1,'HydroSQL::Server::Authority::AuthManager::setUserAuth(const std::string &amp;username, const std::string &amp;table_name, const AuthLevel level)'],['../class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager.html#aec30b9e42671dfee54a703f1e60ec3b2',1,'HydroSQL::Server::Authority::AuthManager::setUserAuth(const std::vector&lt; std::string &gt; &amp;usernames, const std::string &amp;table_name, const AuthLevel level)']]],
+  ['sink_15',['Sink',['../namespace_hydro_s_q_l_1_1_server_1_1_network.html#a2037b24f002c94133911d87e8eaae146',1,'HydroSQL::Server::Network::Sink'],['../namespace_hydro_s_q_l_1_1_client_1_1_network.html#a9dcd096b3ec3ee3cb2f115fc05bd0b25',1,'HydroSQL::Client::Network::Sink']]],
+  ['smallint_16',['SMALLINT',['../namespace_hydro_s_q_l_1_1_server_1_1_engine.html#a715766d140bad7185c4e4e2833d3a40da42a2165cd790300c66917317b8bf7818',1,'HydroSQL::Server::Engine::SMALLINT'],['../namespace_hydro_s_q_l_1_1_server_1_1_parser.html#ad54621e43a39bee86972acec70e00d14a42a2165cd790300c66917317b8bf7818',1,'HydroSQL::Server::Parser::SMALLINT']]],
+  ['stack_17',['Stack',['../namespace_hydro_s_q_l_1_1_server_1_1_parser.html#aec7bb1c2600af0cc216d2c066e63cb3e',1,'HydroSQL::Server::Parser']]],
+  ['stackop_18',['stackOp',['../namespace_hydro_s_q_l_1_1_server_1_1_parser.html#a97059c15040ef923252b8ba30c8b2818',1,'HydroSQL::Server::Parser']]],
+  ['str_19',['STR',['../namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t.html#a29b4d811e755d6b074c574a68c0ead60a3fe0dfff438296bb525e0e8642586c2d',1,'HydroSQL::Server::Engine::LT']]],
+  ['stringify_20',['STRINGIFY',['../server_2build_2_c_make_files_23_831_85_2_compiler_id_c_x_x_2_c_make_c_x_x_compiler_id_8cpp.html#a43e1cad902b6477bec893cb6430bd6c8',1,'STRINGIFY:&#160;CMakeCXXCompilerId.cpp'],['../client_2build_2_c_make_files_23_831_85_2_compiler_id_c_x_x_2_c_make_c_x_x_compiler_id_8cpp.html#a43e1cad902b6477bec893cb6430bd6c8',1,'STRINGIFY:&#160;CMakeCXXCompilerId.cpp']]],
+  ['stringify_5fhelper_21',['STRINGIFY_HELPER',['../server_2build_2_c_make_files_23_831_85_2_compiler_id_c_x_x_2_c_make_c_x_x_compiler_id_8cpp.html#a2ae9b72bb13abaabfcf2ee0ba7d3fa1d',1,'STRINGIFY_HELPER:&#160;CMakeCXXCompilerId.cpp'],['../client_2build_2_c_make_files_23_831_85_2_compiler_id_c_x_x_2_c_make_c_x_x_compiler_id_8cpp.html#a2ae9b72bb13abaabfcf2ee0ba7d3fa1d',1,'STRINGIFY_HELPER:&#160;CMakeCXXCompilerId.cpp']]],
+  ['struct_2ehpp_22',['struct.hpp',['../struct_8hpp.html',1,'']]]
+];

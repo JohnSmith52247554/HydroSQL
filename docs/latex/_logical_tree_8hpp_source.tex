@@ -1,0 +1,99 @@
+\doxysection{Logical\+Tree.\+hpp}
+\hypertarget{_logical_tree_8hpp_source}{}\label{_logical_tree_8hpp_source}\index{server/engine/include/LogicalTree.hpp@{server/engine/include/LogicalTree.hpp}}
+\mbox{\hyperlink{_logical_tree_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{struct_8hpp}{struct.hpp}}>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t}{HydroSQL::Server::Engine::LT}}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{struct_8hpp_ad383fa06a009994033db1e5d3edaa9cf}{HYDROSQL\_ENGINE\_API}}\ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_afd28641e69160d6ac94d2b125f076b1e}{getOpParaNum}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{OpType}}\ type);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a141d6facfe7c39576260db8bcf8f1751}{boolOp}}(std::shared\_ptr<LT>\ root,\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{RowInfo}}\ \&info);}
+\DoxyCodeLine{00021\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ int64\_t\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a45726e5b0111373f8fa12c74fb6ec6fe}{calInt}}(std::shared\_ptr<LT>\ root,\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{RowInfo}}\ \&info);}
+\DoxyCodeLine{00022\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a610d43ab66981f1dfb999132573fdbc8}{calFloat}}(std::shared\_ptr<LT>\ root,\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{RowInfo}}\ \&info);}
+\DoxyCodeLine{00023\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ad4e61c9d654f64ff7eeefa105fabe745}{calStr}}(std::shared\_ptr<LT>\ root,\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{RowInfo}}\ \&info);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{LiterType}}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a197774a0ed3ba3dc6863d9c6ba8b7cd4}{getLiterType}}(std::shared\_ptr<LT>\ node,\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{RowInfo}}\ \&info);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ae3478ea018cac45e336dc12cefd3ecf3}{opEqual}}(std::shared\_ptr<LT>\ root,\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{RowInfo}}\ \&info);}
+\DoxyCodeLine{00028\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a3947356801665556176a311668c1c171}{opGreater}}(std::shared\_ptr<LT>\ root,\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{RowInfo}}\ \&info);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::enable\_if\_t<std::is\_same\_v<T,\ int64\_t>\ ||\ std::is\_same\_v<T,\ double>\ ||\ std::is\_same\_v<T,\ std::string>\ ||\ std::is\_same\_v<T,\ bool>,\ \textcolor{keywordtype}{int}>\ =\ 0>}
+\DoxyCodeLine{00032\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a1d629e19d742e116f6472b5fa61911df}{getCol}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{RowInfo}}\ \&info,\ \textcolor{keyword}{const}\ std::string\ \&col\_name,\ T\ \&result)}
+\DoxyCodeLine{00033\ \ \ \ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&col\ :\ info)}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (col.col\_name\ ==\ col\_name)}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{DataType}}\ =\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{HydroSQL::Server::Engine::DataType}};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{DataType}}\ type;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ int64\_t>)}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da53f93baa3057821107c750323892fa92}{DataType::INT}}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da42a2165cd790300c66917317b8bf7818}{DataType::SMALLINT}}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da7f4c937d16ac710f52c288124cc886ae}{DataType::BIGINT}}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da027acd3aa6b1dd7f26119d3cf0f9a063}{DataType::CHAR}}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da633a6c7a6b9958f8174250094daf1e6a}{DataType::DATE}}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da346ff32eaa3c09983fb2ec057816d352}{DataType::TIME}}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40daa3eb957bd02f4780a599d5ec4464ca46}{DataType::DATETIME}})}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(std::get<int64\_t>(col.liter.liter\_info));}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}[ERROR]\ The\ type\ of\ column\ "{}}\ +\ col\_name\ +\ \textcolor{stringliteral}{"{}doesn't\ meet\ the\ requirement\ of\ the\ expression."{}});}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ double>)}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40dae738c26bf4ce1037fa81b039a915cbf6}{DataType::FLOAT}}\ ||\ col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da13d992d671957e9a2b3e936ca0cf14a4}{DataType::DECIMAL}})}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(std::get<double>(col.liter.liter\_info));}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}[ERROR]\ The\ type\ of\ column\ "{}}\ +\ col\_name\ +\ \textcolor{stringliteral}{"{}doesn't\ meet\ the\ requirement\ of\ the\ expression."{}});}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ std::string>)}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40dadd6a4850d8ccf48d79886d5281d1dbcb}{DataType::VARCHAR}})}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(std::get<std::string>(col.liter.liter\_info));}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}[ERROR]\ The\ type\ of\ column\ "{}}\ +\ col\_name\ +\ \textcolor{stringliteral}{"{}doesn't\ meet\ the\ requirement\ of\ the\ expression."{}});}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ bool>)}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (col.col\_type\ ==\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40dac48d5da12d702e73d6966069f2687376}{DataType::BOOLEAN}})}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(std::get<bool>(col.liter.liter\_info));}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}[ERROR]\ The\ type\ of\ column\ "{}}\ +\ col\_name\ +\ \textcolor{stringliteral}{"{}doesn't\ meet\ the\ requirement\ of\ the\ expression."{}});}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ }
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \}\ \textcolor{comment}{//\ namespace\ YourSQL::E}}
+\DoxyCodeLine{00102\ }
+
+\end{DoxyCode}

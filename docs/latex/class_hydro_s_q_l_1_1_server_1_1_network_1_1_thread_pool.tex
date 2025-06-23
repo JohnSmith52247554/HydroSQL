@@ -1,0 +1,54 @@
+\doxysection{Hydro\+SQL\+::Server\+::Network\+::Thread\+Pool Class Reference}
+\hypertarget{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool}{}\label{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool}\index{HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}}
+
+
+{\ttfamily \#include $<$Thread\+Pool.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_abdfb1010c256d0fef222db0bb899f359}{Thread\+Pool}} (const size\+\_\+t thread\+\_\+num)
+\item 
+\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_ac7bc1087b0391dbb80cf2fc1ab3edc8a}{\texorpdfstring{$\sim$}{\string~}\+Thread\+Pool}} ()
+\item 
+{\footnotesize template$<$typename Callable, typename... Args$>$ }\\void \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_acb8ede43d5beddfce7c31fa50cada3aa}{post}} (Callable \&\&callable, Args \&\&...args)
+\item 
+const bool \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_ac7304b8f38c5479728bdc2a9a96e3be1}{busy}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_abdfb1010c256d0fef222db0bb899f359}\index{HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}!ThreadPool@{ThreadPool}}
+\index{ThreadPool@{ThreadPool}!HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}}
+\doxysubsubsection{\texorpdfstring{ThreadPool()}{ThreadPool()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_abdfb1010c256d0fef222db0bb899f359} 
+Hydro\+SQL\+::\+Server\+::\+Network\+::\+Thread\+Pool\+::\+Thread\+Pool (\begin{DoxyParamCaption}\item[{const size\+\_\+t}]{thread\+\_\+num}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_ac7bc1087b0391dbb80cf2fc1ab3edc8a}\index{HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}!````~ThreadPool@{\texorpdfstring{$\sim$}{\string~}ThreadPool}}
+\index{````~ThreadPool@{\texorpdfstring{$\sim$}{\string~}ThreadPool}!HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}ThreadPool()}{\string~ThreadPool()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_ac7bc1087b0391dbb80cf2fc1ab3edc8a} 
+Hydro\+SQL\+::\+Server\+::\+Network\+::\+Thread\+Pool\+::\texorpdfstring{$\sim$}{\string~}\+Thread\+Pool (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_ac7304b8f38c5479728bdc2a9a96e3be1}\index{HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}!busy@{busy}}
+\index{busy@{busy}!HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}}
+\doxysubsubsection{\texorpdfstring{busy()}{busy()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_ac7304b8f38c5479728bdc2a9a96e3be1} 
+const bool Hydro\+SQL\+::\+Server\+::\+Network\+::\+Thread\+Pool\+::busy (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_acb8ede43d5beddfce7c31fa50cada3aa}\index{HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}!post@{post}}
+\index{post@{post}!HydroSQL::Server::Network::ThreadPool@{HydroSQL::Server::Network::ThreadPool}}
+\doxysubsubsection{\texorpdfstring{post()}{post()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool_acb8ede43d5beddfce7c31fa50cada3aa} 
+template$<$typename Callable, typename... Args$>$ \\
+void Hydro\+SQL\+::\+Server\+::\+Network\+::\+Thread\+Pool\+::post (\begin{DoxyParamCaption}\item[{Callable \&\&}]{callable}{, }\item[{Args \&\&...}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+server/network/include/\mbox{\hyperlink{_thread_pool_8hpp}{Thread\+Pool.\+hpp}}\item 
+server/network/src/\mbox{\hyperlink{_thread_pool_8cpp}{Thread\+Pool.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,149 @@
+\doxysection{server/engine/include/struct.hpp File Reference}
+\hypertarget{struct_8hpp}{}\label{struct_8hpp}\index{server/engine/include/struct.hpp@{server/engine/include/struct.hpp}}
+
+
+structure \& enum  
+
+
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{struct_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_literal}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Literal}}
+\item 
+union \mbox{\hyperlink{union_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_info}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Info}}
+\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+LT}}
+\begin{DoxyCompactList}\small\item\em Logical tree node. After converting an expression into a logical tree, the expression can be calculated recursively from the root node. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_col_info}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Col\+Info}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l}{Hydro\+SQL}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server}{Hydro\+SQL\+::\+Server}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine}{Hydro\+SQL\+::\+Server\+::\+Engine}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{struct_8hpp_ad383fa06a009994033db1e5d3edaa9cf}{HYDROSQL\+\_\+\+ENGINE\+\_\+\+API}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_aae8c3b0cd8c936149a746b8fb9b32926}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Data}} = std\+::variant$<$bool, int64\+\_\+t, double, std\+::string$>$
+\item 
+using \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Row\+Info}} = std\+::vector$<$\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_col_info}{Col\+Info}}$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Data\+Type}} \+: char \{ \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da53f93baa3057821107c750323892fa92}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+INT}} = 0
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da42a2165cd790300c66917317b8bf7818}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+SMALLINT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da7f4c937d16ac710f52c288124cc886ae}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+BIGINT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40dae738c26bf4ce1037fa81b039a915cbf6}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+FLOAT}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da13d992d671957e9a2b3e936ca0cf14a4}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+DECIMAL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da027acd3aa6b1dd7f26119d3cf0f9a063}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+CHAR}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40dadd6a4850d8ccf48d79886d5281d1dbcb}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+VARCHAR}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40dac48d5da12d702e73d6966069f2687376}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+BOOLEAN}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da633a6c7a6b9958f8174250094daf1e6a}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+DATE}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40da346ff32eaa3c09983fb2ec057816d352}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+TIME}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40daa3eb957bd02f4780a599d5ec4464ca46}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+DATETIME}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a9c2ab0332058a4af659ef08fb14aad78}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Node\+Type}} \+: char \{ \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a9c2ab0332058a4af659ef08fb14aad78a37a6259cc0c1dae299a7866489dff0bd}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::null}} = 0
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a9c2ab0332058a4af659ef08fb14aad78aa44a065875f5d66d41474bb9bfb0ce05}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+COL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a9c2ab0332058a4af659ef08fb14aad78aa0000d7769148184776f1d17656921b0}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+LITERAL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a9c2ab0332058a4af659ef08fb14aad78a986496ca5b23669b8661171566a167c3}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+OPERATOR}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a9c2ab0332058a4af659ef08fb14aad78a661ac37a8b5107ae9cf5256ec71808f5}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+CALCULATION}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a9c2ab0332058a4af659ef08fb14aad78ad500138bf8f61d4b0b80413f4b76a82a}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+LBRACKET}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a9c2ab0332058a4af659ef08fb14aad78a270adbd249f9997adc3208e92a57e066}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+RBRACKET}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Op\+Type}} \+: char \{ \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a37a6259cc0c1dae299a7866489dff0bd}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::null}} = 0
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a969f331a87d8c958473c32b4d0e61a44}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+EQUAL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a4ea2d378cdec20f59330f113297bc1ce}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+NOT\+\_\+\+EQUAL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857ae7e72355289e404b762d4cf88824d23b}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+GREATER}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a1798e8c3621ca53d9e3a80d257306000}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+LESS}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a87e6b203bf40967d37a33f9a4438561a}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+GREATER\+\_\+\+EQUAL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a8b4a5cd69b217bf93b054ada7f49abd4}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+LESS\+\_\+\+EQUAL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857aa7598964efa10e649f92662b79e8d4d3}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+LIKE}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a4e8389eab59bb4cfce796cb45342da1c}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+IS\+\_\+\+IN}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a558ffc8f5770d8e4f95f51d822685532}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+AND}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a1d00e7dce692e8dc3f6877f035e3a616}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+OR}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857a10df3d67626099df882920ba6552f16d}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+NOT}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70fa}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Cal\+Type}} \+: char \{ \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70faa37a6259cc0c1dae299a7866489dff0bd}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::null}} = 0
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70faa080aaf8d817ada96fca7096b7b55bd30}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+MULTIPLY}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70faa210c66d794cec40488f3f8f634d6c33b}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+DIVIDE}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70faa928ab45d616dde447dbbbd0270db87ad}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+MODULO}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70faa9eeb52badb613229884838847294b90d}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+ADD}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a086be27b0c0c1f7a3dbc27a8c8aa70faaffc0d9b54a1fe677c4c9e6b050e67c81}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+MINUS}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+Liter\+Type}} \+: char \{ \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60a37a6259cc0c1dae299a7866489dff0bd}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::null}} = 0
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60a53f93baa3057821107c750323892fa92}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+INT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60ae738c26bf4ce1037fa81b039a915cbf6}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+FLOAT}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60ac48d5da12d702e73d6966069f2687376}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+BOOLEAN}}
+, \newline
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60a3fe0dfff438296bb525e0e8642586c2d}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+STR}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60a633a6c7a6b9958f8174250094daf1e6a}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+DATE}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60a346ff32eaa3c09983fb2ec057816d352}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+TIME}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60aa3eb957bd02f4780a599d5ec4464ca46}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::\+DATETIME}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{Liter\+Type}} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ad5d352b664251c76662b8a2b9f917eed}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::data\+Type\+To\+Literal\+Type}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}} type)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+structure \& enum 
+
+\begin{DoxyAuthor}{Author}
+username (\href{mailto:username52247554@gmail.com}{\texttt{ username52247554@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2025-\/06-\/18
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2025 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{struct_8hpp_ad383fa06a009994033db1e5d3edaa9cf}\index{struct.hpp@{struct.hpp}!HYDROSQL\_ENGINE\_API@{HYDROSQL\_ENGINE\_API}}
+\index{HYDROSQL\_ENGINE\_API@{HYDROSQL\_ENGINE\_API}!struct.hpp@{struct.hpp}}
+\doxysubsubsection{\texorpdfstring{HYDROSQL\_ENGINE\_API}{HYDROSQL\_ENGINE\_API}}
+{\footnotesize\ttfamily \label{struct_8hpp_ad383fa06a009994033db1e5d3edaa9cf} 
+\#define HYDROSQL\+\_\+\+ENGINE\+\_\+\+API}
+

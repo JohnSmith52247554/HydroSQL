@@ -1,0 +1,103 @@
+\doxysection{Hydro\+SQL\+::Server\+::Authority\+::Auth\+Manager Class Reference}
+\hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager}{}\label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+
+
+The class that manage the file (User\+Config.\+bin) that record the premission level of each user.  
+
+
+
+
+{\ttfamily \#include $<$authority.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const bool \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aeee2925ea5f5dd01bcda938f61f507aa}{examine\+Password\+Hash}} (const std\+::string \&username, const std\+::string \&password\+\_\+hash)
+\item 
+const std\+::string \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aa61f55e6833728f0d37accf2312b44fe}{get\+Password\+Hash}} (const std\+::string \&username)
+\item 
+const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Auth\+Level}} \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_acb895d66389a282e29c379d0fa6e2342}{get\+Level}} (const std\+::string \&username, const std\+::string tablename)
+\item 
+const int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ae0e0894c33f131c3ac83f6c7b4bcb106}{add\+User}} (const std\+::string \&username, const std\+::string \&password\+\_\+hash)
+\item 
+const int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ac7d47d5bc462dcee20e56c17607942cd}{add\+Table}} (const std\+::string \&table\+\_\+name, const std\+::string \&creator)
+\item 
+const int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ab60c22a7cb014a6f35e463fdfedf28c7}{remove\+Table}} (const std\+::string \&table\+\_\+name)
+\item 
+const int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aefa9eac0e1c8a8832dd823bc7b2145bd}{set\+User\+Auth}} (const std\+::string \&username, const std\+::string \&table\+\_\+name, const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Auth\+Level}} level)
+\item 
+const int \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aec30b9e42671dfee54a703f1e60ec3b2}{set\+User\+Auth}} (const std\+::vector$<$ std\+::string $>$ \&usernames, const std\+::string \&table\+\_\+name, const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Auth\+Level}} level)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager}{Auth\+Manager}} \& \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_a61d2316e2a83fc5259a48823f45e1914}{get}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The class that manage the file (User\+Config.\+bin) that record the premission level of each user. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ac7d47d5bc462dcee20e56c17607942cd}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!addTable@{addTable}}
+\index{addTable@{addTable}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{addTable()}{addTable()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ac7d47d5bc462dcee20e56c17607942cd} 
+const int Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::add\+Table (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{table\+\_\+name}{, }\item[{const std\+::string \&}]{creator}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ae0e0894c33f131c3ac83f6c7b4bcb106}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!addUser@{addUser}}
+\index{addUser@{addUser}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{addUser()}{addUser()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ae0e0894c33f131c3ac83f6c7b4bcb106} 
+const int Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::add\+User (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{username}{, }\item[{const std\+::string \&}]{password\+\_\+hash}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aeee2925ea5f5dd01bcda938f61f507aa}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!examinePasswordHash@{examinePasswordHash}}
+\index{examinePasswordHash@{examinePasswordHash}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{examinePasswordHash()}{examinePasswordHash()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aeee2925ea5f5dd01bcda938f61f507aa} 
+const bool Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::examine\+Password\+Hash (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{username}{, }\item[{const std\+::string \&}]{password\+\_\+hash}{}\end{DoxyParamCaption})}
+
+The document User\+Config.\+bin is a two dimension sheet. username1 username2 username3 ... password\+\_\+hash1 password\+\_\+hash2 password\+\_\+hash3 ... table\+\_\+nameA auth\+\_\+level\+A1 auth\+\_\+level\+A2 auth\+\_\+level\+A3 table\+\_\+nameB auth\+\_\+level\+B1 auth\+\_\+level\+B2 auth\+\_\+level\+B3 table\+\_\+nameC auth\+\_\+level\+C1 auth\+\_\+level\+C2 auth\+\_\+level\+C3 ...
+
+When saving, the sheet will be save in a linear structure as following. USERNAME\+\_\+\+SIZE username1, username2, username3, ... password\+\_\+hash1, password\+\_\+hash2, password\+\_\+hash3, ... TABLE\+\_\+\+NAME\+\_\+\+SIZE table\+\_\+nameA, table\+\_\+nameB, table\+\_\+nameC, ... auth\+\_\+level\+A1, auth\+\_\+level\+A2, auth\+\_\+level\+A3, ... auth\+\_\+level\+B1, auth\+\_\+level\+B2, auth\+\_\+level\+B3, ... auth\+\_\+level\+C1, auth\+\_\+level\+C2, auth\+\_\+level\+C3, ... ... \Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_a61d2316e2a83fc5259a48823f45e1914}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!get@{get}}
+\index{get@{get}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_a61d2316e2a83fc5259a48823f45e1914} 
+static \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager}{Auth\+Manager}} \& Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::get (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_acb895d66389a282e29c379d0fa6e2342}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!getLevel@{getLevel}}
+\index{getLevel@{getLevel}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{getLevel()}{getLevel()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_acb895d66389a282e29c379d0fa6e2342} 
+const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Auth\+Level}} Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::get\+Level (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{username}{, }\item[{const std\+::string}]{tablename}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aa61f55e6833728f0d37accf2312b44fe}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!getPasswordHash@{getPasswordHash}}
+\index{getPasswordHash@{getPasswordHash}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{getPasswordHash()}{getPasswordHash()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aa61f55e6833728f0d37accf2312b44fe} 
+const std\+::string Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::get\+Password\+Hash (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{username}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ab60c22a7cb014a6f35e463fdfedf28c7}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!removeTable@{removeTable}}
+\index{removeTable@{removeTable}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{removeTable()}{removeTable()}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_ab60c22a7cb014a6f35e463fdfedf28c7} 
+const int Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::remove\+Table (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{table\+\_\+name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aefa9eac0e1c8a8832dd823bc7b2145bd}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!setUserAuth@{setUserAuth}}
+\index{setUserAuth@{setUserAuth}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{setUserAuth()}{setUserAuth()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aefa9eac0e1c8a8832dd823bc7b2145bd} 
+const int Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::set\+User\+Auth (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{username}{, }\item[{const std\+::string \&}]{table\+\_\+name}{, }\item[{const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Auth\+Level}}}]{level}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+\Hypertarget{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aec30b9e42671dfee54a703f1e60ec3b2}\index{HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}!setUserAuth@{setUserAuth}}
+\index{setUserAuth@{setUserAuth}!HydroSQL::Server::Authority::AuthManager@{HydroSQL::Server::Authority::AuthManager}}
+\doxysubsubsection{\texorpdfstring{setUserAuth()}{setUserAuth()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_auth_manager_aec30b9e42671dfee54a703f1e60ec3b2} 
+const int Hydro\+SQL\+::\+Server\+::\+Authority\+::\+Auth\+Manager\+::set\+User\+Auth (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{usernames}{, }\item[{const std\+::string \&}]{table\+\_\+name}{, }\item[{const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Auth\+Level}}}]{level}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+server/authority/include/\mbox{\hyperlink{authority_8hpp}{authority.\+hpp}}\item 
+server/authority/src/\mbox{\hyperlink{authority_8cpp}{authority.\+cpp}}\end{DoxyCompactItemize}

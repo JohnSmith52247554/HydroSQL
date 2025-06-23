@@ -1,0 +1,71 @@
+\doxysection{server/engine/include/\+Logical\+Tree.hpp File Reference}
+\hypertarget{_logical_tree_8hpp}{}\label{_logical_tree_8hpp}\index{server/engine/include/LogicalTree.hpp@{server/engine/include/LogicalTree.hpp}}
+
+
+Tree structure to represent logical expression.  
+
+
+{\ttfamily \#include $<$struct.\+hpp$>$}\newline
+Include dependency graph for Logical\+Tree.\+hpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{_logical_tree_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_logical_tree_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l}{Hydro\+SQL}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server}{Hydro\+SQL\+::\+Server}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine}{Hydro\+SQL\+::\+Server\+::\+Engine}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_8hpp_ad383fa06a009994033db1e5d3edaa9cf}{HYDROSQL\+\_\+\+ENGINE\+\_\+\+API}} const int \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_afd28641e69160d6ac94d2b125f076b1e}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::get\+Op\+Para\+Num}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ace503bd0351f5cd2787aced8e4e49857}{Op\+Type}} type)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a141d6facfe7c39576260db8bcf8f1751}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::bool\+Op}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT}} $>$ root, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Row\+Info}} \&info)
+\item 
+const int64\+\_\+t \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a45726e5b0111373f8fa12c74fb6ec6fe}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::cal\+Int}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT}} $>$ root, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Row\+Info}} \&info)
+\item 
+const double \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a610d43ab66981f1dfb999132573fdbc8}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::cal\+Float}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT}} $>$ root, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Row\+Info}} \&info)
+\item 
+const std\+::string \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ad4e61c9d654f64ff7eeefa105fabe745}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::cal\+Str}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT}} $>$ root, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Row\+Info}} \&info)
+\item 
+const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{Liter\+Type}} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a197774a0ed3ba3dc6863d9c6ba8b7cd4}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::get\+Liter\+Type}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT}} $>$ node, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Row\+Info}} \&info)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_ae3478ea018cac45e336dc12cefd3ecf3}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::op\+Equal}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT}} $>$ root, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Row\+Info}} \&info)
+\item 
+const bool \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a3947356801665556176a311668c1c171}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::op\+Greater}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_1_1_l_t}{LT}} $>$ root, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Row\+Info}} \&info)
+\item 
+{\footnotesize template$<$typename T, typename std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+same\+\_\+v$<$ T, int64\+\_\+t $>$\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}std\+::is\+\_\+same\+\_\+v$<$ T, double $>$\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}std\+::is\+\_\+same\+\_\+v$<$ T, std\+::string $>$\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}std\+::is\+\_\+same\+\_\+v$<$ T, bool $>$, int $>$ = 0$>$ }\\const int \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a1d629e19d742e116f6472b5fa61911df}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+LT\+::get\+Col}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_af0870c8ebcafc268ec4dea3043725646}{Row\+Info}} \&info, const std\+::string \&col\+\_\+name, T \&result)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Tree structure to represent logical expression. 
+
+\begin{DoxyAuthor}{Author}
+username (\href{mailto:username52247554@gmail.com}{\texttt{ username52247554@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2025-\/06-\/17
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2025 
+\end{DoxyCopyright}

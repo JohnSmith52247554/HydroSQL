@@ -20,6 +20,10 @@
 
 namespace HydroSQL::Server::Network
 {
+    /**
+     * @brief TCP server
+     * 
+     */
     class Server
     {
     private:
@@ -47,6 +51,7 @@ namespace HydroSQL::Server::Network
         const int recieve(std::string &msg, const SOCKET client_socket, const std::string &username);
 
 #ifdef WIN32
+        // The function to be push into the thread pool.
         void handleClient(const SOCKET client_socket, const std::string client_addr);
 #endif
     };

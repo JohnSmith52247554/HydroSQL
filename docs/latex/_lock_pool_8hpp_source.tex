@@ -1,0 +1,36 @@
+\doxysection{Lock\+Pool.\+hpp}
+\hypertarget{_lock_pool_8hpp_source}{}\label{_lock_pool_8hpp_source}\index{server/engine/include/LockPool.hpp@{server/engine/include/LockPool.hpp}}
+\mbox{\hyperlink{_lock_pool_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine}{HydroSQL::Server::Engine}}}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{class\ }LockPool}
+\DoxyCodeLine{00021\ \ \ \ \ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ POOL\_SIZE\ =\ 8;}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ std::array<std::shared\_mutex,\ POOL\_SIZE>\ locks;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ std::hash<std::string>\ hash;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ LockPool()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \string~LockPool()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ LockPool\ \&\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool_a5eaa65659aca0d958bbaccc1abd0163c}{get}}()}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ LockPool\ instance;}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ instance;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ std::shared\_mutex\ \&\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_lock_pool_ade163c990903e143d314578865b850a6}{getLock}}(\textcolor{keyword}{const}\ std::string\ \&file\_name)}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ hash(file\_name)\ \%\ POOL\_SIZE;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ locks[index];}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \};}
+\DoxyCodeLine{00043\ \}}
+
+\end{DoxyCode}

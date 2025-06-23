@@ -1,0 +1,51 @@
+\doxysection{server.\+hpp}
+\hypertarget{server_8hpp_source}{}\label{server_8hpp_source}\index{server/network/include/server.hpp@{server/network/include/server.hpp}}
+\mbox{\hyperlink{server_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <utils/logger/include/logger.hpp>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{_thread_pool_8hpp}{ThreadPool.hpp}}>}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#ifdef\ WIN32}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <winsock2.h>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_network}{HydroSQL::Server::Network}}}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_server_a6611fca435ddddb010353931cfcab610}{Server}}}
+\DoxyCodeLine{00028\ \ \ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Utils::Logger::Level\ log\_level\ =\ Utils::Logger::Level::INFO;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ port;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_thread_pool}{ThreadPool}}\ thread\_pool;}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ std::atomic<bool>\ running;}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#ifdef\ WIN32}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ SOCKET\ server\_socket;}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#ifdef\ \_linux}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_server_a6611fca435ddddb010353931cfcab610}{Server}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ port,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ thread\_num);}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_server_a2e38d55cc8118b035f74f66ce74217c9}{\string~Server}}();}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_network_1_1_server_a2c5fccc7e6b81866b2b3d8b02f1abb0f}{run}}();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ send(std::string\ \&msg,\ \textcolor{keyword}{const}\ SOCKET\ client\_socket,\ \textcolor{keyword}{const}\ std::string\ \&username);}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ recieve(std::string\ \&msg,\ \textcolor{keyword}{const}\ SOCKET\ client\_socket,\ \textcolor{keyword}{const}\ std::string\ \&username);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#ifdef\ WIN32}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ function\ to\ be\ push\ into\ the\ thread\ pool.}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ handleClient(\textcolor{keyword}{const}\ SOCKET\ client\_socket,\ \textcolor{keyword}{const}\ std::string\ client\_addr);}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00057\ \ \ \ \ \};}
+\DoxyCodeLine{00058\ \}}
+
+\end{DoxyCode}

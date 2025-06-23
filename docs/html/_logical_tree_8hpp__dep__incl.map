@@ -1,0 +1,9 @@
+<map id="server/engine/include/LogicalTree.hpp" name="server/engine/include/LogicalTree.hpp">
+<area shape="rect" id="Node000001" title="Tree structure to represent logical expression." alt="" coords="212,5,357,48"/>
+<area shape="rect" id="Node000002" href="$_logical_tree_8cpp.html" title="Tree structure to represent logical expression." alt="" coords="5,96,172,139"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,57,136,98,133,93,224,52"/>
+<area shape="rect" id="Node000003" href="$table_8cpp.html" title=" " alt="" coords="195,104,374,131"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="287,64,287,104,282,104,282,64"/>
+<area shape="rect" id="Node000004" href="$parser_8cpp.html" title="parser" alt="" coords="398,104,582,131"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="348,52,461,101,459,106,346,57"/>
+</map>

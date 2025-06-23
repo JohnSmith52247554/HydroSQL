@@ -1,0 +1,98 @@
+\doxysection{server/engine/include/table.hpp File Reference}
+\hypertarget{table_8hpp}{}\label{table_8hpp}\index{server/engine/include/table.hpp@{server/engine/include/table.hpp}}
+
+
+defination of the basic structure of a table  
+
+
+{\ttfamily \#include $<$struct.\+hpp$>$}\newline
+Include dependency graph for table.\+hpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{table_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{table_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_constraint}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Constraint}}
+\begin{DoxyCompactList}\small\item\em \doxylink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_constraint}{Constraint} of column. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column}}
+\begin{DoxyCompactList}\small\item\em \doxylink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column} of table. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_select_order}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Select\+Order}}
+\item 
+struct \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_update_info}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Update\+Info}}
+\item 
+class \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_engine_1_1_table}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Table}}
+\begin{DoxyCompactList}\small\item\em SQL table. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l}{Hydro\+SQL}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server}{Hydro\+SQL\+::\+Server}}
+\item 
+namespace \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine}{Hydro\+SQL\+::\+Server\+::\+Engine}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ae1f839f7d0d6df3780f36532353d9900}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Constraint\+Type}} \+: char \{ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ae1f839f7d0d6df3780f36532353d9900a5e0276ef8ae59ebb9aae19348ad173d5}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+PRIMARY\+\_\+\+KEY}} = 0
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ae1f839f7d0d6df3780f36532353d9900aeed1de8e53bda49dda97e42841cfe6c5}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+NOT\+\_\+\+NULL}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ae1f839f7d0d6df3780f36532353d9900a88e3e8040c7cd11b9faffdf34372fa2a}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+UNIQUE}}
+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ae1f839f7d0d6df3780f36532353d9900a5b39c8b553c821e7cddc6da64b5bd2ee}{Hydro\+SQL\+::\+Server\+::\+Engine\+::\+DEFAULT}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Enum$>$ }\\std\+::underlying\+\_\+type$<$ Enum $>$\+::type \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a41cf816542ad57644d45f20e1d77d8f3}{Hydro\+SQL\+::\+Server\+::\+Engine\+::enum\+To\+Base}} (Enum data)
+\begin{DoxyCompactList}\small\item\em convert a enum type into its base type \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ac4cc3ca61c7369407a48af81ac87837e}{Hydro\+SQL\+::\+Server\+::\+Engine\+::save\+Str}} (std\+::ostream \&os, const std\+::string \&str)
+\begin{DoxyCompactList}\small\item\em save a std\+::string into a stream object (std\+::fstream) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_aee23a807fae26608d6dba403a4b5c7aa}{Hydro\+SQL\+::\+Server\+::\+Engine\+::load\+Str}} (std\+::istream \&is, std\+::string \&str)
+\begin{DoxyCompactList}\small\item\em load a std\+::string from a stream object (std\+::fstream) \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T$>$ }\\void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_aa859241f04f3220457294b47d6f5e0fe}{Hydro\+SQL\+::\+Server\+::\+Engine\+::save\+Vector}} (std\+::ostream \&os, const std\+::vector$<$ T $>$ \&vec)
+\begin{DoxyCompactList}\small\item\em save a std\+::vector into a stream object (std\+::fstream) \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T$>$ }\\void \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a4acb33d55bf3f0caae4153365fe38536}{Hydro\+SQL\+::\+Server\+::\+Engine\+::load\+Vector}} (std\+::istream \&is, std\+::vector$<$ T $>$ \&vec)
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a81449f9b6f0ed8d0d422f729a0afcb01}{Hydro\+SQL\+::\+Server\+::\+Engine\+::data\+Type\+Str}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}} type)
+\begin{DoxyCompactList}\small\item\em get the name of a data type as string \end{DoxyCompactList}\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ad357cb21afd433911fcb313c08f30093}{Hydro\+SQL\+::\+Server\+::\+Engine\+::constraint\+Type\+Str}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ae1f839f7d0d6df3780f36532353d9900}{Constraint\+Type}} type)
+\begin{DoxyCompactList}\small\item\em get the name of a constraint type as string \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_ab22c77dc5b33efe96332dd1c25cae5c1}{Hydro\+SQL\+::\+Server\+::\+Engine\+::operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_constraint}{Constraint}} \&constraint)
+\item 
+std\+::istream \& \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a7ea3394ee43573a1705107cea3425075}{Hydro\+SQL\+::\+Server\+::\+Engine\+::operator$>$$>$}} (std\+::istream \&is, \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_constraint}{Constraint}} \&constraint)
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a5ac9305ce60e5ca302d6a925b9db0f46}{Hydro\+SQL\+::\+Server\+::\+Engine\+::operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&col)
+\item 
+std\+::istream \& \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_abd598a2b3ebf9bd9adb8fc37207d31dc}{Hydro\+SQL\+::\+Server\+::\+Engine\+::operator$>$$>$}} (std\+::istream \&is, \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&col)
+\item 
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_1_1_l_t_a29b4d811e755d6b074c574a68c0ead60}{LT\+::\+Liter\+Type}} \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a45e8e061290410523a90cbe52d7fe2b8}{Hydro\+SQL\+::\+Server\+::\+Engine\+::data\+Type\+To\+Literal\+Type}} (const \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}} type)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+defination of the basic structure of a table 
+
+\begin{DoxyAuthor}{Author}
+username (\href{mailto:username52247554@gmail.com}{\texttt{ username52247554@gmail.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2025-\/06-\/13
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2025 
+\end{DoxyCopyright}

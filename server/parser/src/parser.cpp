@@ -443,11 +443,7 @@ namespace HydroSQL::Server::Parser
 
                 std::string str(start_it, it + 1);
 
-                auto kw = std::find_if(keywords.begin(), keywords.end(),
-                                       [&](const std::pair<std::string, KeywordE> &k)
-                                       {
-                                           return k.first == str;
-                                       });
+                auto kw = keywords.find(str);
 
                 if (kw != keywords.end())
                 {

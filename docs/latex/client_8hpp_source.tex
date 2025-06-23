@@ -1,0 +1,42 @@
+\doxysection{client.\+hpp}
+\hypertarget{client_8hpp_source}{}\label{client_8hpp_source}\index{client/network/include/client.hpp@{client/network/include/client.hpp}}
+\mbox{\hyperlink{client_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <pch.hpp>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifdef\ WIN32}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <winsock.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_client_1_1_network}{HydroSQL::Client::Network}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_client_1_1_network_1_1_client_afe41f7c120220053e26b822968ad3a1a}{Client}}}
+\DoxyCodeLine{00027\ \ \ \ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ SOCKET\ client\_socket;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ std::string\ server\_ip;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ server\_port;}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ connected;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_client_1_1_network_1_1_client_afe41f7c120220053e26b822968ad3a1a}{Client}}(\textcolor{keyword}{const}\ std::string\ \&server\_ip\_,\ \textcolor{keywordtype}{int}\ server\_port\_);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_client_1_1_network_1_1_client_ae43bf0bf1450cabc81754dc592c44f39}{\string~Client}}();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_client_1_1_network_1_1_client_afab4c20e26d349f38293676976020faa}{connect}}();}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_client_1_1_network_1_1_client_a65539f0aee4e51e327ede092a07556aa}{send}}(\textcolor{keyword}{const}\ std::string\ \&data);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_client_1_1_network_1_1_client_a3c63e0249665cb4d15785735ed4ff4fb}{receive}}();}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ disconnect();}
+\DoxyCodeLine{00046\ \ \ \ \ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \}\ \textcolor{comment}{//\ namespace\ HydroSQL::Client::Network}}
+
+\end{DoxyCode}

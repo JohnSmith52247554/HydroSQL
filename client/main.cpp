@@ -2,6 +2,10 @@
 #include <encrypt/include/encrypt.hpp>
 #include <utils/logger/include/logger.hpp>
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 const char getLastNon0(const std::string &str)
 {
     auto it = str.rbegin();
@@ -17,6 +21,11 @@ int main()
 {
     using namespace HydroSQL::Client;
     using Logger = HydroSQL::Utils::Logger::Logger;
+
+#ifdef WIN32
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
+#endif
 
     try
     {

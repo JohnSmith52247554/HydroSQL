@@ -1,0 +1,5 @@
+<map id="HydroSQL::Server::Parser::SelectA" name="HydroSQL::Server::Parser::SelectA">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,96,180,139"/>
+<area shape="rect" id="Node000002" href="$class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair.html" title="Used to stored the data parsed from the command and excute the SQL operation (INSERT,..." alt="" coords="5,5,180,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,64,95,96,90,96,90,64"/>
+</map>

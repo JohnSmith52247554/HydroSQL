@@ -23,6 +23,10 @@ namespace HydroSQL::Server::Authority
         ADMIN       // be able to remove the database and manager the authority level of other user
     };
 
+    /**
+     * @brief The class that manage the file (UserConfig.bin) that record the premission level of each user.
+     * 
+     */
     class AuthManager
     {
     private:
@@ -96,6 +100,10 @@ namespace HydroSQL::Server::Authority
         static void loadVecLevel(std::istream &is, std::vector<AuthLevel> &vec, const size_t &size);
     };
 
+    /**
+     * @brief An object to tranfer the username to Affair::execute. Used to authorize the permission level of user.
+     * 
+     */
     class Authoriser
     {
     private:

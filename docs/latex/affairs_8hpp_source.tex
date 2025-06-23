@@ -1,0 +1,137 @@
+\doxysection{affairs.\+hpp}
+\hypertarget{affairs_8hpp_source}{}\label{affairs_8hpp_source}\index{server/parser/include/affairs.hpp@{server/parser/include/affairs.hpp}}
+\mbox{\hyperlink{affairs_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <pch.hpp>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{table_8hpp}{engine/include/table.hpp}}>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <\mbox{\hyperlink{authority_8hpp}{authority/include/authority.hpp}}>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser}{HydroSQL::Server::Parser}}}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_a6a2795004d4e5506deba0cc28e89f5b6}{Authoriser}}\ =\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_authority_1_1_authoriser}{Authority::Authoriser}};}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_afb6f9842fa470172c86f7d62438c0bab}{AuthLevel}}\ =\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_authority_a717367fbddfe89a0a5a083d2a8b19406}{Authority::AuthLevel}};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}}
+\DoxyCodeLine{00028\ \ \ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair_a195eba8fdd9905530e3079455e2eccc5}{\string~Affair}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair_a7e5c939a3d8dd908791919a59b48c3ce}{execute}}(\textcolor{keyword}{const}\ std::unique\_ptr<Authoriser>\ auth,\ std::string\ \&result)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00032\ \ \ \ \ \};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_create_table_a_ada3c6141e14f701611d095932182606d}{CreateTableA}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}}
+\DoxyCodeLine{00035\ \ \ \ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ std::string\ table\_name;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ std::vector<Engine::Column>\ col;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_create_table_a_ada3c6141e14f701611d095932182606d}{CreateTableA}}(std::string\ \&\&tn,\ std::vector<Engine::Column>\ \&\&c)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ :\ table\_name(tn),\ col(c)}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_create_table_a_ab9d9ec302f2f02ab21ef72bbc6610964}{\string~CreateTableA}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_create_table_a_a7be9dd5ab67c388811d07076bca96485}{execute}}(\textcolor{keyword}{const}\ std::unique\_ptr<Authoriser>\ auth,\ std::string\ \&result)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00047\ \ \ \ \ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_insert_a_ac2b4333df524b8e49635c2115eab6b1a}{InsertA}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}}
+\DoxyCodeLine{00050\ \ \ \ \ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ std::string\ table\_name;}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ std::vector<std::string>\ keys;}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ std::vector<std::vector<std::shared\_ptr<Engine::LT::LT>>>\ values;}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_insert_a_ac2b4333df524b8e49635c2115eab6b1a}{InsertA}}(std::string\ \&\&tn,\ std::vector<std::string>\ \&\&k,\ std::vector<std::vector<std::shared\_ptr<Engine::LT::LT>>>\ \&\&v)}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ :\ table\_name(tn),\ keys(k),\ values(v)}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_insert_a_a418bb3d7958d68c1880b78c5d7ccff32}{\string~InsertA}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_insert_a_a891722fcc7dd233ab5b52f4b2fe86443}{execute}}(\textcolor{keyword}{const}\ std::unique\_ptr<Authoriser>\ auth,\ std::string\ \&result)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00063\ \ \ \ \ \};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_select_a_aa1b901ca11c1a4722d3900d7c969b0ba}{SelectA}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}}
+\DoxyCodeLine{00066\ \ \ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ std::string\ table\_name;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ std::vector<std::string>\ keys;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ std::shared\_ptr<Engine::LT::LT>\ requirements;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ std::shared\_ptr<Engine::SelectOrder>\ order;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_select_a_aa1b901ca11c1a4722d3900d7c969b0ba}{SelectA}}(std::string\ \&\&tn,\ std::vector<std::string>\ \&\&k,\ std::shared\_ptr<Engine::LT::LT>\ \&\&r,\ std::shared\_ptr<Engine::SelectOrder>\ \&\&o)}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ :\ table\_name(tn),\ keys(k),\ requirements(r),\ order(o)}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_select_a_a868d1ecc47ecd78a9743e4aeee78c9d1}{\string~SelectA}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_select_a_a0cb0c7c9b3f60267a8c218feff6b0936}{execute}}(\textcolor{keyword}{const}\ std::unique\_ptr<Authoriser>\ auth,\ std::string\ \&result)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00080\ \ \ \ \ \};}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_update_a_a17d7e6f56931ebb2fed503ce602a07e2}{UpdateA}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}}
+\DoxyCodeLine{00083\ \ \ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ std::string\ table\_name;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ std::vector<std::string>\ keys;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ std::vector<std::shared\_ptr<Engine::LT::LT>>\ expr;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ std::shared\_ptr<Engine::LT::LT>\ requirements;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_update_a_a17d7e6f56931ebb2fed503ce602a07e2}{UpdateA}}(std::string\ \&\&tn,\ std::vector<std::string>\ \&\&k,\ std::vector<std::shared\_ptr<Engine::LT::LT>>\ \&\&e,\ std::shared\_ptr<Engine::LT::LT>\ \&\&r)}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ :\ table\_name(tn),\ keys(k),\ expr(e),\ requirements(r)}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_update_a_ad363de010e5af81fbac29f711a8e061a}{\string~UpdateA}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_update_a_a19fec9202f3eb2aeb914d354a65a7fc0}{execute}}(\textcolor{keyword}{const}\ std::unique\_ptr<Authoriser>\ auth,\ std::string\ \&result)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00097\ \ \ \ \ \};}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_delete_a_a50e0cd31d0ae58c659fea8bfd0cfb60c}{DeleteA}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}}
+\DoxyCodeLine{00100\ \ \ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ std::string\ table\_name;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ std::shared\_ptr<Engine::LT::LT>\ requirements;}
+\DoxyCodeLine{00104\ \ \ \ \ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_delete_a_a50e0cd31d0ae58c659fea8bfd0cfb60c}{DeleteA}}(std::string\ \&\&tn,\ std::shared\_ptr<Engine::LT::LT>\ \&\&r)}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ :\ table\_name(tn),\ requirements(r)}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_delete_a_a52d4c58c25fe73b9acaa9811a3c64d4a}{\string~DeleteA}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_delete_a_a0275bc4047f92166ddce62933c4ee9da}{execute}}(\textcolor{keyword}{const}\ std::unique\_ptr<Authoriser>\ auth,\ std::string\ \&result)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00112\ \ \ \ \ \};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_drop_a_afcb93267886bb0b15b1b160ba5151b2e}{DropA}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}}
+\DoxyCodeLine{00115\ \ \ \ \ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ std::string\ table\_name;}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_drop_a_afcb93267886bb0b15b1b160ba5151b2e}{DropA}}(std::string\ \&\&tn)}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ :\ table\_name(tn)}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_drop_a_afbb73f9b4d6aba9b2c5a65154b7fd3b5}{\string~DropA}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_drop_a_a62c4342823fbeb692fd19f4c44013348}{execute}}(\textcolor{keyword}{const}\ std::unique\_ptr<Authoriser>\ auth,\ std::string\ \&result)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00126\ \ \ \ \ \};}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_grant_a_a302a095cf2f97859d92ee536819f6149}{GrantA}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_affair}{Affair}}}
+\DoxyCodeLine{00129\ \ \ \ \ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ std::string\ table\_name;}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_afb6f9842fa470172c86f7d62438c0bab}{AuthLevel}}\ level;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ std::vector<std::string>\ user\_list;}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_grant_a_a302a095cf2f97859d92ee536819f6149}{GrantA}}(std::string\ \&\&tn,\ \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_parser_afb6f9842fa470172c86f7d62438c0bab}{AuthLevel}}\ \&\&l,\ std::vector<std::string>\ \&\&ul)}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ :\ table\_name(tn),\ level(l),\ user\_list(ul)}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_grant_a_adb865c9386a5793aa56418a26e583379}{\string~GrantA}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_hydro_s_q_l_1_1_server_1_1_parser_1_1_grant_a_a145d0bfbb1424b46ed913da2ca6f5535}{execute}}(\textcolor{keyword}{const}\ std::unique\_ptr<Authoriser>\ auth,\ std::string\ \&result)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00142\ \ \ \ \ \};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \}\ \textcolor{comment}{//\ namespace\ HydroSQL::Server::Parser}}
+
+\end{DoxyCode}

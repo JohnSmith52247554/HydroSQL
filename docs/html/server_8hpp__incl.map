@@ -1,0 +1,9 @@
+<map id="server/network/include/server.hpp" name="server/network/include/server.hpp">
+<area shape="rect" id="Node000001" title="Muti&#45;thread TCP server." alt="" coords="66,5,218,48"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,96,135,139"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,50,98,86,94,82,123,47"/>
+<area shape="rect" id="Node000003" href="$_thread_pool_8hpp.html" title="Thread pool." alt="" coords="159,104,272,131"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,47,198,90,193,94,157,50"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="182,187,249,213"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="218,131,218,171,213,171,213,131"/>
+</map>

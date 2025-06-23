@@ -1,6 +1,6 @@
 # HydroSQL
 
-HydroSQL is a lightweight relational database system that supports basic SQL (Structured Query Language) operations. It features a client-server architecture where the server can connected with multiple client at the same time.
+HydroSQL is a lightweight relational database system that supports basic SQL (Structured Query Language) operations. It features a client-server architecture where the server can connected with multiple clients at the same time.
 
 ## Getting Started
 ### Connect the Server
@@ -68,7 +68,7 @@ The server will search and send the stored password hash. Then the client can ve
 
 #### Table Management
 
-The new-sign-up user can not access all of the existing database. You can whether ask other user who has administrator permissions to grant you an permission, or create a table youself.
+The new-sign-up user can not access all of the existing databases. You can whether ask other user who has administrator permissions to grant you a permission, or create a table youself.
 
 #### Create Table
 
@@ -185,7 +185,7 @@ Four permission levels:
 
 4. ADMIN: Full access including GRANT
 
-#### Drop
+#### Drop Table
 ```SQL
 > DROP TABLE employees;
 [SUCCESS] 1 table dropped.
@@ -199,7 +199,7 @@ Disconnected from server.
 Press any key to exit.
 ```
 
-## Example: Comprehensive Vehicle Manage System
+## Example: Comprehensive Vehicle Manage System utilizing HydroSQL
 
 Administrator:
 ```SQL
@@ -290,6 +290,8 @@ Press any key to exit.
 ## Further Plan... if there is.
 
 - OPTIMIZE TABLE statement: Disk defragmentation.
+- Add linux support.
+- LIKE statement: Fuzzy search.
 - Column constraints: PRIMERY KEY, UNIQUE, DEFAULT...etc.
 - Better TCP connection: Add timeover detecion and heart beat detection.
 - Table Index: Utilizing B-trees.

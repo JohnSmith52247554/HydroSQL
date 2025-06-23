@@ -1,0 +1,13 @@
+<map id="client/pch.hpp" name="client/pch.hpp">
+<area shape="rect" id="Node000001" title="pre&#45;compiled header" alt="" coords="156,5,258,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,59,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,35,74,77,72,73,175,30"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="83,80,154,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,35,147,72,144,68,190,30"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="178,80,235,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="209,33,209,64,204,64,204,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="259,80,320,107"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="223,31,265,68,262,72,219,35"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="343,80,412,107"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="237,30,334,71,332,76,235,35"/>
+</map>

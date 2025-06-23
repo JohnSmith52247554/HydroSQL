@@ -1,0 +1,140 @@
+\doxysection{Hydro\+SQL\+::Server\+::Engine\+::Column Struct Reference}
+\hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{}\label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+
+
+\doxylink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column} of table.  
+
+
+
+
+{\ttfamily \#include $<$table.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a6d841023452fff81d05f35a574ffad43}{Column}} ()
+\item 
+\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adb51ae4d220e19881d04dcd4e3faf2a8}{Column}} (const std\+::string \&name\+\_\+, \mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}} type\+\_\+, int len\+\_\+=1)
+\item 
+void \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adef72c3cac6e9ff687cf3a26a0ea0156}{operator=}} (const \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&other)=delete
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adffd291450549e7bfd5a2fc6c9bba9a8}{name}}
+\item 
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}} \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_ab51d3cd88c8b732b1939060e2330deb3}{data\+\_\+type}}
+\item 
+unsigned int \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a3c1b6cdb56a24b637fb1ab5634d652c4}{length}}
+\item 
+unsigned int \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a511e2bfb6e9226027e9a3d4d03180163}{precision}}
+\item 
+unsigned int \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a5d799d322b20400aff15914dfda72d9d}{scale}}
+\item 
+std\+::string \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_ad0c7a4c92d9b259dda80137db34e67de}{default\+\_\+value}}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_constraint}{Constraint}} $>$ \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_aa88225293fb7fda515feb4ab7d9561cd}{constraints}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_aeacbc4ddb1786d5f7751d171d0ba465e}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&col)
+\begin{DoxyCompactList}\small\item\em save or load a column into/from a stream object(std\+::fstream) \end{DoxyCompactList}\item 
+std\+::istream \& \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a0a29389c1f4b1c811d9bea8161941957}{operator$>$$>$}} (std\+::istream \&is, \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&col)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column} of table. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a6d841023452fff81d05f35a574ffad43}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!Column@{Column}}
+\index{Column@{Column}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{Column()}{Column()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a6d841023452fff81d05f35a574ffad43} 
+Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::\+Column (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adb51ae4d220e19881d04dcd4e3faf2a8}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!Column@{Column}}
+\index{Column@{Column}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{Column()}{Column()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adb51ae4d220e19881d04dcd4e3faf2a8} 
+Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::\+Column (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name\+\_\+}{, }\item[{\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}}}]{type\+\_\+}{, }\item[{int}]{len\+\_\+}{ = {\ttfamily 1}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adef72c3cac6e9ff687cf3a26a0ea0156}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!operator=@{operator=}}
+\index{operator=@{operator=}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adef72c3cac6e9ff687cf3a26a0ea0156} 
+void Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_aeacbc4ddb1786d5f7751d171d0ba465e}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_aeacbc4ddb1786d5f7751d171d0ba465e} 
+std\+::ostream \& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os}{, }\item[{const \mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&}]{col}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+save or load a column into/from a stream object(std\+::fstream) 
+
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a0a29389c1f4b1c811d9bea8161941957}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{operator$>$$>$}{operator>>}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a0a29389c1f4b1c811d9bea8161941957} 
+std\+::istream \& operator$>$$>$ (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{is}{, }\item[{\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column}{Column}} \&}]{col}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_aa88225293fb7fda515feb4ab7d9561cd}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!constraints@{constraints}}
+\index{constraints@{constraints}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{constraints}{constraints}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_aa88225293fb7fda515feb4ab7d9561cd} 
+std\+::vector$<$\mbox{\hyperlink{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_constraint}{Constraint}}$>$ Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::constraints}
+
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_ab51d3cd88c8b732b1939060e2330deb3}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!data\_type@{data\_type}}
+\index{data\_type@{data\_type}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{data\_type}{data\_type}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_ab51d3cd88c8b732b1939060e2330deb3} 
+\mbox{\hyperlink{namespace_hydro_s_q_l_1_1_server_1_1_engine_a715766d140bad7185c4e4e2833d3a40d}{Data\+Type}} Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::data\+\_\+type}
+
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_ad0c7a4c92d9b259dda80137db34e67de}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!default\_value@{default\_value}}
+\index{default\_value@{default\_value}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{default\_value}{default\_value}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_ad0c7a4c92d9b259dda80137db34e67de} 
+std\+::string Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::default\+\_\+value}
+
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a3c1b6cdb56a24b637fb1ab5634d652c4}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!length@{length}}
+\index{length@{length}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{length}{length}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a3c1b6cdb56a24b637fb1ab5634d652c4} 
+unsigned int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::length}
+
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adffd291450549e7bfd5a2fc6c9bba9a8}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!name@{name}}
+\index{name@{name}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_adffd291450549e7bfd5a2fc6c9bba9a8} 
+std\+::string Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::name}
+
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a511e2bfb6e9226027e9a3d4d03180163}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!precision@{precision}}
+\index{precision@{precision}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{precision}{precision}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a511e2bfb6e9226027e9a3d4d03180163} 
+unsigned int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::precision}
+
+\Hypertarget{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a5d799d322b20400aff15914dfda72d9d}\index{HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}!scale@{scale}}
+\index{scale@{scale}!HydroSQL::Server::Engine::Column@{HydroSQL::Server::Engine::Column}}
+\doxysubsubsection{\texorpdfstring{scale}{scale}}
+{\footnotesize\ttfamily \label{struct_hydro_s_q_l_1_1_server_1_1_engine_1_1_column_a5d799d322b20400aff15914dfda72d9d} 
+unsigned int Hydro\+SQL\+::\+Server\+::\+Engine\+::\+Column\+::scale}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+server/engine/include/\mbox{\hyperlink{table_8hpp}{table.\+hpp}}\end{DoxyCompactItemize}

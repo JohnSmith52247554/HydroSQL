@@ -1,0 +1,13 @@
+<map id="server/network/src" name="server/network/src">
+<area shape="rect" id="node1" href="dir_63bb0df12074fa624dcbc9945da792d6.html" title="include" alt="" coords="26,128,88,155"/>
+<area shape="rect" id="node2" href="dir_1fd7677c392260c1ddbc8cba3c6235ba.html" title="src" alt="" coords="48,53,88,80"/>
+<area shape="poly" id="edge2" href="dir_000026_000016.html" alt="" coords="69,81,64,113,59,112,64,80"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000026_000016.html" title="2" alt="" coords="67,103,74,119"/>
+<area shape="rect" id="node3" href="dir_2ce037fa530d73e7730230330195d87b.html" title="parser" alt="" coords="113,128,170,155"/>
+<area shape="poly" id="edge1" href="dir_000026_000020.html" alt="" coords="83,79,120,115,116,119,79,82"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000026_000020.html" title="2" alt="" coords="118,101,125,117"/>
+<area shape="rect" id="node4" href="dir_eda9eb4832ba3e33f255df278277551b.html" title="authority" alt="" coords="194,128,265,155"/>
+<area shape="poly" id="edge3" href="dir_000026_000002.html" alt="" coords="89,74,188,119,186,124,87,79"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000026_000002.html" title="1" alt="" coords="185,104,192,120"/>
+<area shape="rect" id="clust1" href="dir_4487f62d704edc97e05acbdb4b4a0784.html" title="network" alt="" coords="16,16,99,165"/>
+</map>
