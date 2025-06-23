@@ -76,7 +76,10 @@ namespace HydroSQL::Server::Authority
         auto user = std::find(username_vec.begin(), username_vec.end(), username);
         assert(user != username_vec.end());
         auto table = std::find(table_name_vec.begin(), table_name_vec.end(), tablename);
-        assert(table != table_name_vec.end());
+        if (table == table_name_vec.end())
+        {
+            throw std::runtime_error("[FAILED] Table doesn't exist.");
+        }
 
         std::streamoff coord_x = user - username_vec.begin();
         std::streamoff coord_y = table - table_name_vec.begin();
@@ -226,6 +229,45 @@ namespace HydroSQL::Server::Authority
         file.write(reinterpret_cast<const char *>(&level), sizeof(level));
 
         return 1;
+    }
+
+    const int AuthManager::setUserAuth(const std::vector<std::string> &usernames, const std::string &table_name, const AuthLevel level)
+    {
+        std::vector<std::string> username_vec;
+        std::vector<std::string> password_hash_vec;
+        std::vector<std::string> table_name_vec;
+        std::vector <std::vector<AuthLevel>> level_vec;
+
+        {
+            std::shared_lock lock(shared_mutex);
+            read(username_vec, password_hash_vec, table_name_vec, level_vec);
+        }
+        auto col_num = username_vec.size();
+        auto row_num = table_name_vec.size();
+
+        auto table = std::find(table_name_vec.begin(), table_name_vec.end(), table_name);
+        if (table == table_name_vec.end())
+        {
+            throw std::runtime_error("[FAILED] Table not found.");
+        }
+        size_t coord_y = table - table_name_vec.begin();
+
+        for (const auto &username : usernames)
+        {
+            auto user = std::find(username_vec.begin(), username_vec.end(), username);
+            if (user == username_vec.end())
+            {
+                throw std::runtime_error("[FAILED] User not found.");
+            }
+            
+
+            size_t coord_x = user - username_vec.begin();
+
+            level_vec[coord_y][coord_x] = level;
+        }
+
+        std::unique_lock u_lock(shared_mutex);
+        return write(username_vec, password_hash_vec, table_name_vec, level_vec);
     }
 
     void AuthManager::saveStr(std::ostream &os, const std::string &str)

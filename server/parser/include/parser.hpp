@@ -27,7 +27,7 @@
  * DELETE_STMT = DELETE FROM table_name
  *               WHERE where_condition
  * 
- * GRANT_STMT = GRANT authority ON table_name TO username
+ * GRANT_STMT = GRANT authority ON table_name TO username | (, username)*
  * 
  * DROP_STMT = DROP TABLE table_name
  * 
@@ -68,6 +68,7 @@
 #include <pch.hpp>
 #include <engine/include/struct.hpp>
 #include <affairs.hpp>
+#include <authority/include/authority.hpp>
 
 namespace HydroSQL::Server::Parser
 {
@@ -78,6 +79,7 @@ namespace HydroSQL::Server::Parser
         BOOL_OPERATOR,
         CALCULATION_OPERATOR,
         LITERAL,
+        AUTH_LEVEL,
         LBRACKET,
         RBRACKET,
         COMMA
@@ -101,6 +103,9 @@ namespace HydroSQL::Server::Parser
         ASC,
         DESC,
         DROP,
+        GRANT,
+        ON,
+        TO,
 
         INT,
         SMALLINT,
@@ -117,6 +122,11 @@ namespace HydroSQL::Server::Parser
         AND,
         OR,
         NOT,
+
+        AUTH_NULL,
+        READONLY,
+        MODIFY,
+        ADMIN,
     };
 
     const std::vector<std::pair<std::string, KeywordE>> keywords = {
@@ -136,6 +146,9 @@ namespace HydroSQL::Server::Parser
         {"ASC", KeywordE::ASC},
         {"DESC", KeywordE::DESC},
         {"DROP", KeywordE::DROP},
+        {"GRANT", KeywordE::GRANT},
+        {"ON", KeywordE::ON},
+        {"TO", KeywordE::TO},
 
         {"INT", KeywordE::INT},
         {"SMALLINT", KeywordE::SMALLINT},
@@ -152,12 +165,18 @@ namespace HydroSQL::Server::Parser
         {"AND", KeywordE::AND},
         {"OR", KeywordE::OR},
         {"NOT", KeywordE::NOT},
+
+        {"NULL", KeywordE::AUTH_NULL},
+        {"READONLY", KeywordE::READONLY},
+        {"MODIFY", KeywordE::MODIFY},
+        {"ADMIN", KeywordE::ADMIN},
     };
 
     using BoolOp = HydroSQL::Server::Engine::LT::OpType;
     using CalOp = HydroSQL::Server::Engine::LT::CalType;
     using LiteralT = HydroSQL::Server::Engine::LT::LiterType;
     using ColTableName = std::string;
+    using AuthLevel = HydroSQL::Server::Authority::AuthLevel;
 
     struct LiteralInfo
     {
@@ -165,7 +184,7 @@ namespace HydroSQL::Server::Parser
         HydroSQL::Server::Engine::Data data;
     };
 
-    using TokenInfo = std::variant<BoolOp, CalOp, LiteralInfo, ColTableName, KeywordE>;
+    using TokenInfo = std::variant<BoolOp, CalOp, LiteralInfo, ColTableName, KeywordE, AuthLevel>;
 
     struct Token
     {
@@ -188,6 +207,8 @@ namespace HydroSQL::Server::Parser
     std::unique_ptr<Affair> parseDelete(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
 
     std::unique_ptr<Affair> parseDrop(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
+
+    std::unique_ptr<Affair> parseGrant(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
 
     std::shared_ptr<Engine::LT::LT> parseExpr(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end);
 

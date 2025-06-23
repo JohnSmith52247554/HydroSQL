@@ -121,4 +121,20 @@ namespace HydroSQL::Server::Parser
         virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const override;
     };
 
+    class GrantA : public Affair
+    {
+    private:
+        std::string table_name;
+        AuthLevel level;
+        std::vector<std::string> user_list;
+
+    public:
+        GrantA(std::string &&tn, AuthLevel &&l, std::vector<std::string> &&ul)
+            : table_name(tn), level(l), user_list(ul)
+        {}
+        ~GrantA() = default;
+
+        virtual const int execute(const std::unique_ptr<Authoriser> auth, std::string &result) const override;
+    };
+
 } // namespace HydroSQL::Server::Parser

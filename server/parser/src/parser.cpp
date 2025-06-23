@@ -477,10 +477,15 @@ namespace HydroSQL::Server::Parser
                             token_list.emplace_back(TokenT::LITERAL, LiteralInfo{LiteralT::INT, stoll(num)});
                         }
                     }
-                    else
+                    else if (static_cast<char>(kw->second) < static_cast<char>(KeywordE::AUTH_NULL))
                     {
                         // AND OR NOT
                         token_list.emplace_back(TokenT::BOOL_OPERATOR, static_cast<BoolOp>(static_cast<char>(kw->second) - static_cast<char>(KeywordE::AND) + static_cast<char>(BoolOp::AND)));
+                    }
+                    else
+                    {
+                        // Authority
+                        token_list.emplace_back(TokenT::AUTH_LEVEL, static_cast<AuthLevel>(static_cast<char>(kw->second) - static_cast<char>(KeywordE::AUTH_NULL) + static_cast<char>(AuthLevel::null)));
                     }
                 }
                 else
@@ -506,22 +511,18 @@ namespace HydroSQL::Server::Parser
         {
         case KeywordE::CREATE:
             return parseCreate(++token.begin(), token.end());
-            break;
         case KeywordE::INSERT:
             return parseInsert(++token.begin(), token.end());
-            break;
         case KeywordE::SELECT:
             return parseSelect(++token.begin(), token.end());
-            break;
         case KeywordE::UPDATE:
             return parseUpdate(++token.begin(), token.end());
-            break;
         case KeywordE::DELETE_:
             return parseDelete(++token.begin(), token.end());
-            break;
         case KeywordE::DROP:
             return parseDrop(++token.begin(), token.end());
-            break;
+        case KeywordE::GRANT:
+            return parseGrant(++token.begin(), token.end());
         default:
             throw std::runtime_error("[FAILED] Command not found.");
             return nullptr;
@@ -997,6 +998,52 @@ namespace HydroSQL::Server::Parser
         default:
             throw std::runtime_error("[ERROR] Parsing expression failed.");
         }
+    }
+
+    std::unique_ptr<Affair> parseGrant(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end)
+    {
+        if (start->type != TokenT::AUTH_LEVEL)
+        {
+            throw std::runtime_error("[FAILED] GRANT should be followed with an authority level");
+        }
+
+        auto level = std::get<AuthLevel>(start->info);
+
+        if (start == end)
+            throw std::runtime_error("[FAILED] Command not found. Do you meant GRANT ... ON ..TO?");
+        start++;
+
+        if (!(start->type == TokenT::KEYWORD && std::get<KeywordE>(start->info) == KeywordE::ON))
+            throw std::runtime_error("[FAILED] Command not found. Do you meant GRANT ... ON ..TO?");
+        
+        if (start == end)
+            throw std::runtime_error("[FAILED] ON should be followed with a table name.");
+        start++;
+        if (start->type != TokenT::COLANDTABLE)
+            throw std::runtime_error("[FAILED] ON should be followed with a table name.");
+        std::string table_name = std::get<ColTableName>(start->info);
+
+        if (start == end)
+            throw std::runtime_error("[FAILED] Command not found. Do you meant GRANT ... ON ..TO?");
+        start++;
+        if (!(start->type == TokenT::KEYWORD && std::get<KeywordE>(start->info) == KeywordE::TO))
+            throw std::runtime_error("[FAILED] Command not found. Do you meant GRANT ... ON ..TO?");
+
+        if (start == end)
+            throw std::runtime_error("[FAILED] TO should be followed with a list of username.");
+        start++;
+
+        std::vector<std::string> user_list;
+
+        for (; start != end; start++)
+        {
+            if (start->type == TokenT::COLANDTABLE)
+                user_list.push_back(std::get<ColTableName>(start->info));
+        }
+        if (user_list.size() == 0)
+            throw std::runtime_error("[FAILED] TO should be followed with a list of username.");
+
+        return static_cast<std::unique_ptr<Affair>>(std::make_unique<GrantA>(std::move(table_name), std::move(level), std::move(user_list)));
     }
 
     std::shared_ptr<Engine::LT::LT> parseExpr(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end)

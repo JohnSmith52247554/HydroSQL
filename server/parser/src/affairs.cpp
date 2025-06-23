@@ -165,4 +165,28 @@ namespace HydroSQL::Server::Parser
             return 0;
         }
     }
+
+    const int GrantA::execute(const std::unique_ptr<Authoriser> auth, std::string &result) const
+    {
+        result.clear();
+
+        // check authority
+        if (!auth->authorise(this->table_name, Authority::AuthLevel::ADMIN))
+        {
+            result = "[FAILED] Authority Insufficient.";
+            return 0;
+        }
+
+        try
+        {
+            auto num = Authority::AuthManager::get().setUserAuth(this->user_list, this->table_name, this->level);
+            result = "[SUCCESS] " + std::to_string(user_list.size()) + " users' authority level updated.";
+            return num;
+        }
+        catch (const std::exception &e)
+        {
+            result = e.what();
+            return 0;
+        }
+    }
 }

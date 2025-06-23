@@ -73,6 +73,8 @@ namespace HydroSQL::Server::Authority
         // note: It necessary to examine whether the caller has administrator authority before calling this function.
         [[nodiscard]] const int setUserAuth(const std::string &username, const std::string &table_name, const AuthLevel level);
 
+        [[nodiscard]] const int setUserAuth(const std::vector<std::string> &usernames, const std::string &table_name, const AuthLevel level);
+
     private:
         // @return the size of header.
         const std::streampos read(std::vector<std::string> &username, std::vector<std::string> &password_hash, std::vector<std::string> &table_name) const;
