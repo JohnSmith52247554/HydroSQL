@@ -498,31 +498,218 @@ namespace HydroSQL::Server::Parser
         return token_list;
     }
 
-    std::unique_ptr<Affair> parse(const std::list<Token> &token)
-    {
-        if (token.size() == 0 || token.front().type != TokenT::KEYWORD)
-            return nullptr;
+    using Stack = Utils::DataStructure::Stack<std::shared_ptr<Engine::LT::LT>>;
 
-        switch (std::get<KeywordE>(token.front().info))
+    void opStackPopOnce(Stack &li_stack, Stack &op_stack)
+    {
+        auto orig_top = op_stack.pop();
+
+        int liStackPopTime = 0;
+        if (orig_top->type == Engine::LT::NodeType::CALCULATION)
+            liStackPopTime = 2;
+        else if (orig_top->type == Engine::LT::NodeType::OPERATOR)
+            liStackPopTime = Engine::LT::getOpParaNum(orig_top->info.op_type);
+
+        orig_top->children.resize(liStackPopTime);
+
+        for (; liStackPopTime > 0; liStackPopTime--)
         {
-        case KeywordE::CREATE:
-            return parseCreate(++token.begin(), token.end());
-        case KeywordE::INSERT:
-            return parseInsert(++token.begin(), token.end());
-        case KeywordE::SELECT:
-            return parseSelect(++token.begin(), token.end());
-        case KeywordE::UPDATE:
-            return parseUpdate(++token.begin(), token.end());
-        case KeywordE::DELETE_:
-            return parseDelete(++token.begin(), token.end());
-        case KeywordE::DROP:
-            return parseDrop(++token.begin(), token.end());
-        case KeywordE::GRANT:
-            return parseGrant(++token.begin(), token.end());
-        default:
-            throw std::runtime_error("[FAILED] Command not found.");
-            return nullptr;
+            auto child = li_stack.pop();
+            orig_top->children[liStackPopTime - 1] = child;
         }
+
+        li_stack.push(orig_top);
+    }
+
+    void opStackPop(std::shared_ptr<Engine::LT::LT> &op, Stack &li_stack, Stack &op_stack)
+    {
+        /**
+         * Firstly, op_stack pop.
+         * Secondly, li_stack pop. The time of popping is resolved by the type of the original top of op_stack.
+         * Thirdly, what li_stack has popped become the children of the original top of op_stack.
+         * Fourthly, the original top of op_stack, with its children, will be push into the li_stack.
+         * Lastly, op will be push into op_stack if op isn't right bracket.
+         *
+         * If op is not right bracket, the aforesaid steps will be applied only once.
+         * If it is, the steps will be applied repeatedly until one left bracket is pop.
+         */
+
+        if (op->type != Engine::LT::NodeType::RBRACKET)
+        {
+            opStackPopOnce(li_stack, op_stack);
+            op_stack.push(op);
+        }
+        else
+        {
+            while (op_stack.top()->type != Engine::LT::NodeType::LBRACKET)
+            {
+                opStackPopOnce(li_stack, op_stack);
+            }
+            op_stack.pop();
+        }
+    }
+
+    void stackOp(std::shared_ptr<Engine::LT::LT> &op, Stack &li_stack, Stack &op_stack)
+    {
+        /**
+         * Left bracket always push, while right bracket always pop.
+         * Otherwise, only when the stack_top has a higher or equal priority than the op
+         * will op_stack pop.
+         */
+
+        if (op_stack.empty())
+        {
+            op_stack.push(op);
+            return;
+        }
+
+        auto stack_top = op_stack.top();
+        switch (op->type)
+        {
+        case Engine::LT::NodeType::LBRACKET:
+            op_stack.push(op);
+            return;
+        case Engine::LT::NodeType::RBRACKET:
+            opStackPop(op, li_stack, op_stack);
+            return;
+        case Engine::LT::NodeType::CALCULATION:
+        {
+            switch (stack_top->type)
+            {
+            case Engine::LT::NodeType::OPERATOR:
+                op_stack.push(op);
+                return;
+            case Engine::LT::NodeType::CALCULATION:
+                if (static_cast<char>(op->info.cal_type) >= static_cast<char>(stack_top->info.cal_type))
+                {
+                    opStackPop(op, li_stack, op_stack);
+                }
+                else
+                {
+                    op_stack.push(op);
+                }
+                return;
+            case Engine::LT::NodeType::LBRACKET:
+                op_stack.push(op);
+                return;
+            default:
+                throw std::runtime_error("[ERROR] Parsing expression failed.");
+            }
+        }
+            return;
+        case Engine::LT::NodeType::OPERATOR:
+        {
+            switch (stack_top->type)
+            {
+            case Engine::LT::NodeType::OPERATOR:
+                if (static_cast<char>(op->info.op_type) >= static_cast<char>(stack_top->info.op_type))
+                {
+                    opStackPop(op, li_stack, op_stack);
+                }
+                else
+                {
+                    op_stack.push(op);
+                }
+                return;
+            case Engine::LT::NodeType::CALCULATION:
+                opStackPop(op, li_stack, op_stack);
+                return;
+            case Engine::LT::NodeType::LBRACKET:
+                op_stack.push(op);
+                return;
+            default:
+                throw std::runtime_error("[ERROR] Parsing expression failed.");
+            }
+        }
+            return;
+        default:
+            throw std::runtime_error("[ERROR] Parsing expression failed.");
+        }
+    }
+
+    std::shared_ptr<Engine::LT::LT> parseExpr(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end)
+    {
+        /**
+         * Priority:
+         * bracket > calculation operator > bool operator > literal / column
+         *
+         * In calculation operator & bool operator,
+         * the smaller one has higher priority.
+         */
+
+        Stack literal;
+        Stack operation;
+
+        while (true)
+        {
+            switch (start->type)
+            {
+            case TokenT::KEYWORD:
+                throw std::runtime_error("Invalid expression arguement KEYWORD.");
+                break;
+            case TokenT::LITERAL:
+            {
+                auto node = std::make_shared<Engine::LT::LT>();
+                node->type = Engine::LT::NodeType::LITERAL;
+                node->info.liter.liter_type = std::get<LiteralInfo>(start->info).type;
+                node->info.liter.liter_info = std::get<LiteralInfo>(start->info).data;
+                literal.push(node);
+            }
+            break;
+            case TokenT::COLANDTABLE:
+            {
+                auto node = std::make_shared<Engine::LT::LT>();
+                node->type = Engine::LT::NodeType::COL;
+                node->info.liter.liter_type = Engine::LT::LiterType::STR;
+                node->info.liter.liter_info.emplace<std::string>(std::get<std::string>(start->info));
+                literal.push(node);
+            }
+            break;
+            case TokenT::BOOL_OPERATOR:
+            {
+                auto node = std::make_shared<Engine::LT::LT>();
+                node->type = Engine::LT::NodeType::OPERATOR;
+                node->info.op_type = std::get<BoolOp>(start->info);
+                stackOp(node, literal, operation);
+            }
+            break;
+            case TokenT::CALCULATION_OPERATOR:
+            {
+                auto node = std::make_shared<Engine::LT::LT>();
+                node->type = Engine::LT::NodeType::CALCULATION;
+                node->info.cal_type = std::get<CalOp>(start->info);
+                stackOp(node, literal, operation);
+            }
+            break;
+            case TokenT::LBRACKET:
+            {
+                auto node = std::make_shared<Engine::LT::LT>();
+                node->type = Engine::LT::NodeType::LBRACKET;
+                stackOp(node, literal, operation);
+            }
+            break;
+            case TokenT::RBRACKET:
+            {
+                auto node = std::make_shared<Engine::LT::LT>();
+                node->type = Engine::LT::NodeType::RBRACKET;
+                stackOp(node, literal, operation);
+            }
+            break;
+            default:
+                throw std::runtime_error("[ERROR] Parse expression failed.");
+            }
+
+            if (start == end)
+                break;
+            start++;
+        }
+
+        while (literal.size() != 1)
+        {
+            opStackPopOnce(literal, operation);
+        }
+
+        return literal.top();
     }
 
     std::unique_ptr<Affair> parseCreate(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end)
@@ -721,7 +908,8 @@ namespace HydroSQL::Server::Parser
                     start++;
                     auto where_start = start;
                     for (; start != end && start->type != TokenT::KEYWORD; start++)
-                    {}
+                    {
+                    }
                     requirements = parseExpr(where_start, --start);
                 }
                 else if (std::get<KeywordE>(start->info) == KeywordE::ORDER)
@@ -798,7 +986,8 @@ namespace HydroSQL::Server::Parser
                     throw std::runtime_error("[FAILED] Could not found expression.");
                 auto expr_start = ++start;
                 for (; start != end && start->type != TokenT::COMMA && start->type != TokenT::KEYWORD; start++)
-                {}
+                {
+                }
                 expr.push_back(parseExpr(expr_start, --start));
                 // start++;
             }
@@ -867,135 +1056,6 @@ namespace HydroSQL::Server::Parser
         return static_cast<std::unique_ptr<Affair>>(std::make_unique<DropA>(std::move(table_name)));
     }
 
-    using Stack = Utils::DataStructure::Stack<std::shared_ptr<Engine::LT::LT>>;
-
-    void opStackPopOnce(Stack &li_stack, Stack &op_stack)
-    {
-        auto orig_top = op_stack.pop();
-
-        int liStackPopTime = 0;
-        if (orig_top->type == Engine::LT::NodeType::CALCULATION)
-            liStackPopTime = 2;
-        else if (orig_top->type == Engine::LT::NodeType::OPERATOR)
-            liStackPopTime = Engine::LT::getOpParaNum(orig_top->info.op_type);
-
-        orig_top->children.resize(liStackPopTime);
-
-        for (; liStackPopTime > 0; liStackPopTime--)
-        {
-            auto child = li_stack.pop();
-            orig_top->children[liStackPopTime - 1] = child;
-        }
-
-        li_stack.push(orig_top);
-    }
-
-    void opStackPop(std::shared_ptr<Engine::LT::LT> &op, Stack &li_stack, Stack &op_stack)
-    {
-        /**
-         * Firstly, op_stack pop.
-         * Secondly, li_stack pop. The time of popping is resolved by the type of the original top of op_stack.
-         * Thirdly, what li_stack has popped become the children of the original top of op_stack.
-         * Fourthly, the original top of op_stack, with its children, will be push into the li_stack.
-         * Lastly, op will be push into op_stack if op isn't right bracket.
-         *
-         * If op is not right bracket, the aforesaid steps will be applied only once.
-         * If it is, the steps will be applied repeatedly until one left bracket is pop.
-         */
-
-        if (op->type != Engine::LT::NodeType::RBRACKET)
-        {
-            opStackPopOnce(li_stack, op_stack);
-            op_stack.push(op);
-        }
-        else
-        {
-            while (op_stack.top()->type != Engine::LT::NodeType::LBRACKET)
-            {
-                opStackPopOnce(li_stack, op_stack);
-            }
-            op_stack.pop();
-        }
-    }
-
-    void stackOp(std::shared_ptr<Engine::LT::LT> &op, Stack &li_stack, Stack &op_stack)
-    {
-        /**
-         * Left bracket always push, while right bracket always pop.
-         * Otherwise, only when the stack_top has a higher or equal priority than the op 
-         * will op_stack pop.
-         */
-
-        if (op_stack.empty())
-        {
-            op_stack.push(op);
-            return;
-        }
-        
-        auto stack_top = op_stack.top();
-        switch (op->type)
-        {
-        case Engine::LT::NodeType::LBRACKET:
-            op_stack.push(op);
-            return;
-        case Engine::LT::NodeType::RBRACKET:
-            opStackPop(op, li_stack, op_stack);
-            return;
-        case Engine::LT::NodeType::CALCULATION:
-            {
-                switch (stack_top->type)
-                {
-                case Engine::LT::NodeType::OPERATOR:
-                    op_stack.push(op);
-                    return;
-                case Engine::LT::NodeType::CALCULATION:
-                    if (static_cast<char>(op->info.cal_type) >= static_cast<char>(stack_top->info.cal_type))
-                    {
-                        opStackPop(op, li_stack, op_stack);
-                    }
-                    else
-                    {
-                        op_stack.push(op);
-                    }
-                    return;
-                case Engine::LT::NodeType::LBRACKET:
-                    op_stack.push(op);
-                    return;
-                default:
-                    throw std::runtime_error("[ERROR] Parsing expression failed.");
-                }
-            }
-            return;
-        case Engine::LT::NodeType::OPERATOR:
-            {
-                switch (stack_top->type)
-                {
-                case Engine::LT::NodeType::OPERATOR:
-                    if (static_cast<char>(op->info.op_type) >= static_cast<char>(stack_top->info.op_type))
-                    {
-                        opStackPop(op, li_stack, op_stack);
-                    }
-                    else
-                    {
-                        op_stack.push(op);
-                    }
-                    return;
-                case Engine::LT::NodeType::CALCULATION:
-                    opStackPop(op, li_stack, op_stack);
-                    return;
-                case Engine::LT::NodeType::LBRACKET:
-                    op_stack.push(op);
-                    return;
-                default:
-                    throw std::runtime_error("[ERROR] Parsing expression failed.");
-                }
-            }
-                return;
-        default:
-            throw std::runtime_error("[ERROR] Parsing expression failed.");
-        }
-    }
-
     std::unique_ptr<Affair> parseGrant(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end)
     {
         if (start->type != TokenT::AUTH_LEVEL)
@@ -1011,7 +1071,7 @@ namespace HydroSQL::Server::Parser
 
         if (!(start->type == TokenT::KEYWORD && std::get<KeywordE>(start->info) == KeywordE::ON))
             throw std::runtime_error("[FAILED] Command not found. Do you meant GRANT ... ON ..TO?");
-        
+
         if (start == end)
             throw std::runtime_error("[FAILED] ON should be followed with a table name.");
         start++;
@@ -1042,88 +1102,32 @@ namespace HydroSQL::Server::Parser
         return static_cast<std::unique_ptr<Affair>>(std::make_unique<GrantA>(std::move(table_name), std::move(level), std::move(user_list)));
     }
 
-    std::shared_ptr<Engine::LT::LT> parseExpr(std::list<Token>::const_iterator start, std::list<Token>::const_iterator end)
+    std::unique_ptr<Affair> parse(const std::list<Token> &token)
     {
-        /**
-         * Priority:
-         * bracket > calculation operator > bool operator > literal / column
-         * 
-         * In calculation operator & bool operator,
-         * the smaller one has higher priority.
-         */
+        if (token.size() == 0 || token.front().type != TokenT::KEYWORD)
+            return nullptr;
 
-        Stack literal;
-        Stack operation;
-
-        while (true)
+        switch (std::get<KeywordE>(token.front().info))
         {
-            switch (start->type)
-            {
-            case TokenT::KEYWORD:
-                throw std::runtime_error("Invalid expression arguement KEYWORD.");
-                break;
-            case TokenT::LITERAL:
-                {
-                    auto node = std::make_shared<Engine::LT::LT>();
-                    node->type = Engine::LT::NodeType::LITERAL;
-                    node->info.liter.liter_type = std::get<LiteralInfo>(start->info).type;
-                    node->info.liter.liter_info = std::get<LiteralInfo>(start->info).data;
-                    literal.push(node);
-                }
-                break;
-            case TokenT::COLANDTABLE:
-                {
-                    auto node = std::make_shared<Engine::LT::LT>();
-                    node->type = Engine::LT::NodeType::COL;
-                    node->info.liter.liter_type = Engine::LT::LiterType::STR;
-                    node->info.liter.liter_info.emplace<std::string>(std::get<std::string>(start->info));
-                    literal.push(node);
-                }
-                break;
-            case TokenT::BOOL_OPERATOR:
-                {
-                    auto node = std::make_shared<Engine::LT::LT>();
-                    node->type = Engine::LT::NodeType::OPERATOR;
-                    node->info.op_type = std::get<BoolOp>(start->info);
-                    stackOp(node, literal, operation);
-                }
-                break;
-            case TokenT::CALCULATION_OPERATOR:
-                {
-                    auto node = std::make_shared<Engine::LT::LT>();
-                    node->type = Engine::LT::NodeType::CALCULATION;
-                    node->info.cal_type = std::get<CalOp>(start->info);
-                    stackOp(node, literal, operation);
-                }
-                break;
-            case TokenT::LBRACKET:
-                {
-                    auto node = std::make_shared<Engine::LT::LT>();
-                    node->type = Engine::LT::NodeType::LBRACKET;
-                    stackOp(node, literal, operation);
-                }
-                break;
-            case TokenT::RBRACKET:
-                {
-                    auto node = std::make_shared<Engine::LT::LT>();
-                    node->type = Engine::LT::NodeType::RBRACKET;
-                    stackOp(node, literal, operation);
-                }
-                break;
-            default:
-                throw std::runtime_error("[ERROR] Parse expression failed.");
-            }
-
-            if (start == end)
-                break;
-            start++;
+        case KeywordE::CREATE:
+            return parseCreate(++token.begin(), token.end());
+        case KeywordE::INSERT:
+            return parseInsert(++token.begin(), token.end());
+        case KeywordE::SELECT:
+            return parseSelect(++token.begin(), token.end());
+        case KeywordE::UPDATE:
+            return parseUpdate(++token.begin(), token.end());
+        case KeywordE::DELETE_:
+            return parseDelete(++token.begin(), token.end());
+        case KeywordE::DROP:
+            return parseDrop(++token.begin(), token.end());
+        case KeywordE::GRANT:
+            return parseGrant(++token.begin(), token.end());
+        default:
+            throw std::runtime_error("[FAILED] Command not found.");
+            return nullptr;
         }
-
-        while (literal.size() != 1)
-        {
-            opStackPopOnce(literal, operation);
-        }
-
-        return literal.top();
     }
+
+
 };

@@ -105,7 +105,7 @@ Multiple rows:
 > (4, "Sam Smith", 13000);
 [SUCCESS] 3 row(s) inserted.
 ```
-The column birthday will be fill with default value.
+The column birthday will be filled with default value.
 
 Insert using expression:
 ```SQL
